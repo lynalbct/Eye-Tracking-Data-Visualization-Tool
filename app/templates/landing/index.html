@@ -20,6 +20,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/static/css/landing-page.min.css" rel="stylesheet">
+    <link href="/static/css/buttons.css" rel="stylesheet">
 
   </head>
 
@@ -29,11 +30,14 @@
     <nav class="navbar navbar-light bg-light static-top">
       <div class="container">
         <a class="navbar-brand" href="#">Start Bootstrap</a>
-        <a class="btn btn-primary" href="#">Sign Up</a>
-        <a class="btn btn-primary" href="#">Sign In</a>
-
-      </div>
+        <a class="btn btn-primary" style="margin-right: -72%" data-target="#login-modal" data-toggle="modal">Sign In</a>
+        
+        <a class="btn btn-primary" data-target="#reg-modal" data-toggle="modal">Sign Up</a>
+        
+      </div>  
     </nav>
+    {% include "forms/reg-modal.html" %}
+    {% include "forms/login-modal.html" %}
 
     <!-- Masthead -->
     <header class="masthead text-white text-center">

@@ -1,0 +1,58 @@
+<div class="">
+	<div  ng-controller="loginCtrl as main"  class="modal right fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+		<div  class="modal-dialog" role="document">
+			<div class="modal-content">
+
+				<!-- <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel2">Right Sidebar</h4>
+				</div> -->
+
+				<div class="modal-body">
+                    <div class="login-container">
+                        <div class="row">
+                            <!-- <div class="col-md-4 col-md-offset-4 col-sm-10 col-sm-offset-1"> -->
+                            <div class="col-md-12">
+                                <div class="text-center m-b-md">
+                                    <b><h2>Login</h2></b>
+                                    <small>Welcome to ETDT</small>
+                                </div>
+                                <div class="hpanel">
+                                    <div class="panel-body">
+                                        <!-- <form action="/signin/" id="loginForm" method="post"> -->
+                                        <!-- <p ng-if="main.error" class="text-danger text-center">{$ main.error $}</p> -->
+
+                                        <div class="form-group">
+                                            <i class="fa fa-envelope"></i>&nbsp
+                                            <label class="control-label" for="email">Email</label>
+
+                                            <input type="text" title="Please enter you email" name="email" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <i class="fa fa-lock"></i>&nbsp
+                                            <label class="control-label" for="password">Password</label><br>
+                                            
+                                            <input type="password" title="Please enter your password" placeholder="" name="password" class="form-control">
+                                        </div>
+                                        <button class="btn btn-primary btn-block" ng-disabled="main.logging_in" submit-form="login" id="login-btn">Login</button>
+                                        <br>
+                                        <a data-toggle="modal">Forgot Password?</a>&nbsp&nbsp&nbsp
+                                        <a show-modal="verify-modal" data-dismiss="modal" data-toggle="modal" >Resend Verification Code</a>
+                                        <!-- </form> -->
+										<center>
+											<br/>
+											Don't have an account yet? Sign up <a data-target="#reg-modal" data-dismiss="modal" data-toggle="modal" href="#"><strong>here!</strong></a>
+										</center>
+									
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+
+			</div><!-- modal-content -->
+		</div><!-- modal-dialog -->
+
+	</div><!-- modal -->
+</div>
