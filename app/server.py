@@ -17,3 +17,7 @@ from flask import render_template, request, url_for,redirect,send_from_directory
 @app.route('/')
 def index():
 	return render_template('landing/index.html')
+
+@app.route('/dashboard')
+def dashboard():
+	return render_template('dashboard/dashboard.html')
