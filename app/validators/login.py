@@ -13,7 +13,7 @@ def load_user(userid):
     return User.query.get(userid)
 
 
-class UserLoginForm(Form):
+class LoginForm(Form):
     username = TextField('Username', [validators.Required(), validators.Length(min=4, max=25)])
     password = PasswordField('Password', [validators.Required(), validators.Length(min=6, max=200)])
 
