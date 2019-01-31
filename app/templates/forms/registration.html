@@ -1,0 +1,159 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+<head>
+	<title>Login V6</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="static/images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="static/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="static/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="static/css/util.css">
+	<link rel="stylesheet" type="text/css" href="static/css/loginmain.css">
+<!--===============================================================================================-->
+</head>
+<body>
+	{% block content %}
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100 p-t-85 p-b-20">
+				<form action="/register" method="post" class="form" role="form" autocomplete="off">
+
+				<!-- <form class="login100-form validate-form"> -->
+					<span class="login100-form-title p-b-70">
+						Welcome
+					</span>
+<!-- 					<span class="login100-form-avatar">
+						<img src="static/images/avatar-01.jpg" alt="AVATAR">
+					</span> -->
+              		  {{ form.csrf_token }}
+            		<div class="row">
+               			<div class="col-xs-6 col-sm-6">
+                    	{{ wtf.form_field(form.first_name ) }}
+                		</div>
+               				 <div class="col-xs-6 col-sm-6">
+                   				{{ wtf.form_field(form.last_name) }}
+                			</div>
+            		</div>
+		            {{ wtf.form_field(form.username) }}
+		            {{ wtf.form_field(form.profession) }}
+		            {{ wtf.form_field(form.organization) }}
+		            {{ wtf.form_field(form.email) }}
+		            {{ wtf.form_field(form.password) }}
+		            {{ wtf.form_field(form.confirm) }}
+		            <br />
+		            <br />
+		            <button class="btn btn-lg btn-primary btn-block" type="submit">Create Account</button>
+		             <p>Already have an account? <a href="/register" class="">Log In</a></p>
+		            </form>
+<!-- 					<div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate = "Enter firstname">
+						<input class="input100" type="text" name="firstname">
+						<span class="focus-input100" data-placeholder="First Name"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-50" data-validate = "Enter middlename">
+						<input class="input100" type="text" name="middlename">
+						<span class="focus-input100" data-placeholder="Middle Name"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-50" data-validate = "Enter lastname">
+						<input class="input100" type="text" name="lastname">
+						<span class="focus-input100" data-placeholder="Last Name"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-50" data-validate = "Enter username">
+						<input class="input100" type="text" name="username">
+						<span class="focus-input100" data-placeholder=" Username"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-50" data-validate = "Enter profession">
+						<input class="input100" type="text" name="profession">
+						<span class="focus-input100" data-placeholder=" Profession"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-50" data-validate = "Enter organization">
+						<input class="input100" type="text" name="organization">
+						<span class="focus-input100" data-placeholder=" Organization"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-50" data-validate = "Enter email">
+						<input class="input100" type="text" name="email">
+						<span class="focus-input100" data-placeholder=" Email"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-50" data-validate="Enter password">
+						<input class="input100" type="password" name="password">
+						<span class="focus-input100" data-placeholder="Password"></span>
+					</div>
+
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn">
+							Sign Up
+						</button>
+					</div> -->
+					<br>
+					<span class="txt1">
+								Already have an account?
+							</span>
+
+							<a href="#" class="txt2">
+								Sign in
+							</a>
+
+					<!-- <ul class="login-more p-t-190"> -->
+						<!-- <li class="m-b-8">
+							 <span class="txt1">
+								Forgot
+							</span> -->
+
+							<!-- <a href="#" class="txt2"> -->
+								<!-- Username / Password? -->
+							<!-- </a> -->
+						<!-- </li>  -->
+
+					<!-- 	<li>
+							<span class="txt1">
+								Already have an account?
+							</span>
+
+							<a href="#" class="txt2">
+								Sign in
+							</a>
+						</li> -->
+					</ul>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+
+	<div id="dropDownSelect1"></div>
+	
+<!--===============================================================================================-->
+	<script src="static/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="static/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="static/vendor/bootstrap/js/popper.js"></script>
+	<script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="static/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="static/vendor/daterangepicker/moment.min.js"></script>
+	<script src="static/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="static/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="static/js/loginmain.js"></script>
+
+</body>
+{% endblock %}
