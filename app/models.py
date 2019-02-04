@@ -2,36 +2,47 @@ from app import db
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 
 
 
-class Researcher(db.Model):
+class Researcher(UserMixin, db.Model):
 	__tablename__ = 'researcher'
 	researcher_id = db.Column(db.Integer, primary_key=True)
-	first_name = db.Column(db.String(60))
-	middle_name = db.Column(db.String(60))
-	last_name = db.Column(db.String(60))
-	username = db.Column(db.String(60))
+	first_name = db.Column(db.String(140))
+	last_name = db.Column(db.String(140))
+	username = db.Column(db.String(140))
 	profession = db.Column(db.String(140))
 	organization = db.Column(db.String(140))
-	email = db.Column(db.String(60), nullable=False, unique=True)
-	password = db.Column(db.String(60), nullable=False)
+	email = db.Column(db.String(140), nullable=False, unique=True)
+	password = db.Column(db.String(140), nullable=False)
 	date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-	date_modified = db.Column(db.DateTime)
 	connections = db.relationship("Connection", uselist=False, backref="researcher")
 	projects = db.relationship("Project", uselist=False, backref="researcher")
 	sharedprojects = db.relationship("SharedProject", uselist=False, backref="researcher")
 
-	def __init__(self, first_name,middle_name,last_name,profession,organization,email,password,date_modified):
+	def __init__(self, first_name,last_name,username,profession,organization,email,password):
 		self.first_name = first_name
-		self.middle_name = middle_name
 		self.last_name = last_name
+		self.username = username
 		self.profession = profession
 		self.organization = organization
 		self.email = email
 		self.password = generate_password_hash(password, method='sha256')
 
+	def get_id(self):
+		return (self.researcher_id)
+
+	def isAuthenticated(self):
+		return True
+
+	def is_active(self):
+		return True
+
+	def is_anonymous(self):
+		return Fals
+		
 	def __repr__(self):
 		return '<Researcher %r>' % self.researcher_id
 
