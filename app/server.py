@@ -34,9 +34,28 @@ def load_user(researcher_id):
 def index():
 	return render_template('landing/index.html')
 
+@app.route('/forgotpassword')
+def forgotpassword():
+	return render_template('dashboard/forgot-password.html')
+
 @app.route('/log')
 def log():
-	return render_template('dashboard/login.html')
+	form = LoginForm()
+	# if current_user.is_authenticated is True:
+	# 	return redirect(url_for('home'))
+	if form.validate_on_submit():
+		user = Researcher.query.filter_by(username=form.username.data).first()
+		if user:
+			print(form.password.data)
+			if check_password_hash(user.password, form.password.data):
+				login_user(user, remember=True)
+				return redirect(url_for('home'))
+			else:
+				flash('Invalid username or password')
+				return render_template('dashboard/login.html', form=form)
+		else:
+			return render_template('dashboard/login.html', form=form)
+	return render_template('dashboard/login.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
