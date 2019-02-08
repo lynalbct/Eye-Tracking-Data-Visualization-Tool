@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
 from flask import render_template, request, url_for,redirect,send_from_directory
-from app import *
+from app import db, app
 from app.forms import *
 from app.models import *
 from flask import render_template, request, url_for,redirect,send_from_directory
@@ -33,6 +33,10 @@ def load_user(researcher_id):
 @app.route('/')
 def index():
 	return render_template('landing/index.html')
+
+@app.route('/log')
+def log():
+	return render_template('dashboard/404.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

@@ -19,6 +19,7 @@ app.config['SECRET_KEY'] = 'etdvt'
 from app import models
 from app import server
 from app.server import upload_folder
+
 app.config['UPLOAD_FOLDER'] = upload_folder
 
 
