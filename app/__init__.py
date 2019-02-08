@@ -11,14 +11,17 @@ import psycopg2
 app = Flask(__name__)
 Bootstrap(app)
 db = SQLAlchemy(app)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1234@localhost/etdvt'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'etdvt'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 
 from app import models
 from app import server
+from app.server import upload_folder
+app.config['UPLOAD_FOLDER'] = upload_folder
+
+
 db.create_all()
 app.debug = True
 

@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
 from flask import render_template, request, url_for,redirect,send_from_directory
-from app import db, app
+from app import *
 from app.forms import *
 from app.models import *
 from flask import render_template, request, url_for,redirect,send_from_directory
@@ -94,15 +94,11 @@ def info():
 @app.route('/resetpassword')
 def resetpassword():
 	form = ResetPasswordForm()
-	# user = Researcher.query.filter_by(researcher_id=current_user.researcher_id)
 	if request.method == 'POST':
 		if form.validate():
-			# update_user = Researcher(
 			current_user.username=form.username.data,
 			current_user.email=form.email.data,
 			current_user.password = form.password.data
-				# )
-			# db.session.commit()
 			current_user.first_name = form.first_name.data,
 			current_user.last_name = form.last_name.data,
 			current_user.profession = form.profession.data,
@@ -113,7 +109,6 @@ def resetpassword():
 		else:
 			print('not validated')
 	return render_template('profile/profile.html')
-
 
 @app.route('/home')
 def home():
@@ -127,11 +122,8 @@ def profile():
 	print(current_user.researcher_id)
 	if request.method == 'POST':
 		if form.validate():
-			# update_user = Researcher(
 			current_user.username=form.username.data,
 			current_user.email=form.email.data,
-				# )
-			# db.session.commit()
 			current_user.first_name = form.first_name.data,
 			current_user.last_name = form.last_name.data,
 			current_user.profession = form.profession.data,
