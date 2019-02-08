@@ -10,6 +10,14 @@ from flask import flash
 from flask import current_app
 from werkzeug.security import check_password_hash
 from flask_bcrypt import Bcrypt
+from werkzeug.utils import secure_filename
+
+upload_folder = 'app/static/user'
+allowed_extensions = set(['csv', 'png', 'jpg', 'jpeg'])
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 def debug():
 	assert current_app.debug == False, "Don't panic! You're here by request of debug()"
@@ -26,83 +34,117 @@ def load_user(researcher_id):
 def index():
 	return render_template('landing/index.html')
 
-
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	form = LoginForm()
-	print(form)
 	if current_user.is_authenticated is True:
 		return redirect(url_for('home'))
 	elif form.validate_on_submit():
 		user = Researcher.query.filter_by(username=form.username.data).first()
-		# debug()
 		if user:
 			print(form.password.data)
 			if check_password_hash(user.password, form.password.data):
 				login_user(user, remember=True)
 				return redirect(url_for('home'))
 			else:
-				debug()
 				flash('Invalid username or password')
 				return render_template('forms/login.html', form=form)
 		else:
-			print(user)
-			debug()
 			return render_template('forms/login.html', form=form)
-
 	return render_template('forms/login.html', form=form)
 
 @app.route('/register', methods = ['GET','POST'])
 def register():
 	form = RegistrationForm()
-	# print(form.username.data)
 	if request.method == 'POST':
 		if form.validate():
 			new_user = Researcher(
-				first_name=form.first_name.data,
-				last_name=form.last_name.data,
 				username=form.username.data,
-				profession=form.profession.data,
-				organization=form.organization.data,
 				email=form.email.data,
 				password=form.password.data,
 				)
 			db.session.add(new_user)
 			db.session.commit()
 			if new_user is True:
-				print('hello')	
 				login_user(new_user, remember=True)
-				return redirect(url_for('home'))
-			return redirect(url_for('home'))
+				return redirect(url_for('info'))
+			return redirect(url_for('info'))
 		else:
-			return redirect(url_for('home'))
+			return redirect(url_for('register'))
 	return render_template('forms/registration.html', form=form)
 
-	
+@app.route('/info', methods = ['GET','POST'])
+@login_required
+def info():
+	form = InfoForm()
+	if request.method == 'POST':
+		if form.validate():
+			current_user.first_name = form.first_name.data,
+			current_user.last_name = form.last_name.data,
+			current_user.profession = form.profession.data,
+			current_user.organization = form.organization.data
+			db.session.add(current_user)
+			db.session.commit()
+			print('ok')
+			return redirect(url_for('home'))
+		else:
+			return redirect(url_for('info'))
+	return render_template('forms/info.html', form=form)
+
+@app.route('/resetpassword')
+def resetpassword():
+	form = ResetPasswordForm()
+	# user = Researcher.query.filter_by(researcher_id=current_user.researcher_id)
+	if request.method == 'POST':
+		if form.validate():
+			# update_user = Researcher(
+			current_user.username=form.username.data,
+			current_user.email=form.email.data,
+			current_user.password = form.password.data
+				# )
+			# db.session.commit()
+			current_user.first_name = form.first_name.data,
+			current_user.last_name = form.last_name.data,
+			current_user.profession = form.profession.data,
+			current_user.organization = form.organization.data
+			db.session.add(current_user)
+			db.session.commit()
+			print('ok')
+		else:
+			print('not validated')
+	return render_template('profile/profile.html')
+
 
 @app.route('/home')
 def home():
-	return render_template('landing/index.html')
+	return render_template('dashboard/index.html')
 
-# @app.route('/register', methods=['GET', 'POST'])
-# def register():
-#     form = RegistrationForm(request.form)
-#     if request.method == 'POST' and form.validate():
-#         user = User(form.username.data, form.email.data,
-#                     form.password.data)
-#         db_session.add(user)
-#         flash('Thanks for registering')
-#         return redirect(url_for('login'))
-#     return render_template('register.html', form=form)
+@app.route('/profile', methods=['POST','GET'])
+def profile():
+	form = ProfileForm()
+	print(form)
+	user = Researcher.query.filter_by(researcher_id =current_user.researcher_id)
+	print(current_user.researcher_id)
+	if request.method == 'POST':
+		if form.validate():
+			# update_user = Researcher(
+			current_user.username=form.username.data,
+			current_user.email=form.email.data,
+				# )
+			# db.session.commit()
+			current_user.first_name = form.first_name.data,
+			current_user.last_name = form.last_name.data,
+			current_user.profession = form.profession.data,
+			current_user.organization = form.organization.data
+			db.session.add(current_user)
+			db.session.commit()
+			print('ok')
+		else:
+			print('not validated')
+	return render_template('profile/profile.html', form=form)
 
 @app.route('/logout')
 @login_required
 def logout():
 	logout_user()
 	return redirect(url_for('index'))
-
-
-				# new_user = Researcher(form.username.data, form.password.data, form.email.data,form.last_name.data,\
-			# 	form.first_name.data,form.middle_name.data,form.profession.data,form.organization.data)
-			# print('hello')

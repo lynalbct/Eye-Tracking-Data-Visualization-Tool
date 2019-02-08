@@ -22,12 +22,12 @@ class Researcher(UserMixin, db.Model):
 	projects = db.relationship("Project", uselist=False, backref="researcher")
 	sharedprojects = db.relationship("SharedProject", uselist=False, backref="researcher")
 
-	def __init__(self, first_name,last_name,username,profession,organization,email,password):
-		self.first_name = first_name
-		self.last_name = last_name
+	def __init__(self, username='', email='',password=''):
+		self.first_name = ''
+		self.last_name = ''
 		self.username = username
-		self.profession = profession
-		self.organization = organization
+		self.profession = ''
+		self.organization = ''
 		self.email = email
 		self.password = generate_password_hash(password, method='sha256')
 

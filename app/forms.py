@@ -15,11 +15,7 @@ def load_user(userid):
     return User.query.get(userid)
 
 class RegistrationForm(Form):
-    first_name = StringField('First Name', validators=[Length(min=2, max=25)])
-    last_name = StringField('Last Name', validators=[Length(min=4, max=25)])
     username = StringField('Username', validators=[InputRequired(), Length(min=3, max=25)])
-    profession = StringField('Profession', validators=[Length(min=4, max=25)])
-    organization = StringField('Organization', validators=[Length(min=4, max=25)])
     email = StringField('Email Address', validators=[Length(min=6, max=35),InputRequired(),Email()])
     password = PasswordField('Password', validators=[InputRequired(), Length(min=6, max=80)])
     confirm = PasswordField('Repeat password', validators=[InputRequired(),
@@ -39,3 +35,41 @@ class LoginForm(Form):
     username = StringField('Username', validators=[InputRequired(), Length(min=3, max=25)])
     password = PasswordField('Password', validators=[InputRequired(),Length(min=6, max=80)])
 
+class ProfileForm(Form):
+    first_name = StringField('First Name', validators=[Length(min=2, max=25)])
+    last_name = StringField('Last Name', validators=[Length(min=2, max=25)])
+    username = StringField('Username', validators=[InputRequired(), Length(min=3, max=25)])
+    profession = StringField('Profession', validators=[Length(min=4, max=25)])
+    organization = StringField('Organization', validators=[Length(min=4, max=25)])
+    email = StringField('Email Address', validators=[Length(min=6, max=35),InputRequired(),Email()])
+
+    def validate_email(self, field):
+        if Researcher.query.filter_by(email=field.data).first():
+            raise ValidationError('Email already registered.')
+
+    def validate_username(self, field):
+        if Researcher.query.filter_by(username=field.data).first():
+            raise ValidationError('Username already in use.')
+
+class InfoForm(Form):
+    first_name = StringField('First Name', validators=[Length(min=2, max=25)])
+    last_name = StringField('Last Name', validators=[Length(min=2, max=25)])
+    profession = StringField('Profession', validators=[Length(min=4, max=25)])
+    organization = StringField('Organization', validators=[Length(min=4, max=25)])
+
+class ResetPasswordForm(Form):
+    first_name = StringField('First Name', validators=[Length(min=2, max=25)])
+    last_name = StringField('Last Name', validators=[Length(min=2, max=25)])
+    username = StringField('Username', validators=[InputRequired(), Length(min=3, max=25)])
+    profession = StringField('Profession', validators=[Length(min=4, max=25)])
+    organization = StringField('Organization', validators=[Length(min=4, max=25)])
+    email = StringField('Email Address', validators=[Length(min=6, max=35),InputRequired(),Email()])
+    password = PasswordField('Password', validators=[InputRequired(), Length(min=6, max=80)])
+
+    def validate_email(self, field):
+        if Researcher.query.filter_by(email=field.data).first():
+            raise ValidationError('Email already registered.')
+
+    def validate_username(self, field):
+        if Researcher.query.filter_by(username=field.data).first():
+            raise ValidationError('Username already in use.')
