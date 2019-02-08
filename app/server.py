@@ -36,7 +36,7 @@ def index():
 
 @app.route('/log')
 def log():
-	return render_template('dashboard/404.html')
+	return render_template('dashboard/login.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
