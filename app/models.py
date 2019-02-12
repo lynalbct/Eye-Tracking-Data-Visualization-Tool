@@ -41,7 +41,7 @@ class Researcher(UserMixin, db.Model):
 		return True
 
 	def is_anonymous(self):
-		return Fals
+		return False
 		
 	def __repr__(self):
 		return '<Researcher %r>' % self.researcher_id
@@ -76,7 +76,7 @@ class Connection(db.Model):
 	request_id = db.Column(db.Integer)
 	researcher_id = db.Column(db.Integer, db.ForeignKey('researcher.researcher_id'))
 
-	def __init__(self,status,date_accepted,request_id,researcher_id):
+	def __init__(self,status,request_id,researcher_id,date_accepted):
 		self.status = status
 		self.date_accepted = date_accepted
 		self.request_id = request_id
@@ -97,7 +97,7 @@ class Project(db.Model):
 	sharedprojects = db.relationship("SharedProject", uselist=False, backref="project")
 	stimuli = db.relationship("Stimuli", uselist=False, backref="project")
 
-	def __init__(self, project_name,project_description,date_modified,row_status,researcher_id):
+	def __init__(self, project_name,project_description,researcher_id,row_status,date_modified):
 		self.project_name = project_name
 		self.project_description = project_description
 		self.date_modified = date_modified
@@ -117,7 +117,7 @@ class SharedProject(db.Model):
 	researcher_id = db.Column(db.Integer, db.ForeignKey('researcher.researcher_id'))
 	project_id = db.Column(db.Integer, db.ForeignKey('project.project_id'))
 
-	def __init__(self, status, sp_date_modified, shared_to, researcher_id,project_id ):
+	def __init__(self, status, shared_to, researcher_id,project_id,sp_date_modified):
 		self.status = status
 		self.sp_date_modified = sp_date_modified
 		self.shared_to = shared_to

@@ -18,7 +18,7 @@ class RegistrationForm(Form):
     username = StringField('Username', validators=[InputRequired(), Length(min=3, max=25)])
     email = StringField('Email Address', validators=[Length(min=6, max=35),InputRequired(),Email()])
     password = PasswordField('Password', validators=[InputRequired(), Length(min=6, max=80)])
-    confirm = PasswordField('Repeat password', validators=[InputRequired(),
+    confirm = PasswordField('Repeat Password', validators=[InputRequired(),
                                                            EqualTo('password', message='Passwords must match.')])
 
     def validate_email(self, field):
@@ -73,3 +73,7 @@ class ResetPasswordForm(Form):
     def validate_username(self, field):
         if Researcher.query.filter_by(username=field.data).first():
             raise ValidationError('Username already in use.')
+
+class ProjectForm(Form):
+    project_name = StringField('Project Name', validators=[Length(min=2, max=25)])
+    project_description = StringField('Project Description', validators=[Length(min=15, max=250)])

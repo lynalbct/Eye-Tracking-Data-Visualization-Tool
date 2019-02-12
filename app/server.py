@@ -32,11 +32,19 @@ def load_user(researcher_id):
 
 @app.route('/')
 def index():
-	return render_template('landing/index.html')
+	return render_template('landing/landing.html')
 
 @app.route('/forgotpassword')
 def forgotpassword():
 	return render_template('dashboard/forgot-password.html')
+
+@app.route('/prof')
+def prof():
+	user = Researcher.query.filter_by(researcher_id=current_user.researcher_id)
+	return render_template('profile/profile.html', user=user)
+@app.route('/stimuli')
+def stimuli():
+	return render_template('stimuli/stimuli.html')
 
 @app.route('/log')
 def log():
@@ -52,10 +60,10 @@ def log():
 				return redirect(url_for('home'))
 			else:
 				flash('Invalid username or password')
-				return render_template('dashboard/login.html', form=form)
+				return render_template('forms/login.html', form=form)
 		else:
-			return render_template('dashboard/login.html', form=form)
-	return render_template('dashboard/login.html', form=form)
+			return render_template('forms/login.html', form=form)
+	return render_template('forms/login.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -86,14 +94,18 @@ def register():
 				email=form.email.data,
 				password=form.password.data,
 				)
+			print(new_user)
 			db.session.add(new_user)
 			db.session.commit()
+
 			if new_user is True:
+				debug()
 				login_user(new_user, remember=True)
 				return redirect(url_for('info'))
-			return redirect(url_for('info'))
-		else:
-			return redirect(url_for('register'))
+			else:
+				# debug()
+				return redirect(url_for('info'))
+
 	return render_template('forms/registration.html', form=form)
 
 @app.route('/info', methods = ['GET','POST'])
@@ -113,6 +125,14 @@ def info():
 		else:
 			return redirect(url_for('info'))
 	return render_template('forms/info.html', form=form)
+
+@app.route('/createproject', methods=['GET','POST'])
+def createproject():
+	projectform = ProjectForm()
+	# if request.method == 'POST':
+	# 	if form.validate():
+
+	return render_template('stimuli/stimuli.html')
 
 @app.route('/resetpassword')
 def resetpassword():

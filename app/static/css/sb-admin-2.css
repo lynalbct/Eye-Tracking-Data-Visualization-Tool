@@ -2575,6 +2575,7 @@ textarea.form-control {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
 }
 
+
 @media screen and (prefers-reduced-motion: reduce) {
   .btn {
     -webkit-transition: none;
@@ -2854,6 +2855,42 @@ fieldset:disabled a.btn {
 
 .btn-light:not(:disabled):not(.disabled):active:focus, .btn-light:not(:disabled):not(.disabled).active:focus,
 .show > .btn-light.dropdown-toggle:focus {
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(220, 221, 225, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(220, 221, 225, 0.5);
+}
+
+.btn-light1 {
+  color: #3a3b45;
+  background-color: #f8f9fc;
+  border-color: #51406d;
+}
+
+.btn-light1:hover {
+  color: #3a3b45;
+  background-color: #dde2f1;
+  border-color: #51406d;
+}
+
+.btn-light1:focus, .btn-light1.focus {
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(220, 221, 225, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(220, 221, 225, 0.5);
+}
+
+.btn-light1.disabled, .btn-light1:disabled {
+  color: #3a3b45;
+  background-color: #f8f9fc;
+  border-color: #51406d;
+}
+
+.btn-light1:not(:disabled):not(.disabled):active, .btn-light1:not(:disabled):not(.disabled).active,
+.show > .btn-light1.dropdown-toggle {
+  color: #3a3b45;
+  background-color: #d4daed;
+  border-color: #51406d;
+}
+
+.btn-light1:not(:disabled):not(.disabled):active:focus, .btn-light1:not(:disabled):not(.disabled).active:focus,
+.show > .btn-light1.dropdown-toggle:focus {
   -webkit-box-shadow: 0 0 0 0.2rem rgba(220, 221, 225, 0.5);
   box-shadow: 0 0 0 0.2rem rgba(220, 221, 225, 0.5);
 }
@@ -5992,6 +6029,13 @@ a.close.disabled {
   .modal.fade .modal-dialog {
     -webkit-transition: none;
     transition: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .modal-xl {
+    width: 70%;
+   max-width:1100px;
   }
 }
 
