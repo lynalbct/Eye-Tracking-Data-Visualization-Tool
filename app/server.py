@@ -139,6 +139,14 @@ def profile():
 			print('not validated')
 	return render_template('profile/profile.html', form=form)
 
+@app.route('/connections')
+def connections():
+	return render_template('profile/connections.html', title="Connections")
+
+@app.route('/projects')
+def projects():
+	return render_template('profile/projects.html', title="Title")
+
 @app.route('/logout')
 @login_required
 def logout():
