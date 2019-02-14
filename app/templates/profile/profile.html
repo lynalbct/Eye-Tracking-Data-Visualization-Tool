@@ -11,8 +11,22 @@
   <style>
     .container{
       background-color: #fcfdff;
+      /*box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 15px 0 rgba(0, 0, 0, 0.10);*/
+      overflow-x: none;
+
+      /*width: 10%;*/
     }
+    .content1{
+      background-color: #fcfdff;
+      /*box-shadow: 0 0px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 15px 0 rgba(0, 0, 0, 0.10);*/
+      min-height: 75%;
+      padding: 2%;
+      overflow-x: none;
+      /*margin-top: 5%;*/
+    }
+
     .box{
+      overflow-x: none;
       background-color: #6d89da;
       border: 2px ;
       border-radius: 8px;
@@ -56,11 +70,7 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="index.html">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
-      </li>
+
 
 
       <!-- Divider -->
@@ -68,50 +78,37 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Addons
+        <!-- Addons -->
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Pages</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="dashboard/login.html">Login</a>
-            <a class="collapse-item" href="dashboard/register.html">Register</a>
-            <a class="collapse-item" href="dashboard/forgot-password.html">Forgot Password</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="dashboard/404.html">404 Page</a>
-            <a class="collapse-item" href="dashboard/blank.html">Blank Page</a>
-          </div>
-        </div>
+        <a class="nav-link" href="{{ url_for('home') }}">
+          <i class="fas fa-fw fa-home"></i>
+          <span>Dashboard</span></a>
       </li>
-
       <!-- Nav Item - Charts -->
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('profile') }}">
-          <i class="fas fa-fw fa-chart-area"></i>
+          <i class="fas fa-fw fa-user-circle"></i>
           <span>Profile</span></a>
       </li>
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('stimuli') }}">
-          <i class="fas fa-fw fa-table"></i>
+        <a class="nav-link" href="{{ url_for('connections') }}">
+          <i class="fas fa-fw fa-users"></i>
           <span>Connections</span></a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('stimuli') }}">
+          <i class="fas fa-fw fa-chart-area"></i>
+          <span>Stimuli</span></a>
       </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
-
-      <!-- Sidebar Toggler (Sidebar) -->
-<!--       <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div> -->
 
     </ul>
     <!-- End of Sidebar -->
@@ -275,8 +272,8 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Jane Doe</span>
+                <img class="img-profile rounded-circle" src="static/images/avatars/user-01.jpg">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -305,22 +302,7 @@
         </nav>
         <!-- End of Topbar -->
 
-        <!-- Begin Page Content -->
-<!--         <div class="container-fluid">
-
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <div class="row">
-              <div class="col-xl-3 col-md-6 mb-4">
-                <div class="box">
-                  <center>
-                        <img src="static/images/avatars/user-01.jpg" alt="user" style="width:250%">
-                  </center>
-                </div>
-              </div> -->
-            <!-- </div> -->
-          <!-- Page Heading -->
-          <!-- </div>
-      </div> -->
+      </div> 
       <div class="container"><br>
         <div class="row">
           <div class="col-sm">
@@ -342,23 +324,56 @@
         </div>
       </div>
       <br>
-      <div class="box">
-        <span>Projects</span>
-      </div>
       <div class="container">
-      <span>No projects added yet.</span>     
-      </div>
+        <form class="user">
+          <br>
+            <div class="form-group row">
+              <div class="col-sm-6 mb-3 mb-sm-0">
+                <!-- <input type="text" class="form-control form-control-user" id="first_name" placeholder="First Name"> -->
+                {{form.first_name(class="form-control form-control-user", placeholder="First Name") }}
+              </div>
+              <div class="col-sm-6">
+                <!-- <input type="text" class="form-control form-control-user" id="last_name" placeholder="Last Name"> -->
+                {{form.last_name(class="form-control form-control-user", placeholder="Last Name") }}
+              </div>
+            </div>
+              <div class="form-group">
+                <!-- <input type="text" class="form-control form-control-user" id="username" placeholder="Username"> -->
+                {{form.username(class="form-control form-control-user", placeholder="Username") }}
+              </div>
+              <div class="form-group">
+                <!-- <input type="email" class="form-control form-control-user" id="email" placeholder="Email Address"> -->
+                {{form.email(class="form-control form-control-user", placeholder="Email Address") }}
+              </div>
+              <div class="form-group">
+                <!-- <input type="text" class="form-control form-control-user" id="profession" placeholder="Profession"> -->
+                {{form.profession(class="form-control form-control-user", placeholder="Profession") }}
+              </div>
+              <div class="form-group">
+                <!-- <input type="text" class="form-control form-control-user" id="organization" placeholder="Organization"> -->
+                {{form.organization(class="form-control form-control-user", placeholder="Organization") }}
+              </div>
+              <center><button class="btn btn-primary btn-user btn-block" type="submit" name="submit">Submit</button></center>
+              <hr>
+              
+              
+            <!-- </div> -->
+            </div>
+          </form>
+        </div>
+        <br>
+        <hr>
+
       <!-- End of Main Content -->
 
       <!-- Footer -->
-      <br>
-      <footer class="sticky-footer bg-white">
+<!--       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
             <span>Copyright &copy; Your Website 2019</span>
           </div>
         </div>
-      </footer>
+      </footer> -->
       <!-- End of Footer -->
 
     </div>

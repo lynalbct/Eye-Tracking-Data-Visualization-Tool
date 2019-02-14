@@ -134,6 +134,15 @@ def createproject():
 
 	return render_template('stimuli/stimuli.html')
 
+
+@app.route('/temp', methods=['GET','POST'])
+def temp():
+	# projectform = ProjectForm()
+	# if request.method == 'POST':
+	# 	if form.validate():
+
+	return render_template('profile/temp.html')
+
 @app.route('/resetpassword')
 def resetpassword():
 	form = ResetPasswordForm()
@@ -156,6 +165,10 @@ def resetpassword():
 @app.route('/home')
 def home():
 	return render_template('dashboard/index.html')
+
+@app.route('/connections')
+def connections():
+	return render_template('connections/connections.html')
 
 @app.route('/profile', methods=['POST','GET'])
 def profile():

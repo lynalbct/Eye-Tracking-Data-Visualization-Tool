@@ -6031,11 +6031,18 @@ a.close.disabled {
     transition: none;
   }
 }
+.grid-container {
+  display: grid;
+/*  grid-template-columns: auto auto auto;
+  background-color: #2196F3;
+  padding: 10px;*/
+  margin-right: -20%
+}
 
 @media (min-width: 768px) {
   .modal-xl {
-    width: 70%;
-   max-width:1100px;
+    width: 40%;
+   max-width:1000px;
   }
 }
 

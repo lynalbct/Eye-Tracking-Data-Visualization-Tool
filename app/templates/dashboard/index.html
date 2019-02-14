@@ -41,11 +41,11 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+<!--       <li class="nav-item active">
         <a class="nav-link" href="index.html">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
-      </li>
+      </li> -->
 
 
       <!-- Divider -->
@@ -53,11 +53,11 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Addons
+        <!-- Addons -->
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
+<!--       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
           <i class="fas fa-fw fa-folder"></i>
           <span>Pages</span>
@@ -74,22 +74,31 @@
             <a class="collapse-item" href="dashboard/blank.html">Blank Page</a>
           </div>
         </div>
+      </li> -->
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('home') }}">
+          <i class="fas fa-fw fa-home"></i>
+          <span>Dashboard</span></a>
       </li>
-
       <!-- Nav Item - Charts -->
       <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('prof') }}">
-          <i class="fas fa-fw fa-chart-area"></i>
+        <a class="nav-link" href="{{ url_for('profile') }}">
+          <i class="fas fa-fw fa-user-circle"></i>
           <span>Profile</span></a>
       </li>
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-          <i class="fas fa-fw fa-table"></i>
+        <a class="nav-link" href="{{ url_for('connections') }}">
+          <i class="fas fa-fw fa-users"></i>
           <span>Connections</span></a>
       </li>
 
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('stimuli') }}">
+          <i class="fas fa-fw fa-chart-area"></i>
+          <span>Stimuli</span></a>
+      </li>
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
@@ -260,8 +269,8 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Jane Doe</span>
+                <img class="img-profile rounded-circle" src="static/images/avatars/user-01.jpg">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
