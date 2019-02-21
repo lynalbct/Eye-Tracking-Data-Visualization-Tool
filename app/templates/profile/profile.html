@@ -11,8 +11,11 @@
   <style>
     .container{
       background-color: #fcfdff;
-      /*box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 15px 0 rgba(0, 0, 0, 0.10);*/
+      margin: auto;
+      box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 10px 0 rgba(0, 0, 0, 0.10);
       overflow-x: none;
+      margin-left: 2%;
+      margin-right: 2%;
 
       /*width: 10%;*/
     }
@@ -272,7 +275,7 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Jane Doe</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.first_name}} {{user.last_name}}</span>
                 <img class="img-profile rounded-circle" src="static/images/avatars/user-01.jpg">
               </a>
               <!-- Dropdown - User Information -->
@@ -303,7 +306,7 @@
         <!-- End of Topbar -->
 
       </div> 
-      <div class="container"><br>
+      <div class="container" style="margin-left: 1%;"><br>
         <div class="row">
           <div class="col-sm">
             <!-- One of three columns -->
@@ -312,9 +315,9 @@
             <center>
             <img src="static/images/avatars/user-01.jpg" alt="Avatar" style="width:180px; border-radius: 50%">
             <p>
-            <h4 style="color: #1c1d1e; font-weight: bold;">Jane Doe</h4>
+            <h4 style="color: #1c1d1e; font-weight: bold;">{{ user.first_name }} {{ user.last_name }}</h4>
             <div class="box">
-            <h6 style="color: #1c1d1e; ">Researcher</h6>
+            <h6 style="color: #1c1d1e; ">{{ user.profession }}</h6>
             </div>
             </center>
           </div>
@@ -324,44 +327,39 @@
         </div>
       </div>
       <br>
-      <div class="container">
-        <form class="user">
-          <br>
-            <div class="form-group row">
-              <div class="col-sm-6 mb-3 mb-sm-0">
-                <!-- <input type="text" class="form-control form-control-user" id="first_name" placeholder="First Name"> -->
-                {{form.first_name(class="form-control form-control-user", placeholder="First Name") }}
-              </div>
-              <div class="col-sm-6">
-                <!-- <input type="text" class="form-control form-control-user" id="last_name" placeholder="Last Name"> -->
-                {{form.last_name(class="form-control form-control-user", placeholder="Last Name") }}
+      
+          <div class="row">
+            <!-- Area Chart -->
+            <div class="col-xl-12 col-lg-7">
+              <br>
+              <div class="card shadow mb-4" style="margin-left: 2%;margin-right: 2%;">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">About me</h6>
+                  <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                      <div class="dropdown-header">Dropdown Header:</div>
+                      <a class="dropdown-item" href="#">Action</a>
+                      <a class="dropdown-item" href="#">Another action</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                  <div class="chart-area">
+                    <div class="row">
+
+                    </div>
+                    <canvas id="myAreaChart"></canvas>
+                  </div>
+                </div>
               </div>
             </div>
-              <div class="form-group">
-                <!-- <input type="text" class="form-control form-control-user" id="username" placeholder="Username"> -->
-                {{form.username(class="form-control form-control-user", placeholder="Username") }}
-              </div>
-              <div class="form-group">
-                <!-- <input type="email" class="form-control form-control-user" id="email" placeholder="Email Address"> -->
-                {{form.email(class="form-control form-control-user", placeholder="Email Address") }}
-              </div>
-              <div class="form-group">
-                <!-- <input type="text" class="form-control form-control-user" id="profession" placeholder="Profession"> -->
-                {{form.profession(class="form-control form-control-user", placeholder="Profession") }}
-              </div>
-              <div class="form-group">
-                <!-- <input type="text" class="form-control form-control-user" id="organization" placeholder="Organization"> -->
-                {{form.organization(class="form-control form-control-user", placeholder="Organization") }}
-              </div>
-              <center><button class="btn btn-primary btn-user btn-block" type="submit" name="submit">Submit</button></center>
-              <hr>
-              
-              
-            <!-- </div> -->
-            </div>
-          </form>
-        </div>
-        <br>
         <hr>
 
       <!-- End of Main Content -->

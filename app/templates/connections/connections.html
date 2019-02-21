@@ -300,6 +300,7 @@ span.b {
           </div>
 
           <!-- ----card for friends--- -->
+
           <span class="b">
             <div class="card" style=" box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);max-width: 150px; max-height: 240px ;margin: auto;text-align: center; font-family: arial;">
               <img src="static/images/avatars/user-05.jpg" alt="Avatar" style="width:100%; padding: 5%">
@@ -313,15 +314,17 @@ span.b {
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h8 class="h4 mb-0 text-gray-800">Add Connections</h8>
           </div>
+          {% for not_connected_user in not_connected_users %}
           <span class="b">
             <div class="card" style=" box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);max-width: 150px; max-height: 240px ;margin: auto;text-align: center; font-family: arial;">
               <img src="static/images/avatars/user-05.jpg" alt="Avatar" style="width:100%; padding: 5%">
-              <p class="title" style="color: #3c3d3f;font-size: 18px;"><bold>John Doe</bold></p>
-              <p style="margin-top: -13%; font-size: 13px;">Professor</p>
+              <p class="title" style="color: #3c3d3f;font-size: 18px;"><bold>{{ not_connected_user.first_name}} {{ not_connected_user.last_name }}</bold></p>
+              <p style="margin-top: -13%; font-size: 13px;">{{ not_connected_user.profession }}</p>
               
-              <p><button class="btn btn-sm btn-primary shadow-sm" style="padding-bottom: -2%; margin-top: -10%"><i class="fas fa-user-plus fa-sm text-white-50"></i>&nbspConnect</button></p>
+              <p><button class="btn btn-sm btn-primary shadow-sm" style="padding-bottom: -2%; margin-top: -10%"><i class="fas fa-user-plus fa-sm text-white-50" method="POST" action="{{ url_for('connections')}}"></i>&nbspConnect</button></p>
             </div>
           </span>
+          {% endfor %}
 
           <!-- ---end of card content--- -->
 

@@ -20,10 +20,11 @@
   <link href="static/css/sb-admin-2.css" rel="stylesheet" type="text/css">
   <style>
     .container{
-      background-color: #fcfdff;
-      /*box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 15px 0 rgba(0, 0, 0, 0.10);*/
+      background-color: #ffffff;
+      box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 0px 0 rgba(0, 0, 0, 0.10);
       overflow-x: none;
-
+      padding-top: 1%;
+      padding-bottom: 1%;
       /*width: 10%;*/
     }
   </style>
@@ -317,7 +318,32 @@
           </div>
 
           <!-- Content Row -->
- <!-- Login Modal -->
+           <!-- contents -->
+           
+          <div class="container">
+            <table style="padding-top: 1%" class="table table-hover">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Project No.</th>
+                  <th scope="col">Project Name</th>
+
+              </thead>
+              <tbody>
+                {% for project in projects %}
+                <tr>
+                  <th scope="row">{{project_count}}</th>
+                  <td>{{project.project_name}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+            <br><br><br><br><br><br>
+           
+
+            
+            <!-- end of contents -->
+      <!-- Stimuli Modal -->
       <div class="modal right fade" id="stimulimodal" onclick="func();" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
         <div class="modal-dialog modal-xl" role="document" style="margin-top: 3%;">
           <div class="modal-content">
@@ -335,41 +361,23 @@
                 <div class="text-center">
                   <h1 class="h4 text-gray-900 mb-4">Add new project!</h1>
                  </div>
-                <form class="user" method="POST" action="{{ url_for('register')}}">
-                  <!-- form hidden tag -->
+                <form class="user" method="POST" action="{{ url_for('stimuli')}}">
+                    {{ projectform.hidden_tag() }}
+                    {{ projectform.csrf_token }}
                   <div class="form-group">
-                    
                   </div>
                   <div class="form-group">
-                    <input type="text" class="form-control form-control" id="username" placeholder="Project name"> 
+                    {{projectform.project_name(class="form-control form-control-user", placeholder="Project Name") }} 
                   </div>
                   <div class="form-group">
-                    <textarea type="text" rows="4" class="form-control form-control" id="username" placeholder="Project description"></textarea>
+                    {{projectform.project_description(class="form-control form-control-user", placeholder="Project Description") }} 
                   </div>
-<!--                   <div class="form-group">
-                    <input type="text" class="form-control form-control-user" id="username" placeholder="Username"> 
-                  </div> -->
-
                   </div><br>
                   <Center>
                     <p><button class="btn btn-lg btn-primary shadow-sm" style="max-width: 900px;padding-bottom: -10%; margin-top: -15%">Create</button></p>
-                    <!-- <button class="btn btn-md btn-primary btn-user btn-block" type="submit" name="submit">Create</button> -->
                   </Center>
-                  <hr>
-<!--                   <a href="index.html" class="btn btn-google btn-user btn-block">
-                    <i class="fab fa-google fa-fw"></i> Register with Google
-                  </a>
-                  <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                    <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                  </a>
                 </form>
-                <hr>
-                <div class="text-center">
-                  <a class="small" href="forgot-password.html">Forgot Password?</a>
-                </div>
-                <div class="text-center">
-                  <a class="small" href="login.html">Already have an account? Login!</a>
-                </div> -->
+                  <hr>
               </div>
               </div>
             </div>
@@ -377,7 +385,7 @@
         </div>
       </div>
     </div>
-  </div><
+  </div>
 
           
       <!-- End of Main Content -->
