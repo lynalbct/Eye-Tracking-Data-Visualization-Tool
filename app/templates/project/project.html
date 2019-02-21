@@ -33,6 +33,7 @@
 <body id="page-top">
 
   <!-- Page Wrapper -->
+  
   <div id="wrapper">
 
     <!-- Sidebar -->
@@ -344,48 +345,6 @@
             
             <!-- end of contents -->
       <!-- Stimuli Modal -->
-      <div class="modal right fade" id="stimulimodal" onclick="func();" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
-        <div class="modal-dialog modal-xl" role="document" style="margin-top: 3%;">
-          <div class="modal-content">
-
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-
-          <div class="modal-body">
-            <div class="grid-container">
-                    <div class="row">
-          <!-- <div class="col-lg-5 d-none d-lg-block bg-register-image"></div> -->
-            <div class="col-lg-10">
-              <div class="p-5">
-                <div class="text-center">
-                  <h1 class="h4 text-gray-900 mb-4">Add new project!</h1>
-                 </div>
-                <form class="user" method="POST" action="{{ url_for('stimuli')}}">
-                    {{ projectform.hidden_tag() }}
-                    {{ projectform.csrf_token }}
-                  <div class="form-group">
-                  </div>
-                  <div class="form-group">
-                    {{projectform.project_name(class="form-control form-control-user", placeholder="Project Name") }} 
-                  </div>
-                  <div class="form-group">
-                    {{projectform.project_description(class="form-control form-control-user", placeholder="Project Description") }} 
-                  </div>
-                  </div><br>
-                  <Center>
-                    <p><button class="btn btn-lg btn-primary shadow-sm" style="max-width: 900px;padding-bottom: -10%; margin-top: -15%">Create</button></p>
-                  </Center>
-                </form>
-                  <hr>
-              </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
           
       <!-- End of Main Content -->

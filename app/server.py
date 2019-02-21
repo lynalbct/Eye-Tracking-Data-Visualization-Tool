@@ -57,10 +57,11 @@ def stimuli():
 			db.session.commit()
 	else:
 		projects = Project.query.filter_by(researcher_id=current_user.researcher_id).all()
-		project_count = 0
-		project_count = project_count+1
+		for a in projects:
+			project_count = 0
+			project_count = len(projects)+1
 		print(project_count)
-		return render_template('stimuli/stimuli.html', projectform=projectform, projects=projects, project_count=project_count)
+		return render_template('stimuli/stimuli.html', projectform=projectform, projects=projects)
 	return render_template('stimuli/stimuli.html', projectform=projectform)
 
 
@@ -152,6 +153,12 @@ def createproject():
 			db.session.commit()
 
 	return render_template('stimuli/stimuli.html', projectForm=form)
+
+@app.route('/project/<int:project_id>', methods=['GET','POST'])
+def project(project_id):
+
+
+	return render_template('project/project.html')
 
 @app.route('/resetpassword')
 def resetpassword():

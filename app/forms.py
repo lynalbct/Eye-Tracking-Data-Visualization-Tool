@@ -76,4 +76,4 @@ class ResetPasswordForm(Form):
 
 class ProjectForm(Form):
     project_name = StringField('Project Name', validators=[Length(min=2, max=25)])
-    project_description = StringField('Project Description', validators=[Length(min=15, max=250)])
+    project_description = StringField('Project Description', validators=[Length(min=15, max=250)])                                                              
