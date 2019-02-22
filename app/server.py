@@ -60,7 +60,8 @@ def stimuli():
 		for a in projects:
 			project_count = 0
 			project_count = len(projects)+1
-		print(project_count)
+		# print(project_count)
+		print projects
 		return render_template('stimuli/stimuli.html', projectform=projectform, projects=projects)
 	return render_template('stimuli/stimuli.html', projectform=projectform)
 
@@ -140,24 +141,17 @@ def info():
 			return redirect(url_for('info'))
 	return render_template('forms/info.html', form=form)
 
-@app.route('/createproject', methods=['GET','POST'])
-def createproject():
-	projectform = ProjectForm()
-	if request.method == 'POST':
-		if form.validate():
-			project = Project(
-				project_name=projectform.project_name,
-				project_description = projectform.project_description
-				)
-			db.session.add(project)
-			db.session.commit()
 
-	return render_template('stimuli/stimuli.html', projectForm=form)
 
-@app.route('/project/<int:project_id>', methods=['GET','POST'])
+@app.route('/project/<project_id>', methods=['GET','POST'])
 def project(project_id):
 
 
+	return render_template('project/project.html')
+
+
+@app.route('/temporaryroute')
+def temporaryroute():
 	return render_template('project/project.html')
 
 @app.route('/resetpassword')

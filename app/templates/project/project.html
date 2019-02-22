@@ -26,6 +26,8 @@
       padding-top: 1%;
       padding-bottom: 1%;
       /*width: 10%;*/
+      min-width: 50%; 
+      min-height: 100%;
     }
   </style>
 </head>
@@ -313,47 +315,49 @@
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800"></h1>
-            <a href="#" data-target="#stimulimodal" data-toggle="modal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus-circle fa-sm text-white-50"></i> Add Project</a>
+          <div class="align-items-center ">
+            <h1 class="h3 mb-0 text-gray-800" ></h1>
+            <center>
+            <div class="btn-group" role="group">
+              <button class="btn btn-outline-primary btn-lg">Upload</button>
+              <button class="btn btn-outline-primary btn-lg">Define</button>
+              <button class="btn btn-outline-primary btn-lg">Analyse</button>
+              <button class="btn btn-outline-primary btn-lg">Visualize</button>
+            </div>
+            </center>
           </div>
 
           <!-- Content Row -->
            <!-- contents -->
-           
-          <div class="container">
-            <table style="padding-top: 1%" class="table">
-              <thead class="thead-light">
-                <tr>
-                  <th scope="col">Project No.</th>
-                  <th scope="col">Project Name</th>
+           <br style="margin-top: 5%">
+          <div>
 
-              </thead>
-              <tbody>
-                {% for project in projects %}
-                <tr id="{{project.project_id}}" >
-                  <th scope="row">{{loop.index}}</th>
-                  <td><a href="{{ url_for('project', project_id=project.project_id) }}">{{project.project_name}}</a></td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-            <br><br><br><br><br><br>
+            <!-- Area Chart -->
+            <div class="col-xl-12 col-lg-12">
+              <div class="card container mb-4">
+
+                <div class="card-body">
+                  <div class="chart-area">
+                    <canvas id="myAreaChart"></canvas> 
+                    <center><a href="#" data-target="#stimulimodal" data-toggle="modal" class="d-none d-sm-inline-block btn btn-lg btn-primary shadow-sm"><i class="fas fa-upload fa-sm text-white-50"></i> Upload Eye Tracking Data</a></center>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            
            
 
             
             <!-- end of contents -->
-      <!-- Stimuli Modal -->
-
-          
       <!-- End of Main Content -->
 
       <!-- Footer -->
+      <br style="margin-top: 40%">
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2019</span>
+            <span>Copyright &copy; ETDV Tool 2019</span>
           </div>
         </div>
       </footer>

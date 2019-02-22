@@ -332,7 +332,7 @@
                 {% for project in projects %}
                 <tr id="{{project.project_id}}" >
                   <th scope="row">{{loop.index}}</th>
-                  <td><a href="{{ url_for('project', project_id=project.project_id) }}">{{project.project_name}}</a></td>
+                  <td><a href="/project {{project.project_id }}" method='POST'>{{project.project_name}}</a></td>
                 </tr>
                 {% endfor %}
               </tbody>
