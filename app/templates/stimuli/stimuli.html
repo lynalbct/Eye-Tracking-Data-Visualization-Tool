@@ -18,7 +18,16 @@
   <!-- Custom styles for this template-->
   <link href="static/css/sb-admin-2.min.css" rel="stylesheet" type="text/css">
   <link href="static/css/sb-admin-2.css" rel="stylesheet" type="text/css">
-
+  <style>
+    .container{
+      background-color: #ffffff;
+      box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 0px 0 rgba(0, 0, 0, 0.10);
+      overflow-x: none;
+      padding-top: 1%;
+      padding-bottom: 1%;
+      /*width: 10%;*/
+    }
+  </style>
 </head>
 
 <body id="page-top">
@@ -41,11 +50,11 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+<!--       <li class="nav-item active">
         <a class="nav-link" href="index.html">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
-      </li>
+      </li> -->
 
 
       <!-- Divider -->
@@ -53,11 +62,11 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Addons
+        <!-- Addons -->
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
+<!--       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
           <i class="fas fa-fw fa-folder"></i>
           <span>Pages</span>
@@ -74,22 +83,31 @@
             <a class="collapse-item" href="dashboard/blank.html">Blank Page</a>
           </div>
         </div>
+      </li> -->
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('home') }}">
+          <i class="fas fa-fw fa-home"></i>
+          <span>Dashboard</span></a>
       </li>
-
       <!-- Nav Item - Charts -->
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('profile') }}">
-          <i class="fas fa-fw fa-chart-area"></i>
+          <i class="fas fa-fw fa-user-circle"></i>
           <span>Profile</span></a>
       </li>
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-          <i class="fas fa-fw fa-table"></i>
+        <a class="nav-link" href="{{ url_for('connections') }}">
+          <i class="fas fa-fw fa-users"></i>
           <span>Connections</span></a>
       </li>
 
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('stimuli') }}">
+          <i class="fas fa-fw fa-chart-area"></i>
+          <span>Stimuli</span></a>
+      </li>
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
@@ -260,8 +278,8 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Jane Doe</span>
+                <img class="img-profile rounded-circle" src="static/images/avatars/user-01.jpg">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -295,12 +313,37 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-            <a href="#" data-target="#stimulimodal" data-toggle="modal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus-circle fa-sm text-white-50"></i> Add Stimuli</a>
+            <h1 class="h3 mb-0 text-gray-800"></h1>
+            <a href="#" data-target="#stimulimodal" data-toggle="modal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus-circle fa-sm text-white-50"></i> Add Project</a>
           </div>
 
           <!-- Content Row -->
- <!-- Login Modal -->
+           <!-- contents -->
+           
+          <div class="container">
+            <table style="padding-top: 1%" class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Project No.</th>
+                  <th scope="col">Project Name</th>
+
+              </thead>
+              <tbody>
+                {% for project in projects %}
+                <tr id="{{project.project_id}}" >
+                  <th scope="row">{{loop.index}}</th>
+                  <td><a href="/project {{project.project_id }}" method='POST'>{{project.project_name}}</a></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+            <br><br><br><br><br><br>
+           
+
+            
+            <!-- end of contents -->
+      <!-- Stimuli Modal -->
       <div class="modal right fade" id="stimulimodal" onclick="func();" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
         <div class="modal-dialog modal-xl" role="document" style="margin-top: 3%;">
           <div class="modal-content">
@@ -310,45 +353,32 @@
             </div>
 
           <div class="modal-body">
+            <div class="grid-container">
                     <div class="row">
-          <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-            <div class="col-lg-7">
+          <!-- <div class="col-lg-5 d-none d-lg-block bg-register-image"></div> -->
+            <div class="col-lg-10">
               <div class="p-5">
                 <div class="text-center">
-                  <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                  <h1 class="h4 text-gray-900 mb-4">Add new project!</h1>
                  </div>
-                <form class="user" method="POST" action="{{ url_for('register')}}">
-                  <!-- form hidden tag -->
+                <form class="user" method="POST" action="{{ url_for('stimuli')}}">
+                    {{ projectform.hidden_tag() }}
+                    {{ projectform.csrf_token }}
                   <div class="form-group">
-                    
                   </div>
                   <div class="form-group">
-                    form
+                    {{projectform.project_name(class="form-control form-control-user", placeholder="Project Name") }} 
                   </div>
-                  <div class="form-group row">
-                    <div class="col-sm-6 mb-3 mb-sm-0">
-                      form
-                    </div>
-                    <div class="col-sm-6">
-                      form
-                    </div>
+                  <div class="form-group">
+                    {{projectform.project_description(class="form-control form-control-user", placeholder="Project Description") }} 
                   </div>
-                    <button class="btn btn-primary btn-user btn-block" type="submit" name="submit">Register</button>
-                  <hr>
-                  <a href="index.html" class="btn btn-google btn-user btn-block">
-                    <i class="fab fa-google fa-fw"></i> Register with Google
-                  </a>
-                  <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                    <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                  </a>
+                  </div><br>
+                  <Center>
+                    <p><button class="btn btn-lg btn-primary shadow-sm" style="max-width: 900px;padding-bottom: -10%; margin-top: -15%">Create</button></p>
+                  </Center>
                 </form>
-                <hr>
-                <div class="text-center">
-                  <a class="small" href="forgot-password.html">Forgot Password?</a>
-                </div>
-                <div class="text-center">
-                  <a class="small" href="login.html">Already have an account? Login!</a>
-                </div>
+                  <hr>
+              </div>
               </div>
             </div>
           </div>

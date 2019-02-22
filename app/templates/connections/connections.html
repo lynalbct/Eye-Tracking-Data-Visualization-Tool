@@ -8,40 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <style>
-    .container{
-      background-color: #fcfdff;
-      margin: auto;
-      box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 10px 0 rgba(0, 0, 0, 0.10);
-      overflow-x: none;
-      margin-left: 2%;
-      margin-right: 2%;
 
-      /*width: 10%;*/
-    }
-    .content1{
-      background-color: #fcfdff;
-      /*box-shadow: 0 0px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 15px 0 rgba(0, 0, 0, 0.10);*/
-      min-height: 75%;
-      padding: 2%;
-      overflow-x: none;
-      /*margin-top: 5%;*/
-    }
-
-    .box{
-      overflow-x: none;
-      background-color: #6d89da;
-      border: 2px ;
-      border-radius: 8px;
-      opacity: .9;
-      width: 100px;
-      margin: auto;
-      padding-top: 2.5px;
-      /*padding-bottom: 1px;*/
-    }
-  </style>
-
-  <title>ETDVT Tool</title>
+  <title>ETDV Tool</title>
 
   <!-- Custom fonts for this template-->
   <link href="static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -50,6 +18,13 @@
   <!-- Custom styles for this template-->
   <link href="static/css/sb-admin-2.min.css" rel="stylesheet" type="text/css">
   <link href="static/css/sb-admin-2.css" rel="stylesheet" type="text/css">
+
+
+<style>
+span.b {
+  display: inline-block;
+}
+</style>
 
 </head>
 
@@ -73,7 +48,11 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-
+<!--       <li class="nav-item active">
+        <a class="nav-link" href="index.html">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span></a>
+      </li> -->
 
 
       <!-- Divider -->
@@ -85,6 +64,7 @@
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
+
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('home') }}">
           <i class="fas fa-fw fa-home"></i>
@@ -112,6 +92,11 @@
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
+
+      <!-- Sidebar Toggler (Sidebar) -->
+<!--       <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div> -->
 
     </ul>
     <!-- End of Sidebar -->
@@ -275,7 +260,7 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.first_name}} {{user.last_name}}</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Jane Doe</span>
                 <img class="img-profile rounded-circle" src="static/images/avatars/user-01.jpg">
               </a>
               <!-- Dropdown - User Information -->
@@ -305,73 +290,114 @@
         </nav>
         <!-- End of Topbar -->
 
-      </div> 
-      <div class="container" style="margin-left: 1%;"><br>
-        <div class="row">
-          <div class="col-sm">
-            <!-- One of three columns -->
-          </div>
-          <div class="col-sm">
-            <center>
-            <img src="static/images/avatars/user-01.jpg" alt="Avatar" style="width:180px; border-radius: 50%">
-            <p>
-            <h4 style="color: #1c1d1e; font-weight: bold;">{{ user.first_name }} {{ user.last_name }}</h4>
-            <div class="box">
-            <h6 style="color: #1c1d1e; ">{{ user.profession }}</h6>
-            </div>
-            </center>
-          </div>
-          <div class="col-sm">
-            <!-- One of three columns -->
-          </div>
-        </div>
-      </div>
-      <br>
-      
-          <div class="row">
-            <!-- Area Chart -->
-            <div class="col-xl-12 col-lg-7">
-              <br>
-              <div class="card shadow mb-4" style="margin-left: 2%;margin-right: 2%;">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">About me</h6>
-                  <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Dropdown Header:</div>
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                  </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                  <div class="chart-area">
-                    <div class="row">
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
 
-                    </div>
-                    <canvas id="myAreaChart"></canvas>
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h6 class="h4 mb-0 text-gray-800">Your Connections</h6>
+            <!-- <a href="#" data-target="#stimulimodal" data-toggle="modal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus-circle fa-sm text-white-50"></i> Add Stimuli</a> -->
+          </div>
+
+          <!-- ----card for friends--- -->
+
+          <span class="b">
+            <div class="card" style=" box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);max-width: 150px; max-height: 240px ;margin: auto;text-align: center; font-family: arial;">
+              <img src="static/images/avatars/user-05.jpg" alt="Avatar" style="width:100%; padding: 5%">
+              <p class="title" style="color: #3c3d3f;font-size: 18px;"><bold>John Doe</bold></p>
+              <p style="margin-top: -13%; font-size: 13px;">Professor</p>
+              
+              <p><button class="btn btn-sm btn-primary shadow-sm" style="padding-bottom: -2%; margin-top: -10%">View Profile</button></p>
+            </div><br>
+          </span>
+          <hr>
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h8 class="h4 mb-0 text-gray-800">Add Connections</h8>
+          </div>
+          {% for not_connected_user in not_connected_users %}
+          <span class="b">
+            <div class="card" style=" box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);max-width: 150px; max-height: 240px ;margin: auto;text-align: center; font-family: arial;">
+              <img src="static/images/avatars/user-05.jpg" alt="Avatar" style="width:100%; padding: 5%">
+              <p class="title" style="color: #3c3d3f;font-size: 18px;"><bold>{{ not_connected_user.first_name}} {{ not_connected_user.last_name }}</bold></p>
+              <p style="margin-top: -13%; font-size: 13px;">{{ not_connected_user.profession }}</p>
+              
+              <p><button class="btn btn-sm btn-primary shadow-sm" style="padding-bottom: -2%; margin-top: -10%"><i class="fas fa-user-plus fa-sm text-white-50" method="POST" action="{{ url_for('connections')}}"></i>&nbspConnect</button></p>
+            </div>
+          </span>
+          {% endfor %}
+
+          <!-- ---end of card content--- -->
+
+          <!-- Content Row -->
+ <!-- Login Modal -->
+      <div class="modal right fade" id="stimulimodal" onclick="func();" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+        <div class="modal-dialog modal-xl" role="document" style="margin-top: 3%;">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+
+          <div class="modal-body">
+                    <div class="row">
+          <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+            <div class="col-lg-7">
+              <div class="p-5">
+                <div class="text-center">
+                  <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                 </div>
+                <form class="user" method="POST" action="{{ url_for('register')}}">
+                  <!-- form hidden tag -->
+                  <div class="form-group">
+                    
                   </div>
+                  <div class="form-group">
+                    form
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                      form
+                    </div>
+                    <div class="col-sm-6">
+                      form
+                    </div>
+                  </div>
+                    <button class="btn btn-primary btn-user btn-block" type="submit" name="submit">Register</button>
+                  <hr>
+                  <a href="index.html" class="btn btn-google btn-user btn-block">
+                    <i class="fab fa-google fa-fw"></i> Register with Google
+                  </a>
+                  <a href="index.html" class="btn btn-facebook btn-user btn-block">
+                    <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
+                  </a>
+                </form>
+                <hr>
+                <div class="text-center">
+                  <a class="small" href="forgot-password.html">Forgot Password?</a>
+                </div>
+                <div class="text-center">
+                  <a class="small" href="login.html">Already have an account? Login!</a>
                 </div>
               </div>
             </div>
-        <hr>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+          
       <!-- End of Main Content -->
 
       <!-- Footer -->
-<!--       <footer class="sticky-footer bg-white">
+      <br><br><br><br><br><br><br><br>
+      <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
             <span>Copyright &copy; Your Website 2019</span>
           </div>
         </div>
-      </footer> -->
+      </footer>
       <!-- End of Footer -->
 
     </div>

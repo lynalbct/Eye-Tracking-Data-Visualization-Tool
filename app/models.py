@@ -58,7 +58,7 @@ class File(db.Model):
 	"""docstring for Files"""
 	def __init__(self, file_id,file_name,file_type,file_extension,directory_name,researcher_id):
 		self.file_id = file_id
-		self,file_name = file_name
+		self.file_name = file_name
 		self.file_type = file_type
 		self.file_extension = file_extension
 		self.directory_name = directory_name
@@ -76,10 +76,10 @@ class Connection(db.Model):
 	request_id = db.Column(db.Integer)
 	researcher_id = db.Column(db.Integer, db.ForeignKey('researcher.researcher_id'))
 
-	def __init__(self,status,request_id,researcher_id,date_accepted):
-		self.status = status
-		self.date_accepted = date_accepted
-		self.request_id = request_id
+	def __init__(self, researcher_id=''):
+		self.status = None
+		self.date_accepted = None
+		self.request_id = None
 		self.researcher_id = researcher_id
 
 	def __repr__(self):
@@ -91,17 +91,13 @@ class Project(db.Model):
 	project_name = db.Column(db.String(140), nullable = False)
 	project_description = db.Column(db.String(200))
 	date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-	date_modified = db.Column(db.DateTime, nullable=False)
-	row_status = db.Column(db.Integer)
 	researcher_id = db.Column(db.Integer, db.ForeignKey('researcher.researcher_id'))
 	sharedprojects = db.relationship("SharedProject", uselist=False, backref="project")
 	stimuli = db.relationship("Stimuli", uselist=False, backref="project")
 
-	def __init__(self, project_name,project_description,researcher_id,row_status,date_modified):
+	def __init__(self, project_name,project_description,researcher_id):
 		self.project_name = project_name
 		self.project_description = project_description
-		self.date_modified = date_modified
-		self.row_status = row_status
 		self.researcher_id = researcher_id
 		
 	def __repr__(self):
@@ -112,14 +108,12 @@ class SharedProject(db.Model):
 	sharedproject_id = db.Column(db.Integer, primary_key=True)
 	status = db.Column(db.Integer, default=0)
 	sp_date_created = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-	sp_date_modified = db.Column(db.DateTime)
 	shared_to = db.Column(db.Integer)
 	researcher_id = db.Column(db.Integer, db.ForeignKey('researcher.researcher_id'))
 	project_id = db.Column(db.Integer, db.ForeignKey('project.project_id'))
 
-	def __init__(self, status, shared_to, researcher_id,project_id,sp_date_modified):
+	def __init__(self, status, shared_to, researcher_id,project_id):
 		self.status = status
-		self.sp_date_modified = sp_date_modified
 		self.shared_to = shared_to
 		self.researcher_id = researcher_id
 		self.project_id = project_id
@@ -135,17 +129,15 @@ class Stimuli(db.Model):
 	x_resolution = db.Column(db.Integer, nullable=False)
 	y_resolution = db.Column(db.Integer, nullable=False)
 	date_created = db.Column(db.DateTime, default = datetime.utcnow, nullable=False)
-	date_modified = db.Column(db.DateTime)
 	project_id = db.Column(db.Integer, db.ForeignKey('project.project_id'))
 	stimuli_participant = db.relationship("Stimuli_Participant", uselist=False, backref="stimuli")
 	aoi = db.relationship("Aoi", uselist=False, backref="stimuli")
 
-	def __init__(self, stimuli_name, stimuli_description,x_resolution,y_resolution,date_modified,project_id):
+	def __init__(self, stimuli_name, stimuli_description,x_resolution,y_resolution,project_id):
 		self.stimuli_name = stimuli_name
 		self.stimuli_description = stimuli_description
 		self.x_resolution = x_resolution
 		self.y_resolution = y_resolution
-		self.date_modified = date_modified
 		self.project_id = project_id
 
 	def __repr__(self):
@@ -156,13 +148,11 @@ class Participant(db.Model):
 	participant_id = db.Column(db.Integer,primary_key=True)
 	participant_name = db.Column(db.String(80))
 	date_created = db.Column(db.DateTime, default=datetime.utcnow)
-	date_modified = db.Column(db.DateTime)
 	stimuli_participant = db.relationship("Stimuli_Participant", uselist=False, backref="participant")
 	fixation_analysis = db.relationship("Fixation_Analysis", uselist=False, backref="participant")
 	
-	def __init__(self,participant_name,date_modified):
+	def __init__(self,participant_name):
 		self.participant_name = participant_name
-		self.date_modified = date_modified
 
 	def __repr__(self):
 		return 'Participant %r' %self.participant_id
@@ -217,15 +207,13 @@ class Fixation_Analysis(db.Model):
 	dff = db.Column(db.Integer)
 	tct = db.Column(db.Integer)
 	date_created = db.Column(db.DateTime, default = datetime.utcnow)
-	date_modified = db.Column(db.DateTime)
 	aoi_id = db.Column(db.Integer, db.ForeignKey('aoi.aoi_id'))
 	participant_id = db.Column(db.Integer, db.ForeignKey('participant.participant_id'))
 
-	def __init__(self,nof,dff,tct,date_modified,aoi_id,participant_id):
+	def __init__(self,nof,dff,tct,aoi_id,participant_id):
 		self.nof = nof
 		self.dff = dff
 		self.tct = tct
-		self.date_modified = date_modified
 		self.aoi_id = aoi_id
 		self.participant_id = participant_id
 	def __repr__(self):
