@@ -4,7 +4,7 @@
           {% block head %}
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Profile</h1>
-            <a href="{{ url_for('editprofile') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Edit Profile </a>
+            <a href="{{ url_for('profile') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i>View Profile</a>
           </div>
 
           {% endblock %}
@@ -20,7 +20,6 @@
             <br><h1 class="h3 mb-0 text-gray-800">USERNAME</h1></br>
             <br></br>
             <br></br>
-            <center>
                 <div class="row">
                     <div class="container2">
                      <div class="circle">
@@ -36,7 +35,6 @@
                      </div>
                       </div>
                 </div>
-              </center>
                   <strong><th>Name: </th></strong></strong>
                   <strong><br><th>Profession: </th></br></strong>
                   <strong><th>Organization: </th></strong>
@@ -53,10 +51,34 @@
               <!-- Background Gradient Utilities -->
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">About Me</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Edit Profile</h6>
                 </div>
                 <div class="card-body">
 
+              <form class="user">
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="text" class="form-control form-control-user" name="form.first_name.data" placeholder="First Name">
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control form-control-user" name="last_name" placeholder="Last Name">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Email Address">
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password">
+                  </div>
+                </div>
+                    <a href="{{ url_for('profile') }} class="btn btn-primary btn-user btn-block">
+                      Save
+                    </a>
+              </form>
 
                 </div>
               </div>

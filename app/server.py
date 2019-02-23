@@ -61,7 +61,7 @@ def stimuli():
 			project_count = 0
 			project_count = len(projects)+1
 		# print(project_count)
-		print projects
+		print (projects)
 		return render_template('stimuli/stimuli.html', projectform=projectform, projects=projects)
 	return render_template('stimuli/stimuli.html', projectform=projectform)
 
@@ -211,6 +211,10 @@ def profile():
 		else:
 			print('not validated')
 	return render_template('profile/profile.html', form=form, user=user)
+
+@app.route('/edit_profile')
+def editprofile():
+	return render_template('profile/edit_profile.html')
 
 @app.route('/logout')
 @login_required
