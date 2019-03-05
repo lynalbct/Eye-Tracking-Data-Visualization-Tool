@@ -543,6 +543,16 @@ pre code {
   max-height: 340px;
   overflow-y: scroll;
 }
+.cont{
+  background-color: #ffffff;
+  box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 0px 0 rgba(0, 0, 0, 0.10);
+  overflow-x: none;
+  padding-top: 1%;
+  padding-bottom: 1%;
+      /*width: 10%;*/
+  min-width: 50%; 
+  min-height: 100%;
+  }
 
 .container {
   width: 100%;

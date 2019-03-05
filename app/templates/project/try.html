@@ -1,5 +1,4 @@
-
-<!DOCTYPE html>
+          <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -10,26 +9,36 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-{% if title %}
-  <title>ETDVT - {{ title }}</title>
-{% endif %}
+  <title>ETDV Tool</title>
 
   <!-- Custom fonts for this template-->
-  <link href="static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="{{ url_for('.static', filename='vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  <!-- Custom styles for this template-->
-  <link href="static/css/sb-admin-2.min.css" rel="stylesheet">
-  <link href="static/css/upload.css" rel="stylesheet" type="text/css">
 
+  <!-- Custom styles for this template-->
+  <link href="{{ url_for('.static', filename='css/sb-admin-2.css')}}" rel="stylesheet" type="text/css">
+  <link href="{{ url_for('.static', filename='css/sb-admin-2.min.css')}}" rel="stylesheet" type="text/css">
+  <style>
+    .container{
+      background-color: #ffffff;
+      box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 0px 0 rgba(0, 0, 0, 0.10);
+      overflow-x: none;
+      padding-top: 1%;
+      padding-bottom: 1%;
+      /*width: 10%;*/
+      min-width: 50%; 
+      min-height: 100%;
+    }href
+  </style>
 </head>
 
 <body id="page-top">
 
   <!-- Page Wrapper -->
+  
   <div id="wrapper">
 
     <!-- Sidebar -->
-    {% block navbar %}
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
@@ -44,14 +53,40 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
+<!--       <li class="nav-item active">
+        <a class="nav-link" href="index.html">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span></a>
+      </li> -->
 
-      <br></br>
 
       <!-- Divider -->
       <hr class="sidebar-divider">
+
       <!-- Heading -->
+      <div class="sidebar-heading">
+        <!-- Addons -->
+      </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
+<!--       <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>Pages</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Login Screens:</h6>
+            <a class="collapse-item" href="{{ url_for('stimuli')}}">Stimuli</a>
+            <a class="collapse-item" href="dashboard/register.html">Register</a>
+            <a class="collapse-item" href="dashboard/forgot-password.html">Forgot Password</a>
+            <div class="collapse-divider"></div>
+            <h6 class="collapse-header">Other Pages:</h6>
+            <a class="collapse-item" href="dashboard/404.html">404 Page</a>
+            <a class="collapse-item" href="dashboard/blank.html">Blank Page</a>
+          </div>
+        </div>
+      </li> -->
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('home') }}">
           <i class="fas fa-fw fa-home"></i>
@@ -77,12 +112,14 @@
           <span>Stimuli</span></a>
       </li>
       <!-- Divider -->
-      <hr class="sidebar-divider">
-      <!-- Heading -->
-     
+      <hr class="sidebar-divider d-none d-md-block">
+
+      <!-- Sidebar Toggler (Sidebar) -->
+<!--       <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div> -->
 
     </ul>
-    {% endblock %}
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -92,7 +129,6 @@
       <div id="content">
 
         <!-- Topbar -->
-        {% block topbar %}
         <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
           <!-- Sidebar Toggle (Topbar) -->
@@ -245,8 +281,8 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Jane Doe</span>
+                <img class="img-profile rounded-circle" src="static/images/avatars/user-01.jpg">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -273,109 +309,70 @@
           </ul>
 
         </nav>
-        {% endblock %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        
-      <div class="container-fluid">
-          {% block body %}
+        <div class="container-fluid">
+
           <!-- Page Heading -->
-          {% block head %}
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+          <div class="align-items-center ">
+            <h1 class="h3 mb-0 text-gray-800" ></h1>
+            <center>
+            <div class="btn-group" role="group">
+              <button class="btn btn-outline-primary btn-lg" data-toggle="tooltip" title="Upload eye tracking data">Upload</button>
+              <button class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" title="Upload stimuli and define AOI/s">Define</button>
+              <button class="btn btn-outline-primary btn-lg" data-toggle="tooltip" title="Analyse data and get the common scanpath">Analyse</button>
+              <button class="btn btn-outline-primary btn-lg" data-toggle="tooltip" title="Visualize data">Visualize</button>
+              
+            </div>
+            </center>
           </div>
-          {% endblock %}
 
           <!-- Content Row -->
-          <div class="row">
+           <!-- contents -->
+           <br style="margin-top: 5%">
+          <div>
 
-            <!-- First Column -->
-            <div class="col-lg-4">
+            <!-- Area Chart -->
+            <div class="col-xl-12 col-lg-12">
+              <div class="card container mb-4">
 
-              <div class="card shadow mb-4">
-
-                <div class="card-body text-center">
-            <br><h1 class="h3 mb-0 text-gray-800">USERNAME</h1></br>
-            <br></br>
-            <br></br>
-                <div class="row">
-                    <div class="container2">
-                     <div class="circle">
-                       <!-- User Profile Image -->
-                       <img class="profile-pic" src="static/images/avatars/user-01.jpg">
-
-                       <!-- Default Image -->
-                       <!-- <i class="fa fa-user fa-5x"></i> -->
-                    </div>
-                     <div class="p-image">
-                       <i class="fa fa-camera upload-button"></i>
-                        <input class="file-upload" type="file" accept="image/*"/>
-                     </div>
-                      </div>
-                </div>
-                  <strong><th>Name: </th></strong></strong>
-                  <strong><br><th>Profession: </th></br></strong>
-                  <strong><th>Organization: </th></strong>
-                  <br></br>
-
-                </div>
-              </div>
-
-            </div>
-
-            <!-- Second Column -->
-            <div class="col-xl-8 col-lg-7">
-
-              <!-- Background Gradient Utilities -->
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Edit Profile</h6>
-                </div>
                 <div class="card-body">
+                  <div class="chart-area">
+                    <canvas id="myAreaChart"></canvas> 
+                    <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_stimuli') }}">
+                      <center>
 
-              <form class="user">
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="First Name">
+                      <span class="btn btn-primary btn-l fileinput-button">
+                        <input type="file" id="image" name="image">
+                      </span><br style="margin-bottom: 3%">
+                      <input type="submit" value="Define AOI">
+                      
+                      </center>
+                    </form>
                   </div>
-                  <div class="col-sm-6">
-                    <input type="text" class="form-control form-control-user" id="exampleLastName" placeholder="Last Name">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Email Address">
-                </div>
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
-                  </div>
-                  <div class="col-sm-6">
-                    <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password">
-                  </div>
-                </div>
-                    <a href="index.html" class="btn btn-primary btn-user btn-block">
-                      Save
-                    </a>
-              </form>
-
                 </div>
               </div>
-
-
             </div>
 
-          </div>
 
-        </div>
-        <!-- /.container-fluid -->
-
-      </div>
+            
+            <!-- end of contents -->
       <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <br style="margin-top: 40%">
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; ETDV Tool 2019</span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
 
     </div>
     <!-- End of Content Wrapper -->
-    {% endblock %}
 
   </div>
   <!-- End of Page Wrapper -->
@@ -419,34 +416,15 @@
   <!-- Page level custom scripts -->
   <script src="js/demo/chart-area-demo.js"></script>
   <script src="js/demo/chart-pie-demo.js"></script>
-  <script src="js/demo/upload.js"></script>
-<script>
-$(document).ready(function() {
+  
+  <script src="bootstrap/js/bootstrap-tooltip.js"></script>
 
-    
-    var readURL = function(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
 
-            reader.onload = function (e) {
-                $('.profile-pic').attr('src', e.target.result);
-            }
-    
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-    
-
-    $(".file-upload").on('change', function(){
-        readURL(this);
+  <script type="text/javascript">
+    $(document).ready(function() {
+    $("body").tooltip({ selector: '[data-toggle=tooltip]' });
     });
-    
-    $(".upload-button").on('click', function() {
-       $(".file-upload").click();
-    });
-});
-</script>
-
+  </script>
 
 </body>
 

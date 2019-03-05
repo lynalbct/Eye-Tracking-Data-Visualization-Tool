@@ -1,12 +1,12 @@
 {% extends "base.html" %}
+            {% block content %}
 <!-- Page Heading -->
-          {% block content %}
           <div class="align-items-center ">
             <h1 class="h3 mb-0 text-gray-800" ></h1>
             <center>
             <div class="btn-group" role="group">
-              <button class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" title="Upload eye tracking data">Upload</button>
-              <button class="btn btn-outline-primary btn-lg" data-toggle="tooltip" title="Upload stimuli and define AOI/s">Define</button>
+              <button class="btn btn-outline-primary btn-lg" data-toggle="tooltip" title="Upload eye tracking data">Upload</button>
+              <button class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" title="Upload stimuli and define AOI/s">Define</button>
               <button class="btn btn-outline-primary btn-lg" data-toggle="tooltip" title="Analyse data and get the common scanpath">Analyse</button>
               <button class="btn btn-outline-primary btn-lg" data-toggle="tooltip" title="Visualize data">Visualize</button>
               
@@ -21,18 +21,18 @@
 
             <!-- Area Chart -->
             <div class="col-xl-12 col-lg-12">
-              <div class="card cont mb-4">
+              <div class="card container mb-4">
 
                 <div class="card-body">
                   <div class="chart-area">
                     <canvas id="area"></canvas> 
-                    <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_data') }}">
+                    <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_stimuli') }}">
                       <center>
 
                       <span class="btn btn-primary btn-l fileinput-button">
-                        <input type="file" id="files" name="files" multiple>
+                        <input type="file" id="image" name="image">
                       </span><br style="margin-bottom: 3%">
-                      <input type="submit" value="Submit">
+                      <input type="submit" value="Define AOI">
                       
                       </center>
                     </form>
@@ -41,5 +41,7 @@
               </div>
             </div>
 
+
+            
             <!-- end of contents -->
             {% endblock %}

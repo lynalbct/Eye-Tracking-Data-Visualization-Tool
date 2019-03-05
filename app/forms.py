@@ -1,11 +1,10 @@
 from wtforms import StringField,  PasswordField, RadioField, ValidationError, SelectField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import Length, InputRequired, EqualTo, DataRequired, Email
-from app.models import Researcher
+from models import Researcher
 from wtforms import TextField, PasswordField, validators, DateField, IntegerField, SubmitField, FileField, RadioField
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_wtf import Form
-
 
 login_manager = LoginManager()
 # login_manager.setup_app(current_app)
@@ -78,3 +77,5 @@ class ResetPasswordForm(Form):
 class ProjectForm(Form):
     project_name = StringField('Project Name', validators=[Length(min=2, max=25)])
     project_description = StringField('Project Description', validators=[Length(min=15, max=250)])                                                              
+
+

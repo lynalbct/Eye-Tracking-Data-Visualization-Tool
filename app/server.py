@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
-from flask import render_template, request, url_for,redirect,send_from_directory
+from flask import render_template, request, url_for,redirect,send_from_directory, request
 from app import db, app
 from app.forms import *
 from app.models import *
@@ -11,9 +11,10 @@ from flask import current_app
 from werkzeug.security import check_password_hash
 from flask_bcrypt import Bcrypt
 from werkzeug.utils import secure_filename
+import os
 
-upload_folder = 'app/static/user'
-allowed_extensions = set(['csv', 'png', 'jpg', 'jpeg'])
+upload_folder = 'app/static/user' 
+allowed_extensions = set(['csv', 'png', 'jpg', 'jpeg','PNG','JPG'])
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -38,32 +39,82 @@ def index():
 def forgotpassword():
 	return render_template('dashboard/forgot-password.html')
 
-@app.route('/prof')
-def prof():
-	user = Researcher.query.filter_by(researcher_id=current_user.researcher_id)
-	return render_template('profile/profile.html', user=user)
+@app.route('/upload/eye-movements', methods=['GET','POST'])
+def upload_data():
+	if request.method == 'POST':
+		# alter upload_location: add project id at the end of the location
+		upload_location = upload_folder + '/' + str(current_user.researcher_id)
+		if os.path.isdir(upload_location) == False:
+			os.makedirs(upload_location)
+		if request.files:
+			for i in request.files.getlist('files'):
+				filename = secure_filename(i.filename)
+				i.save(os.path.join(upload_location + '/', filename))
+
+		else:
+			return redirect(url_for('upload_data'))
+	return render_template('project/define.html')
+
+@app.route('/defineaoi', methods=['GET','POST'])
+def upload_stimuli():
+	if request.method == 'POST':
+		print 'yes'
+		# add project id before the stimuli folder
+		upload_location = upload_folder + '/' + str(current_user.researcher_id) + '/'+'stimuli'
+		print upload_location
+		if os.path.isdir(upload_location) == False:
+			os.makedirs(upload_location)
+		file = request.files['image']
+		if file.filename == '':
+			flash('No selected file')
+			return redirect(request.url)
+		if file and allowed_file(file.filename):
+			filename = secure_filename(file.filename)
+			file.save(os.path.join(upload_location + '/', filename))
+			save_stimuli = Stimuli(
+					stimuli_name="name",
+					stimuli_description="stimuli_description",
+					x_resolution=1280,
+					y_resolution=780,
+					project_id=1
+				 )
+			db.session.add(save_stimuli)
+			db.session.commit()
+			# debug()
+			# change this to a route
+			return render_template('project/analyse.html')
+	return render_template('project/define.html')
+
+
+
 
 @app.route('/stimuli', methods=['GET','POST'])
 def stimuli():
 	projectform = ProjectForm()
 	if request.method == 'POST':
+		# check if the data is validated
 		if projectform.validate():
 			project = Project(
 				project_name=projectform.project_name.data,
 				project_description = projectform.project_description.data,
 				researcher_id = current_user.researcher_id
 				)
+			# insert data to database
 			db.session.add(project)
 			db.session.commit()
+			projects = Project.query.filter_by(researcher_id=current_user.researcher_id).all()
+			return render_template('stimuli/stimuli.html', projects=projects, projectform=projectform)
+
 	else:
 		projects = Project.query.filter_by(researcher_id=current_user.researcher_id).all()
-		for a in projects:
-			project_count = 0
-			project_count = len(projects)+1
+		# for a in projects:
+		# 	project_count = 0
+		# 	project_count = len(projects)+1
 		# print(project_count)
-		print (projects)
+		print projects
 		return render_template('stimuli/stimuli.html', projectform=projectform, projects=projects)
 	return render_template('stimuli/stimuli.html', projectform=projectform)
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -146,13 +197,44 @@ def info():
 @app.route('/project/<project_id>', methods=['GET','POST'])
 def project(project_id):
 
-
 	return render_template('project/project.html')
 
+@app.route('/crop', methods=['GET','POST'])
+def crop():
 
-@app.route('/temporaryroute')
-def temporaryroute():
-	return render_template('project/project.html')
+	return render_template('project/easy-mapper-sample.html')
+
+@app.route('/try', methods=['GET','POST'])
+def leztry():
+
+	return render_template('project/try.html')
+
+@app.route('/save', methods=['GET','POST'])
+def save():
+	data = request.get_json()
+
+	for i in range(len(data['startX'])-1):
+		saveAoi =  Aoi(
+			x1 = data['startX'][i],
+			y1 = data['startY'][i],
+			x2 = data['endX'][i],
+			y2 = data['endY'][i],
+			x3 = data['startX'][i],
+			y3 = (data['startY'][i]) + (data['height'][i]),
+			x4 = data['endX'][i],
+			y4 = (data['endY'][i]) + (data['height'][i]),
+			stimuli_id = 1
+			)
+		db.session.add(saveAoi)
+		db.session.commit()
+
+	return render_template('project/analyse.html')
+
+
+@app.route('/project/<projeject_id>')
+def temporaryroute(project_id):
+	project = Project.query.filter_by(project_id=project_id).first()
+	return render_template('project/project.html', project_id=project_id)
 
 @app.route('/resetpassword')
 def resetpassword():
@@ -191,6 +273,7 @@ def connections():
 	return render_template('connections/connections.html', not_connected_user=not_connected_user)
 
 
+
 @app.route('/profile', methods=['POST','GET'])
 def profile():
 	form = ProfileForm()
@@ -210,7 +293,7 @@ def profile():
 			print('ok')
 		else:
 			print('not validated')
-	return render_template('profile/profile.html', form=form, user=user)
+	return render_template('profile/edit_profile.html', form=form, user=user)
 
 @app.route('/edit_profile')
 def editprofile():

@@ -55,14 +55,16 @@ class File(db.Model):
 	directory_name = db.Column(db.String(80))
 	file_extension = db.Column(db.String(50))
 	researcher_id = db.Column(db.Integer, db.ForeignKey('researcher.researcher_id'))
+	project_id = db.Column(db.Integer, db.ForeignKey('project.project_id'))
 	"""docstring for Files"""
-	def __init__(self, file_id,file_name,file_type,file_extension,directory_name,researcher_id):
+	def __init__(self, file_id,file_name,file_type,file_extension,directory_name,researcher_id, project_id):
 		self.file_id = file_id
 		self.file_name = file_name
 		self.file_type = file_type
 		self.file_extension = file_extension
 		self.directory_name = directory_name
 		self.researcher_id = researcher_id
+		self.project_id = project_id
 
 	def __repr__(self):
 		return 'File %r' % self.file_id
@@ -93,6 +95,7 @@ class Project(db.Model):
 	date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 	researcher_id = db.Column(db.Integer, db.ForeignKey('researcher.researcher_id'))
 	sharedprojects = db.relationship("SharedProject", uselist=False, backref="project")
+	files = db.relationship("File", uselist=False, backref="project")
 	stimuli = db.relationship("Stimuli", uselist=False, backref="project")
 
 	def __init__(self, project_name,project_description,researcher_id):
@@ -182,11 +185,10 @@ class Aoi(db.Model):
 	x4 = db.Column(db.Integer)
 	y4 = db.Column(db.Integer)
 	date_created = db.Column(db.DateTime, default=datetime.utcnow)
-	date_modified = db.Column(db.DateTime)
 	stimuli_id = db.Column(db.Integer, db.ForeignKey('stimuli.stimuli_id'))
 	fixation_analysis = db.relationship("Fixation_Analysis", uselist=False, backref="aoi")
 
-	def __init__(self,x1,y1,x2,y2,x3,y3,x4,y4,date_modified, stimuli_id):
+	def __init__(self,x1,y1,x2,y2,x3,y3,x4,y4, stimuli_id):
 		self.x1 =x1
 		self.y1 =y1
 		self.x2 =x2
@@ -195,7 +197,6 @@ class Aoi(db.Model):
 		self.y3 =y3
 		self.x4 =x4
 		self.y4 =y4
-		self.date_modified =date_modified
 		self.stimuli_id=stimuli_id
 	def __repr__(self):
 		return 'Aoi %r' % self.aoi_id
