@@ -5,14 +5,15 @@ from models import Researcher
 from wtforms import TextField, PasswordField, validators, DateField, IntegerField, SubmitField, FileField, RadioField
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_wtf import Form
+from flask_wtf.file import FileField, FileAllowed, FileRequired
 
 login_manager = LoginManager()
 # login_manager.setup_app(current_app)
 
 
 @login_manager.user_loader
-def load_user(userid):
-    return User.query.get(userid)
+def load_user(researcher_id):
+    return Researcher.query.get(researcher_id)
 
 class RegistrationForm(Form):
     username = StringField('Username', validators=[InputRequired(), Length(min=3, max=25)])
@@ -48,7 +49,7 @@ class ProfileForm(Form):
             raise ValidationError('Email already registered.')
 
     def validate_username(self, field):
-        if Researcher.query.filter_by(username=field.data).first():
+        if Researcher.query.filter_by(username=field.data).first(): 
             raise ValidationError('Username already in use.')
 
 class InfoForm(Form):
@@ -78,4 +79,10 @@ class ProjectForm(Form):
     project_name = StringField('Project Name', validators=[Length(min=2, max=25)])
     project_description = StringField('Project Description', validators=[Length(min=15, max=250)])                                                              
 
+class StimuliForm(Form):
+   upload = FileField('stimuli', validators=[FileRequired(),FileAllowed(['jpg', 'png','PNG','JPG','jpeg'], 'Images only!')])
+   x_resolution = IntegerField('X-Resolution', validators=[Length(min=3, max=4)])
+   y_resolution = IntegerField('Y-Resolution', validators=[Length(min=3, max=4)]) 
 
+class DataForm(Form):
+   upload = FileField('data', validators=[FileRequired(),FileAllowed(['csv'], 'CSV file only!')])

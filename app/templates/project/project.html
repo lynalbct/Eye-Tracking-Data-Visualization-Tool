@@ -26,7 +26,7 @@
                 <div class="card-body">
                   <div class="chart-area">
                     <canvas id="area"></canvas> 
-                    <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_data') }}">
+                    <form method="POST" enctype="multipart/form-data" href="/project/{{project_id }}">
                       <center>
 
                       <span class="btn btn-primary btn-l fileinput-button">

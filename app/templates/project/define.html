@@ -1,47 +1,76 @@
 {% extends "base.html" %}
-            {% block content %}
+						{% block content %}
 <!-- Page Heading -->
-          <div class="align-items-center ">
-            <h1 class="h3 mb-0 text-gray-800" ></h1>
-            <center>
-            <div class="btn-group" role="group">
-              <button class="btn btn-outline-primary btn-lg" data-toggle="tooltip" title="Upload eye tracking data">Upload</button>
-              <button class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" title="Upload stimuli and define AOI/s">Define</button>
-              <button class="btn btn-outline-primary btn-lg" data-toggle="tooltip" title="Analyse data and get the common scanpath">Analyse</button>
-              <button class="btn btn-outline-primary btn-lg" data-toggle="tooltip" title="Visualize data">Visualize</button>
-              
-            </div>
-            </center>
-          </div>
+					<div class="align-items-center ">
+						<h1 class="h3 mb-0 text-gray-800" ></h1>
+						<center>
+						<div class="btn-group" role="group">
+							<button class="btn btn-outline-primary btn-lg" data-toggle="tooltip" title="Upload eye tracking data">Upload</button>
+							<button class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" title="Upload stimuli and define AOI/s">Define</button>
+							<button class="btn btn-outline-primary btn-lg" data-toggle="tooltip" title="Analyse data and get the common scanpath">Analyse</button>
+							<button class="btn btn-outline-primary btn-lg" data-toggle="tooltip" title="Visualize data">Visualize</button>
+							
+						</div>
+						</center>
+					</div>
 
-          <!-- Content Row -->
-           <!-- contents -->
-           <br style="margin-top: 5%">
-          <div>
+					<!-- Content Row -->
+					 <!-- contents -->
+					 <br>
+					<div>
 
-            <!-- Area Chart -->
-            <div class="col-xl-12 col-lg-12">
-              <div class="card container mb-4">
+						<!-- Area Chart -->
+						<div class="col-xl-12 col-lg-12">
+							<div class="card cont mb-4">
 
-                <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="area"></canvas> 
-                    <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload_stimuli') }}">
-                      <center>
+								<div class="card-body">
+									<div class="chart-area">
+										<!-- <canvas id="area"></canvas>  -->
+										<form class="user" method="POST" enctype="multipart/form-data" href="/{{project_id}}/define/aoi">
+					                    {{ form.hidden_tag() }}
+					                    {{ form.csrf_token }}
+					                    <div class="form-group row">
+					                    	<div class="col">
+						                      {% if form.x_resolution.errors %}
+						                        {{form.x_resolution(class="form-control form-control-user", placeholder="x_resolution") }}
+						                        <div class="invalid-feedback">
+						                          {% for error in form.x_resolution.errors %}
+						                            <span>{{ error }}</span>
+						                          {% endfor %}
+						                        <!-- </div> -->
+						                      {% else %}
+						                        {{ form.x_resolution(class="form-control form-control-user", placeholder="x_resolution") }}
+						                      {% endif %}
+					                      </div>
+					                      <h5 style="margin-top: 3%">x</h5>
+					                      <div class="col">
+					                   		
+					                      {{form.y_resolution(class="form-control form-control-user", placeholder="y_resolution") }}
+					                 
+					                      </div>
+					                    </div>
 
-                      <span class="btn btn-primary btn-l fileinput-button">
-                        <input type="file" id="image" name="image">
-                      </span><br style="margin-bottom: 3%">
-                      <input type="submit" value="Define AOI">
-                      
-                      </center>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
+					                    <div class="form-group">
+												<span class="btn form-control-user btn-l fileinput-button">
+													{{form.upload(type="file")}}
+												<!-- <input type="file" id="image" name="image"> -->
+											</span><br style="margin-bottom: 20%">
+										</div>
+					                    <button class="btn btn-primary btn-user btn-block" type="submit" name="submit" >Submit</button><br>
+					                    <hr>
+					                  </form>
+<!-- 											
+											<input type="submit" value="Define AOI">
+											</div>
+											</form> -->
+											</center>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
 
 
-            
-            <!-- end of contents -->
-            {% endblock %}
+						
+						<!-- end of contents -->
+						{% endblock %}

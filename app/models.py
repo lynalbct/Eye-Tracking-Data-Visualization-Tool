@@ -51,17 +51,15 @@ class File(db.Model):
 	__tablename__ = 'file'
 	file_id = db.Column(db.Integer, primary_key = True)
 	file_name = db.Column(db.String(80))
-	file_type = db.Column(db.String(50))
 	directory_name = db.Column(db.String(80))
-	file_extension = db.Column(db.String(50))
+	data = db.Column(db.LargeBinary)
 	researcher_id = db.Column(db.Integer, db.ForeignKey('researcher.researcher_id'))
 	project_id = db.Column(db.Integer, db.ForeignKey('project.project_id'))
 	"""docstring for Files"""
-	def __init__(self, file_id,file_name,file_type,file_extension,directory_name,researcher_id, project_id):
+	def __init__(self, file_id,file_name,directory_name,data,researcher_id, project_id):
 		self.file_id = file_id
 		self.file_name = file_name
-		self.file_type = file_type
-		self.file_extension = file_extension
+		self.data = data
 		self.directory_name = directory_name
 		self.researcher_id = researcher_id
 		self.project_id = project_id
@@ -128,6 +126,7 @@ class Stimuli(db.Model):
 	__tablename__ = 'stimuli'
 	stimuli_id = db.Column(db.Integer, primary_key=True)
 	stimuli_name = db.Column(db.String(80))
+	upload = db.Column(db.LargeBinary)
 	stimuli_description = db.Column(db.String(120))
 	x_resolution = db.Column(db.Integer, nullable=False)
 	y_resolution = db.Column(db.Integer, nullable=False)
