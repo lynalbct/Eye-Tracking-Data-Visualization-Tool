@@ -7,9 +7,39 @@
           </div>
           {% endblock %}
 
-            <div class="col-xl-8 col-lg-7">
+            <div class="inner-toolbar clearfix">
+                  <ul>
+                    <li>
+                      <a href="#" id="mgSelectAll"><i class="fa fa-check-square"></i> <span data-all-text="Select All" data-none-text="Select None">Select All</span></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-pencil"></i> Edit</a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                    </li>
+                    <li class="right" data-sort-source data-sort-id="media-gallery">
+                      <ul class="nav nav-pills nav-pills-primary">
+                        <li>
+                          <label>Filter:</label>
+                        </li>
+                        <li class="active">
+                          <a data-option-value="*" href="#all">All</a>
+                        </li>
+                        <li>
+                          <a data-option-value=".document" href="#document">Documents</a>
+                        </li>
+                        <li>
+                          <a data-option-value=".image" href="#image">Images</a>
+                        </li>
+                        <li>
+                          <a data-option-value=".video" href="#video">Videos</a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
 
-              <!-- Background Gradient Utilities -->
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
                   <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
@@ -44,8 +74,6 @@
                 </div>
               </div>
 
-
-            </div>
 
 
 {% endblock %}
