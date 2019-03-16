@@ -1,7 +1,7 @@
 from wtforms import StringField,  PasswordField, RadioField, ValidationError, SelectField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import Length, InputRequired, EqualTo, DataRequired, Email
-from models import Researcher
+from app.models import Researcher
 from wtforms import TextField, PasswordField, validators, DateField, IntegerField, SubmitField, FileField, RadioField
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_wtf import Form
