@@ -1,0 +1,79 @@
+{% extends "layout.html" %} 
+{% block body %}
+
+		{% block head %}
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Projects</h1>
+          </div>
+          {% endblock %}
+
+            <div class="inner-toolbar clearfix">
+                  <ul>
+                    <li>
+                      <a href="#" id="mgSelectAll"><i class="fa fa-check-square"></i> <span data-all-text="Select All" data-none-text="Select None">Select All</span></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-pencil"></i> Edit</a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                    </li>
+                    <li class="right" data-sort-source data-sort-id="media-gallery">
+                      <ul class="nav nav-pills nav-pills-primary">
+                        <li>
+                          <label>Filter:</label>
+                        </li>
+                        <li class="active">
+                          <a data-option-value="*" href="#all">All</a>
+                        </li>
+                        <li>
+                          <a data-option-value=".document" href="#document">Documents</a>
+                        </li>
+                        <li>
+                          <a data-option-value=".image" href="#image">Images</a>
+                        </li>
+                        <li>
+                          <a data-option-value=".video" href="#video">Videos</a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+                </div>
+                <div class="card-body">
+
+              <form class="user">
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="First Name">
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control form-control-user" id="exampleLastName" placeholder="Last Name">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Email Address">
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password">
+                  </div>
+                </div>
+                    <a href="index.html" class="btn btn-primary btn-user btn-block">
+                      Save
+                    </a>
+              </form>
+
+                </div>
+              </div>
+
+
+
+{% endblock %}

@@ -1,0 +1,287 @@
+{% extends 'index.html' %}
+	{% block body %}
+			<section role="main" class="content-body">
+	{% block header %}
+					<header class="page-header">
+						<h2>Profile</h2>
+					</header>
+	{% endblock %}	
+
+			<div class="row">
+						<div class="col-md-4 col-lg-3">
+
+							<section class="panel">
+								<div class="panel-body">
+									<div class="thumb-info mb-md">
+										<img src="static/images/!logged-user.jpg" class="rounded img-responsive" alt="John Doe">
+										<div class="thumb-info-title">
+											<span class="thumb-info-inner">John Doe</span>
+											<span class="thumb-info-type">CEO</span>
+										</div>
+									</div>
+
+
+									<hr class="dotted short">
+
+									<h6 class="text-muted">About</h6>
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis vulputate quam. Interdum et malesuada</p>
+								
+
+									<hr class="dotted short">
+
+									<div class="social-icons-list">
+										<a rel="tooltip" data-placement="bottom" target="_blank" href="http://www.facebook.com" data-original-title="Facebook"><i class="fa fa-facebook"></i><span>Facebook</span></a>
+										<a rel="tooltip" data-placement="bottom" href="http://www.twitter.com" data-original-title="Twitter"><i class="fa fa-twitter"></i><span>Twitter</span></a>
+										<a rel="tooltip" data-placement="bottom" href="http://www.linkedin.com" data-original-title="Linkedin"><i class="fa fa-linkedin"></i><span>Linkedin</span></a>
+									</div>
+
+								</div>
+							</section>
+
+
+						</div>
+
+
+						<div class="col-md-8 col-lg-6">
+
+							<div class="tabs">
+								<ul class="nav nav-tabs tabs-primary">
+									<li class="active">
+										<a href="#projects" data-toggle="tab">Projects</a>
+									</li>
+									<li>
+										<a href="#connections" data-toggle="tab">Connections</a>
+									</li>
+									<li>
+										<a href="#edit" data-toggle="tab">Edit</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+
+									<!---projects--->
+									<div id="projects" class="tab-pane active">
+										<h4 class="mb-md">Update Status</h4>
+
+										<section class="simple-compose-box mb-xlg">
+											<form method="get" action="/">
+												<textarea name="message-text" data-plugin-textarea-autosize placeholder="What's on your mind?" rows="1"></textarea>
+											</form>
+											<div class="compose-box-footer">
+												<ul class="compose-toolbar">
+													<li>
+														<a href="#"><i class="fa fa-camera"></i></a>
+													</li>
+													<li>
+														<a href="#"><i class="fa fa-map-marker"></i></a>
+													</li>
+												</ul>
+												<ul class="compose-btn">
+													<li>
+														<a class="btn btn-primary btn-xs">Post</a>
+													</li>
+												</ul>
+											</div>
+										</section>
+
+										<h4 class="mb-xlg">Timeline</h4>
+
+
+										<div class="timeline timeline-simple mt-xlg mb-md">
+											<div class="tm-body">
+												<div class="tm-title">
+													<h3 class="h5 text-uppercase">November 2013</h3>
+												</div>
+												<ol class="tm-items">
+										<li>
+											<div class="tm-box">
+											<div class="post-image">
+												<div class="img-thumbnail">
+													<a href="#">
+														<img src="static/images/post-thumb-1.jpg" alt="">
+													</a>
+												</div>
+											</div>
+											<div class="post-info">
+												<a href="#">Nullam Vitae Nibh Un Odiosters</a>
+												<div class="post-meta">
+													 Jan 10, 2013
+												</div>
+											</div>
+											</div>
+										</li>
+										<li>
+											<div class="tm-box">
+											<div class="post-image">
+												<div class="img-thumbnail">
+													<a href="#">
+														<img src="static/images/post-thumb-1.jpg" alt="">
+													</a>
+												</div>
+											</div>
+											<div class="post-info">
+												<a href="#">Nullam Vitae Nibh Un Odiosters</a>
+												<div class="post-meta">
+													 Jan 10, 2013
+												</div>
+											</div>
+											</div>
+										</li>
+											
+												</ol>
+											</div>
+										</div>
+									</div>
+									<!---end projects--->
+									<!--connection-->
+									<div id="connections" class="tab-pane active">
+										<h4 class="mb-md"> Connections </h4>
+
+										
+									</div>
+									
+										
+									<!---end connection-->
+								
+									<!---edit--->
+									<div id="edit" class="tab-pane">
+
+										<form class="form-horizontal" method="get">
+											<h4 class="mb-xlg">Personal Information</h4>
+											<fieldset>
+												<div class="form-group">
+													<label class="col-md-3 control-label" for="profileFirstName">First Name</label>
+													<div class="col-md-8">
+														<input type="text" class="form-control" id="profileFirstName">
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-md-3 control-label" for="profileLastName">Last Name</label>
+													<div class="col-md-8">
+														<input type="text" class="form-control" id="profileLastName">
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-md-3 control-label" for="profileAddress">Address</label>
+													<div class="col-md-8">
+														<input type="text" class="form-control" id="profileAddress">
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-md-3 control-label" for="profileCompany">Company</label>
+													<div class="col-md-8">
+														<input type="text" class="form-control" id="profileCompany">
+													</div>
+												</div>
+											</fieldset>
+											<hr class="dotted tall">
+											<h4 class="mb-xlg">About Yourself</h4>
+											<fieldset>
+												<div class="form-group">
+													<label class="col-md-3 control-label" for="profileBio">Biographical Info</label>
+													<div class="col-md-8">
+														<textarea class="form-control" rows="3" id="profileBio"></textarea>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-xs-3 control-label mt-xs pt-none">Public</label>
+													<div class="col-md-8">
+														<div class="checkbox-custom checkbox-default checkbox-inline mt-xs">
+															<input type="checkbox" checked="" id="profilePublic">
+															<label for="profilePublic"></label>
+														</div>
+													</div>
+												</div>
+											</fieldset>
+											<hr class="dotted tall">
+											<h4 class="mb-xlg">Change Password</h4>
+											<fieldset class="mb-xl">
+												<div class="form-group">
+													<label class="col-md-3 control-label" for="profileNewPassword">New Password</label>
+													<div class="col-md-8">
+														<input type="text" class="form-control" id="profileNewPassword">
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-md-3 control-label" for="profileNewPasswordRepeat">Repeat New Password</label>
+													<div class="col-md-8">
+														<input type="text" class="form-control" id="profileNewPasswordRepeat">
+													</div>
+												</div>
+											</fieldset>
+											<div class="panel-footer">
+												<div class="row">
+													<div class="col-md-9 col-md-offset-3">
+														<button type="submit" class="btn btn-primary">Submit</button>
+														<button type="reset" class="btn btn-default">Reset</button>
+													</div>
+												</div>
+											</div>
+
+										</form>
+
+									</div>
+									<!-------end edit------>
+									</div>
+							</div>
+						</div>
+
+						<div class="col-md-12 col-lg-3">
+
+						<header class="panel-heading">
+									<div class="panel-actions">
+										<a href="#" class="fa fa-caret-down"></a>
+										<a href="#" class="fa fa-times"></a>
+									</div>
+
+									<h2 class="panel-title">
+										<span class="label label-primary label-sm text-normal va-middle mr-sm">198</span>
+										<span class="va-middle">Friends</span>
+									</h2>
+								</header>
+								<div class="panel-body">
+									<div class="content">
+										<ul class="simple-user-list">
+											<li>
+												<figure class="image rounded">
+													<img src="static/images/!sample-user.jpg" alt="Joseph Doe Junior" class="img-circle">
+												</figure>
+												<span class="title">Joseph Doe Junior</span>
+												<span class="message truncate">Lorem ipsum dolor sit.</span>
+											</li>
+											<li>
+												<figure class="image rounded">
+													<img src="static/images/!sample-user.jpg" alt="Joseph Junior" class="img-circle">
+												</figure>
+												<span class="title">Joseph Junior</span>
+												<span class="message truncate">Lorem ipsum dolor sit.</span>
+											</li>
+											<li>
+												<figure class="image rounded">
+													<img src="static/images/!sample-user.jpg" alt="Joe Junior" class="img-circle">
+												</figure>
+												<span class="title">Joe Junior</span>
+												<span class="message truncate">Lorem ipsum dolor sit.</span>
+											</li>
+											<li>
+												<figure class="image rounded">
+													<img src="static/images/!sample-user.jpg" alt="Joseph Doe Junior" class="img-circle">
+												</figure>
+												<span class="title">Joseph Doe Junior</span>
+												<span class="message truncate">Lorem ipsum dolor sit.</span>
+											</li>
+										</ul>
+										<hr class="dotted short">
+										<div class="text-right">
+											<a class="text-uppercase text-muted" href="#">(View All)</a>
+										</div>
+									</div>
+								</div>
+							
+
+					</div>
+					<!-- end: page -->
+				</section>
+			</div>
+
+			
+	{% endblock %}
