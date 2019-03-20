@@ -2743,6 +2743,11 @@ textarea[data-toggle=autosize] {
 	transition: height 0.15s ease-in;
 }
 
+a[data-toggle] {
+cursor:pointer;
+}
+
+
 select {
 	border: 1px solid #E5E7E9;
 	border-radius: 6px;

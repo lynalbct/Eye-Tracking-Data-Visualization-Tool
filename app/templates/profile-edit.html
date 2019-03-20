@@ -1,0 +1,205 @@
+
+{% extends 'index.html' %}
+	{% block body %}
+			<section role="main" class="content-body">
+	{% block header %}
+					<header class="page-header">
+						<h2>Profile</h2>
+					</header>
+	{% endblock %}	
+
+
+			<div class="row">
+						<div class="col-md-4 col-lg-3">
+
+							<section class="panel">
+								<div class="panel-body">
+									<div class="thumb-info mb-md">
+										<img src="{{ url_for('static' , filename='images/!logged-user.jpg') }}" class="rounded img-responsive" alt="John Doe">
+										<div class="thumb-info-title">
+											<span class="thumb-info-inner">{{ current_user.first_name}} {{ current_user.last_name }}</span>
+											<span class="thumb-info-type">{{ current_user.profession }}</span>
+										</div>
+									</div>
+
+
+									<hr class="dotted short">
+
+									<h6 class="text-muted">About</h6>
+									<p><h6 class="text-muted">User Name:</h6>{{ current_user.username }}</p>
+                                    <p><h6 class="text-muted">Email Address:</h6>{{ current_user.email }}</p>
+                                    <p><h6 class="text-muted">Profession:</h6>{{ current_user.profession }}</p>
+                                    <p><h6 class="text-muted">Organization</h6>{{ current_user.organization }}</p>								
+
+									<hr class="dotted short">
+
+									<div class="social-icons-list">
+										<a rel="tooltip" data-placement="bottom" target="_blank" href="http://www.facebook.com" data-original-title="Facebook"><i class="fa fa-facebook"></i><span>Facebook</span></a>
+										<a rel="tooltip" data-placement="bottom" href="http://www.twitter.com" data-original-title="Twitter"><i class="fa fa-twitter"></i><span>Twitter</span></a>
+										<a rel="tooltip" data-placement="bottom" href="http://www.linkedin.com" data-original-title="Linkedin"><i class="fa fa-linkedin"></i><span>Linkedin</span></a>
+									</div>
+
+								</div>
+							</section>
+
+
+						</div>
+
+
+						<div class="col-md-8 col-lg-6">
+
+							<div class="tabs">
+								<ul class="nav nav-tabs tabs-primary">
+									<li>
+										<a href="{{ url_for('profile', researcher_id=res.researcher_id)}}" data-toggle="tab">Projects</a>
+									</li>
+
+									<li class="active">
+										<a href="{{ url_for('profile_edit', researcher_id=res.researcher_id)}}" data-toggle="tab">Edit</a>
+									</li>
+
+								</ul>
+
+								<div class="tab-content">
+
+									<!---projects--->
+
+<div id="edit" class="tab-pane active">
+
+
+		<form method="POST" action="" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Account Info</legend>
+
+                <!--Name-->
+<!--First-->
+                <div class="form-group">
+                    {{ form.first_name.label(class="form-control-label") }}
+
+                    {% if form.first_name.errors %}
+                        {{ form.first_name(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.first_name.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.first_name(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+<!--Last-->
+                  <div class="form-group">
+                    {{ form.last_name.label(class="form-control-label") }}
+
+                    {% if form.last_name.errors %}
+                        {{ form.last_name(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.last_name.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.last_name(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <!--username-->
+
+                  <div class="form-group">
+                    {{ form.username.label(class="form-control-label") }}
+
+                    {% if form.username.errors %}
+                        {{ form.username(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.username.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.username(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <!--profession-->
+
+                <div class="form-group">
+                    {{ form.profession.label(class="form-control-label") }}
+
+                    {% if form.profession.errors %}
+                        {{ form.profession(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.profession.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.profession(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <!--organization-->
+
+                <div class="form-group">
+                    {{ form.organization.label(class="form-control-label") }}
+
+                    {% if form.organization.errors %}
+                        {{ form.organization(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.organization.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.organization(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <!--email-->
+
+
+                <div class="form-group">
+                    {{ form.email.label(class="form-control-label") }}
+                    {% if form.email.errors %}
+                        {{ form.email(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.email(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.picture.label() }}
+                    {{ form.picture(class="form-control-file") }}
+                    {% if form.picture.errors %}
+                        {% for error in form.picture.errors %}
+                            <span class="text-danger">{{ error }}</span></br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+									</div>
+									
+									<!---end projects--->
+									<!--connection-->		
+									<!-------end edit------>
+
+
+
+
+
+									</div>
+							</div>
+					<!-- end: page -->
+				</section>
+
+			
+	{% endblock %}

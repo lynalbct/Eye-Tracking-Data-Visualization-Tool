@@ -57,7 +57,7 @@
                 <div class="text-center">
                   <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                  </div>
-                <form class="user" method="POST" action="{{ url_for('profile')}}">
+                <form class="user" method="POST" action="{{ url_for('profile', researcher_id=res.researcher_id ) }}">
                   <!-- form hidden tag -->
                   <div class="form-group">
                     

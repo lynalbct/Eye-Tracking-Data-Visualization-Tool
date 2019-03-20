@@ -11,6 +11,8 @@ from flask import current_app
 from werkzeug.security import check_password_hash
 from flask_bcrypt import Bcrypt
 from werkzeug.utils import secure_filename
+import secrets
+from PIL import Image
 
 upload_folder = 'app/static/user'
 allowed_extensions = set(['csv', 'png', 'jpg', 'jpeg'])
@@ -116,10 +118,13 @@ def resetpassword():
 
 @app.route('/home')
 def home():
-	return render_template('dashboard/index.html')
+	res = Researcher.query.filter_by(researcher_id =current_user.researcher_id).first()
+	return render_template('index.html', res = res)
 
-@app.route('/profile', methods=['POST','GET'])
-def profile():
+@app.route('/profile/<int:researcher_id>', methods=['POST','GET'])
+def profile(researcher_id):
+
+	res = Researcher.query.filter_by(researcher_id =current_user.researcher_id).first()
 	form = ProfileForm()
 	print(form)
 	user = Researcher.query.filter_by(researcher_id =current_user.researcher_id)
@@ -137,15 +142,44 @@ def profile():
 			print('ok')
 		else:
 			print('not validated')
-	return render_template('profile.html', form=form)
+	return render_template('profile.html', form=form, res=res)
+
+@app.route('/profile/<int:researcher_id>/edit', methods=['POST','GET'])
+@login_required
+def profile_edit(researcher_id):
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+
+        current_user.first_name = form.first_name.data
+        current_user.last_name = form.last_name.data
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.profession = form.profession.data
+        current_user.organization = form.organization.data
+        db.session.commit()
+        flash('Your account has been updated!', 'success')
+        return redirect(url_for('profile_edit', researcher_id=current_user.researcher_id))
+    elif request.method == 'GET':
+        form.first_name.data = current_user.first_name
+        form.last_name.data = current_user.last_name
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+        form.profession.data = current_user.profession
+        form.organization.data = current_user.organization
+        res = Researcher.query.filter_by(researcher_id=current_user.researcher_id).first()
+    return render_template('profile-edit.html',res = res,form = form,title = "Account")
 
 @app.route('/connections')
 def connections():
-	return render_template('connections.html', title="Connections")
+	res = Researcher.query.filter_by(researcher_id=current_user.researcher_id).first()
+	return render_template('connections.html', res=res, title="Connections")
 
-@app.route('/projects')
-def projects():
-	return render_template('profile/projects.html', title="Title")
+@app.route('/projects/<int:researcher_id>')
+def projects(researcher_id):
+	res = Researcher.query.filter_by(researcher_id =current_user.researcher_id).first()
+	return render_template('projects.html', res= res, title="Title")
 
 @app.route('/logout')
 @login_required

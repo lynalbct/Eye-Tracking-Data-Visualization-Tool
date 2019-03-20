@@ -1,10 +1,13 @@
-from wtforms import StringField,  PasswordField, RadioField, ValidationError, SelectField
+
+from flask_wtf.file import FileField, FileAllowed
+
+from wtforms import StringField,  PasswordField, RadioField, ValidationError, SelectField, SubmitField, BooleanField
 from wtforms.fields.html5 import DateField
-from wtforms.validators import Length, InputRequired, EqualTo, DataRequired, Email
+from wtforms.validators import Length, InputRequired, EqualTo, DataRequired, Email, ValidationError
 from app.models import Researcher
 from wtforms import TextField, PasswordField, validators, DateField, IntegerField, SubmitField, FileField, RadioField
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from flask_wtf import Form
+from flask_wtf import Form, FlaskForm
 
 login_manager = LoginManager()
 # login_manager.setup_app(current_app)
@@ -73,3 +76,17 @@ class ResetPasswordForm(Form):
     def validate_username(self, field):
         if Researcher.query.filter_by(username=field.data).first():
             raise ValidationError('Username already in use.')
+
+
+
+class UpdateAccountForm(FlaskForm):
+
+    first_name = StringField('First Name',validators=[DataRequired(), Length(min=2, max=20)])
+    last_name = StringField('Last Name',validators=[DataRequired(), Length(min=2, max=20)])
+    profession = StringField('Profession',validators=[Length(min=2, max=20)])
+    organization = StringField('Organization',validators=[Length(min=2, max=20)])
+    username = StringField('Username',validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email',validators=[DataRequired(), Email()])
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
+    submit = SubmitField('Update')
+
