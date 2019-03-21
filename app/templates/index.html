@@ -42,6 +42,10 @@
 
 		<script src="static/vendor/modernizr/modernizr.js"></script>
 
+		<!--profile picture-->
+
+   		 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/profile.css') }}">
+
 
 	</head>
 	<body>
@@ -238,7 +242,7 @@
 					<div id="userbox" class="userbox">
 						<a href="#" data-toggle="dropdown">
 							<figure class="profile-picture">
-								<img src="{{ url_for('.static', filename='images/avatars/user-01.jpg')}} alt="Joseph Doe" class="img-circle" data-lock-picture="static/images/!logged-user.jpg" />
+								<img src="{{ image_file }}" class="img-circle" />
 							</figure>
 							<div class="profile-info" >
 								<span class="name">{{ current_user. first_name}} {{ current_user. last_name }}</span>
@@ -531,5 +535,13 @@
 
 		<!-- Examples -->
 		<script src="static/javascripts/dashboard/examples.dashboard.js"></script>
+
+		<!--profile picture--> 
+		 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+   		 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  		  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
+
 	</body>
 </html>

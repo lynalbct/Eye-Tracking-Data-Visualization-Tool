@@ -1,3 +1,6 @@
+import os
+import secrets
+from PIL import Image
 from flask import Flask, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
 from flask import render_template, request, url_for,redirect,send_from_directory
@@ -11,8 +14,6 @@ from flask import current_app
 from werkzeug.security import check_password_hash
 from flask_bcrypt import Bcrypt
 from werkzeug.utils import secure_filename
-import secrets
-from PIL import Image
 
 upload_folder = 'app/static/user'
 allowed_extensions = set(['csv', 'png', 'jpg', 'jpeg'])
@@ -144,13 +145,14 @@ def resetpassword():
 
 @app.route('/home')
 def home():
+	image_file = url_for('static', filename='images/' + current_user.image_file)
 	res = Researcher.query.filter_by(researcher_id =current_user.researcher_id).first()
-	return render_template('index.html', res = res)
+	return render_template('index.html', image_file=image_file, res=res)
 
 @app.route('/profile/<int:researcher_id>', methods=['POST','GET'])
 def profile(researcher_id):
-
-	res = Researcher.query.filter_by(researcher_id =current_user.researcher_id).first()
+	image_file = url_for('static', filename='images/' + current_user.image_file)
+	res = Researcher.query.filter_by(researcher_id = current_user.researcher_id).first()
 	form = ProfileForm()
 	print(form)
 	user = Researcher.query.filter_by(researcher_id =current_user.researcher_id)
@@ -168,25 +170,39 @@ def profile(researcher_id):
 			print('ok')
 		else:
 			print('not validated')
-	return render_template('profile.html', form=form, res=res)
+	return render_template('profile.html', image_file=image_file, form=form, res=res)
+
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/images', picture_fn)
+
+    output_size = (125, 125)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+
+    return picture_fn
 
 @app.route('/profile/<int:researcher_id>/edit', methods=['POST','GET'])
 @login_required
 def profile_edit(researcher_id):
     form = UpdateAccountForm()
     if form.validate_on_submit():
-        if form.picture.data:
-            picture_file = save_picture(form.picture.data)
-
-        current_user.first_name = form.first_name.data
-        current_user.last_name = form.last_name.data
-        current_user.username = form.username.data
-        current_user.email = form.email.data
-        current_user.profession = form.profession.data
-        current_user.organization = form.organization.data
-        db.session.commit()
-        flash('Your account has been updated!', 'success')
-        return redirect(url_for('profile_edit', researcher_id=current_user.researcher_id))
+    	if form.picture.data:
+    		picture_file = save_picture(form.picture.data)
+    		current_user.image_file = picture_file
+    	current_user.first_name = form.first_name.data
+    	current_user.last_name = form.last_name.data
+    	current_user.username = form.username.data
+    	current_user.email = form.email.data
+    	current_user.profession = form.profession.data
+    	current_user.organization = form.organization.data
+    	db.session.commit()
+    	flash('Your account has been updated!', 'success')
+    	res = Researcher.query.filter_by(researcher_id=current_user.researcher_id).first()
+    	return render_template('profile-edit.html', res=res, researcher_id=current_user.researcher_id)
     elif request.method == 'GET':
         form.first_name.data = current_user.first_name
         form.last_name.data = current_user.last_name
@@ -194,8 +210,9 @@ def profile_edit(researcher_id):
         form.email.data = current_user.email
         form.profession.data = current_user.profession
         form.organization.data = current_user.organization
+        image_file = url_for('static', filename='images/' + current_user.image_file)
         res = Researcher.query.filter_by(researcher_id=current_user.researcher_id).first()
-    return render_template('profile-edit.html',res = res,form = form,title = "Account")
+    return render_template('profile-edit.html', res = res, form = form, image_file=image_file, title = "Account")
 
 @app.route('/connections')
 def connections():

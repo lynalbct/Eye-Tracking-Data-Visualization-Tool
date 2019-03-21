@@ -15,7 +15,7 @@
 							<section class="panel">
 								<div class="panel-body">
 									<div class="thumb-info mb-md">
-										<img src="{{ url_for('static' , filename='images/!logged-user.jpg') }}" class="rounded img-responsive" alt="John Doe">
+										<img class="rounded-circle account-img" src="{{ image_file }}">
 										<div class="thumb-info-title">
 											<span class="thumb-info-inner">{{ current_user.first_name}} {{ current_user.last_name }}</span>
 											<span class="thumb-info-type">{{ current_user.profession }}</span>
@@ -66,6 +66,14 @@
 
 <div id="edit" class="tab-pane active">
 
+  <div class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ image_file }}">
+        <div class="media-body">
+          <h2 class="account-heading">{{ current_user.username }}</h2>
+          <p class="text-secondary">{{ current_user.email }}</p>
+        </div>
+      </div>
 
 		<form method="POST" action="" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
@@ -186,16 +194,7 @@
                 {{ form.submit(class="btn btn-outline-info") }}
             </div>
         </form>
-									</div>
-									
-									<!---end projects--->
-									<!--connection-->		
-									<!-------end edit------>
-
-
-
-
-
+	</div>
 									</div>
 							</div>
 					<!-- end: page -->

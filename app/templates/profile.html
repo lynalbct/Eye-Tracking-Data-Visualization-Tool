@@ -13,12 +13,13 @@
 							<section class="panel">
 								<div class="panel-body">
 									<div class="thumb-info mb-md">
-										<img src="{{ url_for('static' , filename='images/!logged-user.jpg') }}" class="rounded img-responsive" alt="John Doe">
+										<img class="rounded-circle account-img" src="{{ image_file }}">
 										<div class="thumb-info-title">
 											<span class="thumb-info-inner">{{ current_user. first_name}} {{ current_user. last_name }}</span>
 											<span class="thumb-info-type">{{ current_user. profession }}</span>
 										</div>
 									</div>
+
 
 
 									<hr class="dotted short">
@@ -50,7 +51,7 @@
 							<div class="tabs">
 								<ul class="nav nav-tabs tabs-primary">
 									<li class="active">
-										<a id="#projects" data-toggle="tab">Projects</a>
+										<a href="{{ url_for('profile', researcher_id=res.researcher_id)}}" data-toggle="tab">Projects</a>
 									</li>
 
 									<li>

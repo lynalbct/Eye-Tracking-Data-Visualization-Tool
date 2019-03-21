@@ -5,7 +5,7 @@ from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 
-
+	
 
 class Researcher(UserMixin, db.Model):
 	__tablename__ = 'researcher'
@@ -21,6 +21,7 @@ class Researcher(UserMixin, db.Model):
 	connections = db.relationship("Connection", uselist=False, backref="researcher")
 	projects = db.relationship("Project", uselist=False, backref="researcher")
 	sharedprojects = db.relationship("SharedProject", uselist=False, backref="researcher")
+	image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
 
 	def __init__(self, username='', email='',password=''):
 		self.first_name = ''
@@ -30,6 +31,7 @@ class Researcher(UserMixin, db.Model):
 		self.organization = ''
 		self.email = email
 		self.password = generate_password_hash(password, method='sha256')
+
 
 	def get_id(self):
 		return (self.researcher_id)
@@ -44,7 +46,8 @@ class Researcher(UserMixin, db.Model):
 		return Fals
 		
 	def __repr__(self):
-		return '<Researcher %r>' % self.researcher_id
+		return '<Researcher %r>' % self.researcher_id 
+
 
 
 class File(db.Model):
