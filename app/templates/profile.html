@@ -51,11 +51,11 @@
 							<div class="tabs">
 								<ul class="nav nav-tabs tabs-primary">
 									<li class="active">
-										<a href="{{ url_for('profile', researcher_id=res.researcher_id)}}" data-toggle="tab">Projects</a>
+										<a type="button" data-toggle="tab">Projects</a>
 									</li>
 
 									<li>
-										<a href="{{ url_for('profile_edit', researcher_id=res.researcher_id)}}" data-toggle="tab">Edit</a>
+										<a type="button" href="{{ url_for('profile_edit', researcher_id=res.researcher_id)}}" data-toggle="tab">Edit</a>
 									</li>
 
 								</ul>

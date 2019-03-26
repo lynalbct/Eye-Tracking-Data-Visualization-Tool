@@ -5,7 +5,13 @@ from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 
-	
+
+followers = db.Table(
+    'followers',
+    db.Column('follower_id', db.Integer, db.ForeignKey('researcher.researcher_id')),
+    db.Column('followed_id', db.Integer, db.ForeignKey('researcher.researcher_id'))
+)
+
 
 class Researcher(UserMixin, db.Model):
 	__tablename__ = 'researcher'
@@ -22,6 +28,12 @@ class Researcher(UserMixin, db.Model):
 	projects = db.relationship("Project", uselist=False, backref="researcher")
 	sharedprojects = db.relationship("SharedProject", uselist=False, backref="researcher")
 	image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
+	followed = db.relationship(
+        'Researcher', secondary=followers,
+        primaryjoin=(followers.c.follower_id == researcher_id),
+        secondaryjoin=(followers.c.followed_id == researcher_id),
+        backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
+	
 
 	def __init__(self, username='', email='',password=''):
 		self.first_name = ''
@@ -44,10 +56,21 @@ class Researcher(UserMixin, db.Model):
 
 	def is_anonymous(self):
 		return Fals
+	
+	def follow(self, researcher):
+		if not self.is_following(researcher):
+			self.followed.append(researcher)
+
+	def unfollow(self, researcher):
+		if self.is_following(researcher):
+			self.followed.remove(researcher)
+	
+	def is_following(self, researcher):
+		return self.followed.filter(
+			followers.c.followed_id == researcher.researcher_id).count() > 0
 		
 	def __repr__(self):
 		return '<Researcher %r>' % self.researcher_id 
-
 
 
 class File(db.Model):
@@ -87,6 +110,7 @@ class Connection(db.Model):
 
 	def __repr__(self):
 		return '<Researcher %r>' % self.connections_id
+
 
 class Project(db.Model):
 	__tablename__ = 'project'

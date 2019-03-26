@@ -51,11 +51,11 @@
 							<div class="tabs">
 								<ul class="nav nav-tabs tabs-primary">
 									<li>
-										<a href="{{ url_for('profile', researcher_id=res.researcher_id)}}" data-toggle="tab">Projects</a>
+										<a type="button" href="{{ url_for('profile', researcher_id=res.researcher_id)}}" data-toggle="tab">Projects</a>
 									</li>
 
 									<li class="active">
-										<a href="{{ url_for('profile_edit', researcher_id=res.researcher_id)}}" data-toggle="tab">Edit</a>
+										<a type="button" data-toggle="tab">Edit</a>
 									</li>
 
 								</ul>
@@ -66,14 +66,8 @@
 
 <div id="edit" class="tab-pane active">
 
-  <div class="content-section">
-      <div class="media">
-        <img class="rounded-circle account-img" src="{{ image_file }}">
-        <div class="media-body">
-          <h2 class="account-heading">{{ current_user.username }}</h2>
-          <p class="text-secondary">{{ current_user.email }}</p>
-        </div>
-      </div>
+    <div class="content-section">
+       
 
 		<form method="POST" action="" enctype="multipart/form-data">
             {{ form.hidden_tag() }}

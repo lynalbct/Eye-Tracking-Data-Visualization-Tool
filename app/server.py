@@ -185,7 +185,7 @@ def save_picture(form_picture):
 
     return picture_fn
 
-@app.route('/profile/<int:researcher_id>/edit', methods=['POST','GET'])
+@app.route('/profile/edit/<int:researcher_id>', methods=['POST','GET'])
 @login_required
 def profile_edit(researcher_id):
     form = UpdateAccountForm()
@@ -202,7 +202,7 @@ def profile_edit(researcher_id):
     	db.session.commit()
     	flash('Your account has been updated!', 'success')
     	res = Researcher.query.filter_by(researcher_id=current_user.researcher_id).first()
-    	return render_template('profile-edit.html', res=res, researcher_id=current_user.researcher_id)
+    	return render_template('profile-edit.html', res=res, form=form, researcher_id=current_user.researcher_id)
     elif request.method == 'GET':
         form.first_name.data = current_user.first_name
         form.last_name.data = current_user.last_name
@@ -214,18 +214,66 @@ def profile_edit(researcher_id):
         res = Researcher.query.filter_by(researcher_id=current_user.researcher_id).first()
     return render_template('profile-edit.html', res = res, form = form, image_file=image_file, title = "Account")
 
-@app.route('/connections')
-def connections():
+@app.route('/connections/<researcher_id>')
+@login_required
+def connections(researcher_id):
+	image_file = url_for('static', filename='images/' + current_user.image_file)
+	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
+	posts = [
+        {'author': res, 'body': 'Test post #1'},
+        {'author': res, 'body': 'Test post #2'}
+    ]
+	return render_template('connections.html', res=res, posts=posts, image_file=image_file)
+
+@app.route('/connections/search/<researcher_id>')
+@login_required
+def connections_search(researcher_id):
+	image_file = url_for('static', filename='images/' + current_user.image_file)
 	res = Researcher.query.filter_by(researcher_id=current_user.researcher_id).first()
-	return render_template('connections.html', res=res, title="Connections")
+	return render_template('connections-search.html', res=res, image_file=image_file)
+
+@app.route('/follow/<researcher_id>')
+@login_required
+def follow(researcher_id):
+    res = Researcher.query.filter_by(researcher_id=researcher_id).first()
+    if res is None:
+        flash('User {} not found.'.format(username))
+        return redirect(url_for('home'))
+    if res == current_user:
+        flash('You cannot follow yourself!')
+        return redirect(url_for('connections', researcher_id=researcher_id))
+    current_user.follow(res)
+    db.session.commit()
+    flash('You are following {}!'.format(username))
+    return redirect(url_for('connections', researcher_id=researcher_id))
+
+
+@app.route('/unfollow/<researcher_id>')
+@login_required
+def unfollow(researcher_id):
+    res = Researcher.query.filter_by(researcher_id=researcher_id).first()
+    if res is None:
+        flash('User {} not found.'.format(username))
+        return redirect(url_for('home'))
+    if res == current_user:
+        flash('You cannot unfollow yourself!')
+        return redirect(url_for('connections', researcher_id=researcher_id))
+    current_user.unfollow(res)
+    db.session.commit()
+    flash('You are not following {}.'.format(username))
+    return redirect(url_for('connections', researcher_id=researcher_id))
 
 @app.route('/projects/<int:researcher_id>')
 def projects(researcher_id):
 	res = Researcher.query.filter_by(researcher_id =current_user.researcher_id).first()
 	return render_template('projects.html', res= res, title="Title")
+	
+
+
 
 @app.route('/logout')
 @login_required
 def logout():
 	logout_user()
 	return redirect(url_for('index'))
+

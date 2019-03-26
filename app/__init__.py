@@ -12,7 +12,7 @@ app = Flask(__name__)
 Bootstrap(app)
 db = SQLAlchemy(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost/etdvt'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost/connection'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'etdvt'
 
@@ -21,6 +21,7 @@ from app import server
 from app.server import upload_folder
 
 app.config['UPLOAD_FOLDER'] = upload_folder
+
 
 
 db.create_all()

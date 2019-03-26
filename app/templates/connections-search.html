@@ -1,0 +1,58 @@
+{% extends 'index.html' %}
+	{% block body %}
+			<section role="main" class="content-body">
+	{% block header %}
+					<header class="page-header">
+						<h2>Connections</h2>
+					</header>
+	{% endblock %}	
+
+        <section class="panel">
+            <header class="panel-heading">
+                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default"  href="{{url_for('connections', researcher_id=res.researcher_id)}}">My Connections</a>
+                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default">Connection Request</a>
+                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default">Search Connections</a>
+
+                <br></br>
+                <div class="col-md-4"><span class="show-grid-block"></span></div>
+                <div class="col-md-4"><span class="show-grid-block"></span></div>
+                <div class="col-md-4"><span class="show-grid-block">
+                    <form action="pages-search-results.html" class="search nav-form">
+                            <div class="input-group input-search">
+                                <input type="text" class="form-control" name="q" id="q" placeholder="Search...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                </span>
+                            </div>
+                        </form>
+                    </span></div>
+
+                {% if res.about_me %}<p>{{ res.about_me }}</p>{% endif %}
+                {% if res.last_seen %}<p>Last seen on: {{ res.last_seen }}</p>{% endif %}
+                <p>{{ res.followers.count() }} followers, {{ res.followed.count() }} following.</p>
+
+
+ 
+            </header>
+
+            
+                        </header>
+
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                
+              
+                               
+                            </div>
+                        </div>
+                 
+            </div>
+
+            
+            </div>
+        </section>
+
+</section>
+   
+
+	{% endblock %}

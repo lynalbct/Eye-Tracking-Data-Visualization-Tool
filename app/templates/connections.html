@@ -1,99 +1,78 @@
 {% extends 'index.html' %}
+	{% block body %}
+			<section role="main" class="content-body">
 	{% block header %}
 					<header class="page-header">
 						<h2>Connections</h2>
 					</header>
 	{% endblock %}	
-	{% block body %}
-			<div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h6 class="h4 mb-0 text-gray-800">Your Connections</h6>
-            <!-- <a href="#" data-target="#stimulimodal" data-toggle="modal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus-circle fa-sm text-white-50"></i> Add Stimuli</a> -->
-          </div>
 
-          <!-- ----card for friends--- -->
+        <section class="panel">
+            <header class="panel-heading">
+                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default">My Connections</a>
+                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default">Connection Request</a>
+                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default" href="{{url_for('connections_search', researcher_id=res.researcher_id)}}">Search Connections</a>
 
-          <span class="b">
-            <div class="card" style=" box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);max-width: 150px; max-height: 240px ;margin: auto;text-align: center; font-family: arial;">
-              <img src="static/images/avatars/user-05.jpg" alt="Avatar" style="width:100%; padding: 5%">
-              <p class="title" style="color: #3c3d3f;font-size: 18px;"><bold>John Doe</bold></p>
-              <p style="margin-top: -13%; font-size: 13px;">Professor</p>
-              
-              <p><button class="btn btn-sm btn-primary shadow-sm" style="padding-bottom: -2%; margin-top: -10%">View Profile</button></p>
-            </div><br>
-          </span>
-          <hr>
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h8 class="h4 mb-0 text-gray-800">Add Connections</h8>
-          </div>
-          {% for not_connected_user in not_connected_users %}
-          <span class="b">
-            <div class="card" style=" box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);max-width: 150px; max-height: 240px ;margin: auto;text-align: center; font-family: arial;">
-              <img src="static/images/avatars/user-05.jpg" alt="Avatar" style="width:100%; padding: 5%">
-              <p class="title" style="color: #3c3d3f;font-size: 18px;"><bold>{{ not_connected_user.first_name}} {{ not_connected_user.last_name }}</bold></p>
-              <p style="margin-top: -13%; font-size: 13px;">{{ not_connected_user.profession }}</p>
-              
-              <p><button class="btn btn-sm btn-primary shadow-sm" style="padding-bottom: -2%; margin-top: -10%"><i class="fas fa-user-plus fa-sm text-white-50" method="POST" action="{{ url_for('connections')}}"></i>&nbspConnect</button></p>
+                <br></br>
+
+                {% if res.about_me %}<p>{{ res.about_me }}</p>{% endif %}
+                {% if res.last_seen %}<p>Last seen on: {{ res.last_seen }}</p>{% endif %}
+                <p>{{ res.followers.count() }} followers, {{ res.followed.count() }} following.</p>
+
+ 
+            </header>
+
+            
+                        </header>
+
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                
+                                <table class="table table-striped mb-none">
+                                    <thead>
+                                        <tr>
+                                            <th>Profile</th>
+                                            <th>Profile Name</th>
+                                            <th>Profession</th>
+                                            <th>Organization</th>
+                                            <th>Email</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>                            
+                                                <p><a href="{{ url_for('follow', researcher_id=res.researhcer_id) }}">Follow</a></p>
+                                              
+                                                <p><a href="{{ url_for('unfollow', researcher_id=res.researcher_id) }}">Unfollow</a></p></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>Jacob</td>
+                                            <td>Thornton</td>
+                                            <td>@fat</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>Larry</td>
+                                            <td>the Bird</td>
+                                            <td>@twitter</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                 
             </div>
-          </span>
-          {% endfor %}
 
-          <!-- ---end of card content--- -->
-
-          <!-- Content Row -->
- <!-- Login Modal -->
-      <div class="modal right fade" id="stimulimodal" onclick="func();" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
-        <div class="modal-dialog modal-xl" role="document" style="margin-top: 3%;">
-          <div class="modal-content">
-
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            
             </div>
+        </section>
 
-          <div class="modal-body">
-                    <div class="row">
-          <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-            <div class="col-lg-7">
-              <div class="p-5">
-                <div class="text-center">
-                  <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
-                 </div>
-                <form class="user" method="POST" action="{{ url_for('profile', researcher_id=res.researcher_id ) }}">
-                  <!-- form hidden tag -->
-                  <div class="form-group">
-                    
-                  </div>
-                  <div class="form-group">
-                    form
-                  </div>
-                  <div class="form-group row">
-                    <div class="col-sm-6 mb-3 mb-sm-0">
-                      form
-                    </div>
-                    <div class="col-sm-6">
-                      form
-                    </div>
-                  </div>
-                    <button class="btn btn-primary btn-user btn-block" type="submit" name="submit">Register</button>
-                  <hr>
-                  <a href="index.html" class="btn btn-google btn-user btn-block">
-                    <i class="fab fa-google fa-fw"></i> Register with Google
-                  </a>
-                  <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                    <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                  </a>
-                </form>
-                <hr>
-                <div class="text-center">
-                  <a class="small" href="forgot-password.html">Forgot Password?</a>
-                </div>
-                <div class="text-center">
-                  <a class="small" href="login.html">Already have an account? Login!</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+</section>
+   
+
 	{% endblock %}
