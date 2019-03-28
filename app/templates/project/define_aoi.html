@@ -1,5 +1,5 @@
-<!doctype html><html><head><title>Easy Image Mapper</title><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1"><link rel="stylesheet" href="static/css/easy-mapper.css">
-<script src="static/js/jquery-2.1.3.min.js"></script><script src="static/js/easy-mapper-1.2.0.js"></script></head><body>
+<!DOCTYPE html><head><title>Easy Image Mapper</title><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1"><link rel="stylesheet" href="{{ url_for('.static',filename='css/easy-mapper.css') }}">
+<script src="{{ url_for('.static',filename='js/jquery-2.1.3.min.js') }}"></script><script src="{{ url_for('.static',filename='js/easy-mapper-1.2.0.js') }}"></script></head><body>
 
 <!-- 딤 스크린 -->
 <div id="dim"></div>
@@ -137,7 +137,8 @@
 	
 	<!-- 이미지 -->
 	<div id="workspace-img-wrap">
-		<img id="workspace-img" src="static/images/sampleimg.png">
+		<!-- <div id = "{{ proj_id }}"></di -->
+		<img id="workspace-img" value="{{ proj_id}}" src="data:image/{{ ext }};base64,{{ imgdata }}">
 		
 		<!-- 그리드 -->
 		<div id="grid-x1" class="grid-1"></div>

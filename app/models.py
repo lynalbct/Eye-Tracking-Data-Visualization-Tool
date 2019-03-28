@@ -52,14 +52,11 @@ class File(db.Model):
 	file_id = db.Column(db.Integer, primary_key = True)
 	file_name = db.Column(db.String(80))
 	directory_name = db.Column(db.String(80))
-	data = db.Column(db.LargeBinary)
 	researcher_id = db.Column(db.Integer, db.ForeignKey('researcher.researcher_id'))
 	project_id = db.Column(db.Integer, db.ForeignKey('project.project_id'))
 	"""docstring for Files"""
-	def __init__(self, file_id,file_name,directory_name,data,researcher_id, project_id):
-		self.file_id = file_id
+	def __init__(self, file_name,directory_name,researcher_id, project_id):
 		self.file_name = file_name
-		self.data = data
 		self.directory_name = directory_name
 		self.researcher_id = researcher_id
 		self.project_id = project_id
@@ -126,7 +123,7 @@ class Stimuli(db.Model):
 	__tablename__ = 'stimuli'
 	stimuli_id = db.Column(db.Integer, primary_key=True)
 	stimuli_name = db.Column(db.String(80))
-	upload = db.Column(db.LargeBinary)
+	upload = db.Column(db.String(2000000))
 	stimuli_description = db.Column(db.String(120))
 	x_resolution = db.Column(db.Integer, nullable=False)
 	y_resolution = db.Column(db.Integer, nullable=False)
@@ -135,8 +132,9 @@ class Stimuli(db.Model):
 	stimuli_participant = db.relationship("Stimuli_Participant", uselist=False, backref="stimuli")
 	aoi = db.relationship("Aoi", uselist=False, backref="stimuli")
 
-	def __init__(self, stimuli_name, stimuli_description,x_resolution,y_resolution,project_id):
+	def __init__(self, stimuli_name,upload, stimuli_description,x_resolution,y_resolution,project_id):
 		self.stimuli_name = stimuli_name
+		self.upload = upload
 		self.stimuli_description = stimuli_description
 		self.x_resolution = x_resolution
 		self.y_resolution = y_resolution

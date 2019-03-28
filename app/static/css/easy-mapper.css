@@ -22,7 +22,10 @@ html, body { position:relative; width:100%; display:block; min-width:640px; }
 #gnb-menu-generate:hover { background:#999 !important; }
 
 /* 작업공간 */
-#gnb, #workspace { -webkit-user-select:none; -moz-user-select:none; user-select:none; }
+#gnb, #workspace { 
+	-webkit-user-select:none;
+	-moz-user-select:none; 
+    background-image: url("data:image/jpeg;base64,";)}
 #workspace { position:absolute; top:36px; left:0; width:100%; cursor:crosshair; }
 #workspace-ruler { position:relative; }
 #workspace-ruler-x, #workspace-ruler-y { position:absolute; background:#fff; white-space:nowrap; overflow:hidden; }
@@ -33,7 +36,7 @@ html, body { position:relative; width:100%; display:block; min-width:640px; }
 .workspace-ruler-x-1-el, .workspace-ruler-x-2-el { height:100%; border-right:1px solid #aaa; display:inline-block; }
 .workspace-ruler-x-1-el { width:10px; }
 .workspace-ruler-x-2-el { width:50px; font-size:10px; line-height:12px; padding-left:1px; }
-#workspace-ruler-y { width:20px; height:100%; top:19px; left:0; border-right:1px solid #aaa; border-top:1px solid #aaa; border-bottom:1px solid #aaa; font-size:0; }
+#workspace-ruler-y { width:20px; height:100%; top:0px; left:0; border-right:1px solid #aaa; border-top:1px solid #aaa; border-bottom:1px solid #aaa; font-size:0; }
 #workspace-ruler-y-1, #workspace-ruler-y-2 { height:100%; display:inline-block; }
 #workspace-ruler-y-1 { width:8px; }
 #workspace-ruler-y-2 { width:12px; }

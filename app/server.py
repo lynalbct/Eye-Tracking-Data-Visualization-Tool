@@ -12,6 +12,8 @@ from werkzeug.security import check_password_hash
 from flask_bcrypt import Bcrypt
 from werkzeug.utils import secure_filename
 import os
+import base64
+import csv
 
 upload_folder = 'app/static/user' 
 allowed_img_extensions = set(['png', 'jpg', 'jpeg','PNG','JPG'])
@@ -20,10 +22,10 @@ allowed_file_extensions = set(['csv'])
 def allowed_img(filename):
 	return '.' in filename and \
 		   filename.rsplit('.', 1)[1].lower() in allowed_img_extensions
+
 def allowed_file(filename):
 	return '.' in filename and \
 		   filename.rsplit('.', 1)[1].lower() in allowed_file_extensions
-
 
 def debug():
 	assert current_app.debug == False, "Don't panic! You're here by request of debug()"
@@ -44,62 +46,38 @@ def index():
 def forgotpassword():
 	return render_template('dashboard/forgot-password.html')
 
-# @app.route('/upload/eye-movements', methods=['GET','POST'])
-# def upload_data():
-# 	if request.method == 'POST':
-# 		# alter upload_location: add project id at the end of the location
-# 		upload_location = upload_folder + '/' + str(current_user.researcher_id)
-# 		if os.path.isdir(upload_location) == False:
-# 			os.makedirs(upload_location)
-# 		if request.files:
-# 			for i in request.files.getlist('files'):
-# 				filename = secure_filename(i.filename)
-# 				if allowed_file(i.filename):
-# 					i.save(os.path.join(upload_location + '/', filename))
-# 				else:
-# 					# debug()
-# 					flash('file extension is not csv')
-# 					return redirect(url_for('upload_data'))
-
-# 		else:
-# 			return redirect(url_for('upload_data'))
-# 	return render_template('project/project.html')
-
-@app.route('/<project_id>/define/aoi', methods=['GET','POST'])
-def upload_stimuli(project_id):
+@app.route('/<proj_id>/upload/aoi', methods=['GET','POST'])
+def upload_stimuli(proj_id):
 	form = StimuliForm()
 	if request.method == 'POST':
 		
-		print 'yes'
+		# print 'yes'
 		# add project id before the stimuli folder
-		upload_location = upload_folder + '/' + str(current_user.researcher_id) + '/'+'stimuli'
-		print upload_location
-		if os.path.isdir(upload_location) == False:
-			os.makedirs(upload_location)
-		print(type(form.upload.data))
+		# upload_location = upload_folder + '/' + str(current_user.researcher_id) + '/'+'stimuli'
+		# print upload_location
+		# if os.path.isdir(upload_location) == False:
+		# 	os.makedirs(upload_location)
+		# print(type(form.upload.data))
 		if form.upload is None:
 			flash('No selected file')
 			return redirect(request.url)
 
 		if form.upload:
 			file = form.upload.data
+			encoded_string = base64.b64encode(file.read())
+			print(type(encoded_string))
 			save_stimuli = Stimuli(
 					stimuli_name=file.filename,
-					upload=file.read(),
+					upload=encoded_string,
 					stimuli_description="stimuli_description",
 					x_resolution=form.x_resolution.data,
 					y_resolution=form.y_resolution.data,
-					project_id=project_id
+					project_id=proj_id
 				 )
 			db.session.add(save_stimuli)
 			db.session.commit()
-			# debug()
-			# change this to a route
-			return render_template('project/analyse.html')
+			return redirect(url_for('save_aoi', proj_id=proj_id))
 	return render_template('project/define.html', form=form)
-
-
-
 
 @app.route('/stimuli', methods=['GET','POST'])
 def stimuli():
@@ -117,18 +95,11 @@ def stimuli():
 			db.session.commit()
 			projects = Project.query.filter_by(researcher_id=current_user.researcher_id).all()
 			return render_template('stimuli/stimuli.html', projects=projects, projectform=projectform)
-
 	else:
 		projects = Project.query.filter_by(researcher_id=current_user.researcher_id).all()
-		# for a in projects:
-		#   project_count = 0
-		#   project_count = len(projects)+1
-		# print(project_count)
 		print projects
 		return render_template('stimuli/stimuli.html', projectform=projectform, projects=projects)
 	return render_template('stimuli/stimuli.html', projectform=projectform)
-
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -210,51 +181,86 @@ def info():
 @app.route('/project/<project_id>', methods=['GET','POST'])
 def project(project_id):
 	if request.method == 'POST':
-		# alter upload_location: add project id at the end of the location
-		upload_location = upload_folder + '/' + str(current_user.researcher_id)
-		if os.path.isdir(upload_location) == False:
-			os.makedirs(upload_location)
 		if request.files:
+			upload_location = upload_folder + '/' + str(current_user.researcher_id) + '/' + str(project_id)
+			if os.path.isdir(upload_location) == False:
+				os.makedirs(upload_location)
 			for i in request.files.getlist('files'):
 				filename = secure_filename(i.filename)
-				if allowed_file(i.filename):
+				if allowed_file(filename):
 					i.save(os.path.join(upload_location + '/', filename))
-					return redirect(url_for('upload_stimuli',project_id=project_id))
-				else:
-					# debug()
-					flash('file extension is not csv')
-					return redirect(url_for('upload_stimuli',project_id=project_id))
+					save_file = File(
+						file_name = filename,
+						directory_name = str(upload_location+'/'+filename),
+						researcher_id = current_user.researcher_id,
+						project_id = project_id
+						)
+					db.session.add(save_file)
+					db.session.commit()
+					print 'here'
 
+				else:
+					flash('file extension is not csv')
+					return redirect(url_for('upload_stimuli',proj_id=project_id))
+			return redirect(url_for('upload_stimuli', proj_id=project_id))
 		else:
-			return redirect(url_for('project'))
+			return redirect(url_for('project',proj_id=project_id))
 	return render_template('project/project.html')
 
-@app.route('/crop', methods=['GET','POST'])
-def crop():
+@app.route('/<int:proj_id>/analyse', methods=['GET','POST'])
+def analyse(proj_id):
+	filter_eyemovemnts(proj_id)
 
-	return render_template('project/easy-mapper-sample.html')
+	return render_template('project/analyse.html', project_id=proj_id)
 
+def filter_eyemovemnts(proj_id):
+	stimuli_data = Stimuli.query.filter_by(project_id=proj_id).first()
+	stimuli_id = stimuli_data.stimuli_id
+	aoi_data = Aoi.query.filter_by(stimuli_id=stimuli_id).all()
+	eye_movement_data = File.query.filter_by(project_id=proj_id).all()
+	for i in eye_movement_data:
+		upload_location = upload_folder + '/' + str(current_user.researcher_id) + '/' + str(proj_id) + '/' + 'result_'+ i.file_name
+		with open(i.directory_name,'r') as csv_file:
+			read_csv = csv.reader(csv_file)
+			with open(upload_location,'w') as result:
+				wtr= csv.writer(result)
+				for line in read_csv:
+					wtr.writerow((line[0], line[1]))
+				with open(upload_location,'r') as new_file:
+					file = csv.reader(new_file)
+					for a in file:
+						print map(int, a[0:])
+						
+				
+				# 	print line[0]
 
-@app.route('/save/aoi', methods=['GET','POST'])
-def saveAoi():
+@app.route('/<int:proj_id>/define/aoi', methods=['GET','POST'])
+def save_aoi(proj_id):
 	data = request.get_json()
+	stimuli_data = Stimuli.query.filter_by(project_id=proj_id).first()
+	filename = stimuli_data.stimuli_name 
+	ext = filename.split('.')[-1]
 
-	for i in range(len(data['startX'])-1):
-		saveAoi =  Aoi(
-			x1 = data['startX'][i],
-			y1 = data['startY'][i],
-			x2 = data['endX'][i],
-			y2 = data['endY'][i],
-			x3 = data['startX'][i],
-			y3 = (data['startY'][i]) + (data['height'][i]),
-			x4 = data['endX'][i],
-			y4 = (data['endY'][i]) + (data['height'][i]),
-			stimuli_id = 1
-			)
-		db.session.add(saveAoi)
-		db.session.commit()
-
-	return render_template('project/analyse.html')
+	if request.method == 'POST':
+		for i in range(len(data['startX'])-1):
+			print(data['startY'][i])
+			print(data['endY'][i])
+			print(data['height'][i])
+			save_aoi =  Aoi(
+				x1 = data['startX'][i],
+				y1 = data['startY'][i],
+				x2 = data['endX'][i],
+				y2 = data['startY'][i],
+				x3 = data['startX'][i],
+				y3 = (data['endY'][i]),
+				x4 = data['endX'][i],
+				y4 = (data['endY'][i]),
+				stimuli_id = stimuli_data.stimuli_id
+				)
+			db.session.add(save_aoi)
+			db.session.commit()
+		return redirect(url_for('analyse', proj_id=proj_id))
+	return render_template('project/define_aoi.html', ext=ext, imgdata=stimuli_data.upload, proj_id=proj_id)
 
 
 @app.route('/project/<projeject_id>')
@@ -293,12 +299,7 @@ def connections():
 	not_connected_ids,not_connected_fname, not_connected_lname = [], [], []
 	for not_connection in not_connections:
 		not_connected_user = Researcher.query.filter_by(researcher_id=not_connection.researcher_id).all()
-
-
-
 	return render_template('connections/connections.html', not_connected_user=not_connected_user)
-
-
 
 @app.route('/profile', methods=['POST','GET'])
 def profile():

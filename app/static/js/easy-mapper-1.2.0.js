@@ -139,6 +139,8 @@ function generateCode() {
 		endCoordXloop.push(endCoordX);
 		var endCoordY = parseInt(startCoordY + $('#grid-box-' + i).height() + 1);
 		endCoordYloop.push(endCoordY);
+
+		
 		
 		var link = (mapEl[i][2]) ? mapEl[i][2] : '<em>link</em>';
 		var target = (mapEl[i][3]) ? mapEl[i][3] : '<em>target</em>';
@@ -159,17 +161,20 @@ function generateCode() {
 	var gcM = gcAlert + '&lt;img src="' + imgsrc + '" usemap="#<em>mapname</em>"&gt;' + '<br>' + '&lt;map name="<em>mapname</em>"&gt;' + '<br>' + gcMloop + '&lt;/map&gt;';
 	$('#pop-codegen-im .pop-content p').html(gcM); // 생성된 마크업 출력
 }
+
+
 function sendAoi(startCoordXloop, startCoordYloop, endCoordXloop, endCoordYloop, heightloop){
 	var startX= startCoordXloop;
 	var startY= startCoordYloop;
 	var endX= endCoordXloop;
 	var endY= endCoordYloop;
 	var height = heightloop;
-	console.log(startX);
+	var proj_id = document.getElementById('workspace-img').getAttribute('value');
+
 	$.ajax({
 		type: 'POST',
 		contentType: 'application/json; charset=utf-8',
-		url: '/save', 
+		url: '/'+proj_id+'/define/aoi', 
 		data: JSON.stringify({
 			'startX':startX, 
 			'startY':startY,
@@ -179,7 +184,7 @@ function sendAoi(startCoordXloop, startCoordYloop, endCoordXloop, endCoordYloop,
 		}),
 		datatype: "json",
 		success: function(resp){
-			// window.location.href = '/save';
+			window.location.href = '/'+proj_id+'/analyse';
 			console.log("success");
 		},
 		error: function(e){
