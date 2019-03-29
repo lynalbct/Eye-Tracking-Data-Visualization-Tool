@@ -8,6 +8,7 @@ from app.models import Researcher
 from wtforms import TextField, PasswordField, validators, DateField, IntegerField, SubmitField, FileField, RadioField
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_wtf import Form, FlaskForm
+from flask_table import Table, Col
 
 login_manager = LoginManager()
 # login_manager.setup_app(current_app)
@@ -90,3 +91,18 @@ class UpdateAccountForm(FlaskForm):
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Update')
 
+
+class SearchForm(FlaskForm):
+    choices = [('Researcher','Researcher'),('Organization','Organization')]
+    select = SelectField('Search collaborators:', choices=choices)
+    searchfor = StringField('')
+    submit = SubmitField('')
+
+class Results(Table):
+    id = Col('Id', show= False)
+    name = Col('Researcher')
+    organization = Col('Organization')
+    date_s = Col('Date Start')
+    start = Col('Time Start')
+    date_e = Col('Date End')
+    end = Col('Time End')

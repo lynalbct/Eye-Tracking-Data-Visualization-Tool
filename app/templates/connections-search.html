@@ -14,42 +14,37 @@
                 <a type="button" class="mb-xs mt-xs mr-xs btn btn-default">Search Connections</a>
 
                 <br></br>
-                <div class="col-md-4"><span class="show-grid-block"></span></div>
-                <div class="col-md-4"><span class="show-grid-block"></span></div>
-                <div class="col-md-4"><span class="show-grid-block">
-                    <form action="pages-search-results.html" class="search nav-form">
-                            <div class="input-group input-search">
-                                <input type="text" class="form-control" name="q" id="q" placeholder="Search...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-                                </span>
-                            </div>
-                        </form>
-                    </span></div>
 
-                {% if res.about_me %}<p>{{ res.about_me }}</p>{% endif %}
-                {% if res.last_seen %}<p>Last seen on: {{ res.last_seen }}</p>{% endif %}
-                <p>{{ res.followers.count() }} followers, {{ res.followed.count() }} following.</p>
+           <p></p>
 
 
  
             </header>
 
-            
-                        </header>
 
                         <div class="panel-body">
                             <div class="table-responsive">
-                
-              
-                               
+
+
+                              <form method="POST" class="search nav-form">
+                                <div class="container h-100">
+                                  <div class="d-flex justify-content-center h-100">
+                                    
+                                    {{search.csrf_token}}
+                                    <div class="searchbar">
+                                      {{ search.select(class="search_input") }}
+                                      {{search.searchfor(class="search_input",style="padding: 0 10px; width: 300px; caret-color: red; transition: width 0.4s linear;", placeholder="Search...")}}
+                                      <a>{{search.submit(class="search_icon", style="background-image: url(../static/images/loupe.png); background-position:center; background-size: 24px; background-repeat: no-repeat;")}}</a>
+                                    </div>
+                                    
+                                  </div>
+                                </div>
+                              </form>
+
+                          
                             </div>
                         </div>
                  
-            </div>
-
-            
-            </div>
         </section>
 
 </section>

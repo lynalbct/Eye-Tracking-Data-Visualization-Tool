@@ -149,7 +149,7 @@ def home():
 	res = Researcher.query.filter_by(researcher_id =current_user.researcher_id).first()
 	return render_template('index.html', image_file=image_file, res=res)
 
-@app.route('/profile/<int:researcher_id>', methods=['POST','GET'])
+@app.route('/profile/<researcher_id>', methods=['POST','GET'])
 def profile(researcher_id):
 	image_file = url_for('static', filename='images/' + current_user.image_file)
 	res = Researcher.query.filter_by(researcher_id = current_user.researcher_id).first()
@@ -170,7 +170,7 @@ def profile(researcher_id):
 			print('ok')
 		else:
 			print('not validated')
-	return render_template('profile.html', image_file=image_file, form=form, res=res)
+	return render_template('profile.html', image_file=image_file, form=form, res=res, user=user)
 
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
@@ -214,24 +214,58 @@ def profile_edit(researcher_id):
         res = Researcher.query.filter_by(researcher_id=current_user.researcher_id).first()
     return render_template('profile-edit.html', res = res, form = form, image_file=image_file, title = "Account")
 
-@app.route('/connections/<researcher_id>')
+@app.route('/connections/<int:researcher_id>')
 @login_required
 def connections(researcher_id):
 	image_file = url_for('static', filename='images/' + current_user.image_file)
 	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
-	posts = [
-        {'author': res, 'body': 'Test post #1'},
-        {'author': res, 'body': 'Test post #2'}
-    ]
-	return render_template('connections.html', res=res, posts=posts, image_file=image_file)
 
-@app.route('/connections/search/<researcher_id>')
+	return render_template('connections.html', res=res, image_file=image_file)
+
+
+@app.route('/search/<researcher_id>', methods=['GET', 'POST'])
 @login_required
-def connections_search(researcher_id):
+def search(researcher_id):
+	search = SearchForm()
 	image_file = url_for('static', filename='images/' + current_user.image_file)
-	res = Researcher.query.filter_by(researcher_id=current_user.researcher_id).first()
-	return render_template('connections-search.html', res=res, image_file=image_file)
+	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
 
+	if search.validate_on_submit():
+		if search.searchfor.data != None:
+			searchfor = search.searchfor.data
+		else:
+			searchfor = ' '
+		method = search.select.data
+		return redirect('/result/'+researcher_id+'/'+searchfor+'/by/'+method)
+	return render_template('connections-search.html', res=res, image_file=image_file, search=search)
+
+	
+
+@app.route("/result/<researcher_id>/<string:query>/by/<string:method>", methods=['GET', 'POST'])
+@login_required
+def results(researcher_id, query, method):
+	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
+	results = []
+
+	if query != ' ':
+		if method == 'Researcher': #if Searching for Organizer name(works with either searching first or last name)
+			qry = db.session.query(Researcher).filter(Researcher.researcher_id).filter(Researcher.first_name.contains(query))
+			qry2 = db.session.query(Researcher).filter(Researcher.researcher_id).filter(Researcher.last_name.contains(query))
+			qry3= qry.union(qry2)
+			results = [item[0] for item in qry3.all()]
+		elif method == 'Organization':
+			qry = db.session.query(Researcher).filter(Researcher.researcher_id).filter(Researcher.organization.contains(query))
+			results = qry.all()
+	elif query == ' ':
+            qry = db.session.query(Researcher)
+            results = qry.all()
+			
+	if not results:
+		flash('No results found!', 'search')
+	table = Results(results)
+	table.border = True
+	return render_template('connections-result.html', table=table, res=res)
+	
 @app.route('/follow/<researcher_id>')
 @login_required
 def follow(researcher_id):
@@ -264,12 +298,11 @@ def unfollow(researcher_id):
     return redirect(url_for('connections', researcher_id=researcher_id))
 
 @app.route('/projects/<int:researcher_id>')
+@	login_required
 def projects(researcher_id):
 	res = Researcher.query.filter_by(researcher_id =current_user.researcher_id).first()
 	return render_template('projects.html', res= res, title="Title")
 	
-
-
 
 @app.route('/logout')
 @login_required

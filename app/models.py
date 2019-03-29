@@ -5,6 +5,8 @@ from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 
+from flask_table import Table, Col
+
 
 followers = db.Table(
     'followers',
@@ -110,6 +112,14 @@ class Connection(db.Model):
 
 	def __repr__(self):
 		return '<Researcher %r>' % self.connections_id
+
+class Results(Table):
+    researcher_id = Col('researcher_id', show=False)
+    first_name = Col('first_name')
+    last_name = Col('last_name')
+    username = Col('username')
+    email = Col('email')
+    profession = Col('profession')
 
 
 class Project(db.Model):
