@@ -96,13 +96,9 @@ class SearchForm(FlaskForm):
     choices = [('Researcher','Researcher'),('Organization','Organization')]
     select = SelectField('Search collaborators:', choices=choices)
     searchfor = StringField('')
-    submit = SubmitField('')
+    submit = SubmitField('Search')
 
 class Results(Table):
-    id = Col('Id', show= False)
+    researcher_id = Col('Id', show= False)
     name = Col('Researcher')
     organization = Col('Organization')
-    date_s = Col('Date Start')
-    start = Col('Time Start')
-    date_e = Col('Date End')
-    end = Col('Time End')

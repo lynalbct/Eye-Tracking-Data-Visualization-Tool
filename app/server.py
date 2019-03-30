@@ -244,17 +244,20 @@ def search(researcher_id):
 @app.route("/result/<researcher_id>/<string:query>/by/<string:method>", methods=['GET', 'POST'])
 @login_required
 def results(researcher_id, query, method):
+	search = SearchForm()
+	image_file = url_for('static', filename='images/' + current_user.image_file)
 	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
 	results = []
 
 	if query != ' ':
 		if method == 'Researcher': #if Searching for Organizer name(works with either searching first or last name)
-			qry = db.session.query(Researcher).filter(Researcher.researcher_id).filter(Researcher.first_name.contains(query))
-			qry2 = db.session.query(Researcher).filter(Researcher.researcher_id).filter(Researcher.last_name.contains(query))
-			qry3= qry.union(qry2)
-			results = [item[0] for item in qry3.all()]
+			qry = db.session.query(Researcher).filter(Researcher.first_name.like(query))
+			results = qry.all()
+		elif method == 'Researcher': #if Searching for Organizer name(works with either searching first or last name)
+			qry1 = db.session.query(Researcher).filter(Researcher.last_name.like(query))
+			results = qry1.all()
 		elif method == 'Organization':
-			qry = db.session.query(Researcher).filter(Researcher.researcher_id).filter(Researcher.organization.contains(query))
+			qry = db.session.query(Researcher).filter(Researcher.organization.like(query))
 			results = qry.all()
 	elif query == ' ':
             qry = db.session.query(Researcher)
@@ -264,7 +267,15 @@ def results(researcher_id, query, method):
 		flash('No results found!', 'search')
 	table = Results(results)
 	table.border = True
-	return render_template('connections-result.html', table=table, res=res)
+
+	if search.validate_on_submit():
+		if search.searchfor.data != None:
+			searchfor = search.searchfor.data
+		else:
+			searchfor = ' '
+		method = search.select.data
+		return redirect('/result/'+researcher_id+'/'+searchfor+'/by/'+method)
+	return render_template('connections-result.html', table=table, image_file=image_file, res=res,query=query, method=method, search=search)
 	
 @app.route('/follow/<researcher_id>')
 @login_required
