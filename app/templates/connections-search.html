@@ -10,7 +10,7 @@
         <section class="panel">
             <header class="panel-heading">
                 <a type="button" class="mb-xs mt-xs mr-xs btn btn-default"  href="{{url_for('connections', researcher_id=res.researcher_id)}}">My Connections</a>
-                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default">Connection Request</a>
+                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default" href="{{url_for('connects', researcher_id=res.researcher_id)}}">Connection Request</a>
                 <a type="button" class="mb-xs mt-xs mr-xs btn btn-default">Search Connections</a>
 
                 <br></br>
@@ -46,20 +46,7 @@
                             <div class="table-responsive">
 
 
-                              <form method="POST" class="search nav-form">
-                                <div class="container h-100">
-                                  <div class="d-flex justify-content-center h-100">
-                                    
-                                    {{search.csrf_token}}
-                                    <div class="searchbar">
-                                      {{ search.select(class="search_input") }}
-                                      {{search.searchfor(class="search_input",style="padding: 0 10px; width: 300px; caret-color: red; transition: width 0.4s linear;", placeholder="Search...")}}
-                                      <a>{{search.submit(class="search_icon", style="background-image: url(../static/images/loupe.png); background-position:center; background-size: 24px; background-repeat: no-repeat;")}}</a>
-                                    </div>
-                                    
-                                  </div>
-                                </div>
-                              </form>
+                             
 
                           
                             </div>

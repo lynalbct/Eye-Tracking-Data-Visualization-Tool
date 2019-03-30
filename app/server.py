@@ -276,7 +276,28 @@ def results(researcher_id, query, method):
 		method = search.select.data
 		return redirect('/result/'+researcher_id+'/'+searchfor+'/by/'+method)
 	return render_template('connections-result.html', table=table, image_file=image_file, res=res,query=query, method=method, search=search)
+
+@app.route('/connect/<int:connections_id>/approved', methods=['GET', 'POST'])
+@login_required
+def approveconnections(connections_id):
+	image_file = url_for('static', filename='images/' + current_user.image_file)
+	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
+	connect = Connection.query.filter_by(connections_id=connections_id).first()
 	
+	connect.status = 'Approved'
+	db.session.commit()
+	flash('Your event has been approved!','Notify'+str(res.researcher_id))
+	return redirect(url_for('connect', res=res, image_file=image_file, connect=connect))
+
+@app.route("/connect/<int:researcher_id>/manage", methods=['GET', 'POST'])
+@login_required
+def connects(researcher_id):
+	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
+	researcher = Researcher.query.all()
+	connect = Connection.query.all()
+	return render_template('connections-connect.html', res=res, connects=connect, researcher=researcher)
+
+
 @app.route('/follow/<researcher_id>')
 @login_required
 def follow(researcher_id):
