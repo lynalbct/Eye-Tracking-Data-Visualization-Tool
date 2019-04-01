@@ -46,7 +46,7 @@ def index():
 def forgotpassword():
 	return render_template('dashboard/forgot-password.html')
 
-@app.route('/<proj_id>/upload/aoi', methods=['GET','POST'])
+@app.route('/<int:proj_id>/upload/aoi', methods=['GET','POST'])
 def upload_stimuli(proj_id):
 	form = StimuliForm()
 	if request.method == 'POST':
@@ -209,14 +209,13 @@ def project(project_id):
 
 @app.route('/<int:proj_id>/analyse', methods=['GET','POST'])
 def analyse(proj_id):
-	filter_eyemovemnts(proj_id)
-
+	# filter_data(proj_id)
+	filter_eyemovement(proj_id)
 	return render_template('project/analyse.html', project_id=proj_id)
 
-def filter_eyemovemnts(proj_id):
+def filter_data(proj_id):
 	stimuli_data = Stimuli.query.filter_by(project_id=proj_id).first()
 	stimuli_id = stimuli_data.stimuli_id
-	aoi_data = Aoi.query.filter_by(stimuli_id=stimuli_id).all()
 	eye_movement_data = File.query.filter_by(project_id=proj_id).all()
 	for i in eye_movement_data:
 		upload_location = upload_folder + '/' + str(current_user.researcher_id) + '/' + str(proj_id) + '/' + 'result_'+ i.file_name
@@ -224,15 +223,42 @@ def filter_eyemovemnts(proj_id):
 			read_csv = csv.reader(csv_file)
 			with open(upload_location,'w') as result:
 				wtr= csv.writer(result)
+				next(read_csv)
 				for line in read_csv:
 					wtr.writerow((line[0], line[1]))
-				with open(upload_location,'r') as new_file:
+				with open(upload_location,'r') as new_file, open(i.directory_name,'w') as write_file:
 					file = csv.reader(new_file)
+					new_file = csv.writer(write_file)
+					# new_file.writerow("XY")
 					for a in file:
-						print map(int, a[0:])
+						converted_data = map(int, a[0:])
+						write = new_file.writerow(converted_data)
 						
-				
-				# 	print line[0]
+
+def filter_eyemovement(proj_id):
+	stimuli_data = Stimuli.query.filter_by(project_id=proj_id).first()
+	stimuli_id = stimuli_data.stimuli_id
+	aoi = Aoi.query.filter_by(stimuli_id=stimuli_id).all()
+
+	eye_movement_data = File.query.filter_by(project_id=proj_id).all()
+	x = []
+	y = []
+	for i in eye_movement_data:
+		for b in range(len(aoi)):
+			with open(i.directory_name, 'r') as csv_file:
+				print i.directory_name
+				# data = [row for row in csv.reader(csv_file)]
+				reader = csv.reader(csv_file, delimiter=',')
+				for row in reader:
+					if (int(row[0]) in range(aoi[b].x1, aoi[b].x2)) and (int(row[1]) in range(aoi[b].y1, aoi[b].y3)):
+						x.append(row[0])
+						y.append(row[1])
+
+		with open(i.directory_name, 'w') as new_file:
+			file = csv.writer(new_file)
+			for c in range(len(x)):
+				for d in range(len(y)):
+					file.writerow([int(x[c]),int(y[d])])
 
 @app.route('/<int:proj_id>/define/aoi', methods=['GET','POST'])
 def save_aoi(proj_id):
@@ -243,9 +269,6 @@ def save_aoi(proj_id):
 
 	if request.method == 'POST':
 		for i in range(len(data['startX'])-1):
-			print(data['startY'][i])
-			print(data['endY'][i])
-			print(data['height'][i])
 			save_aoi =  Aoi(
 				x1 = data['startX'][i],
 				y1 = data['startY'][i],
@@ -263,10 +286,6 @@ def save_aoi(proj_id):
 	return render_template('project/define_aoi.html', ext=ext, imgdata=stimuli_data.upload, proj_id=proj_id)
 
 
-@app.route('/project/<projeject_id>')
-def temporaryroute(project_id):
-	project = Project.query.filter_by(project_id=project_id).first()
-	return render_template('project/project.html', project_id=project_id)
 
 @app.route('/resetpassword')
 def resetpassword():
