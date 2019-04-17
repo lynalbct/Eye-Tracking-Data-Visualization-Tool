@@ -14,6 +14,7 @@ from flask import current_app
 from werkzeug.security import check_password_hash
 from flask_bcrypt import Bcrypt
 from werkzeug.utils import secure_filename
+from datetime import datetime
 
 upload_folder = 'app/static/user'
 allowed_extensions = set(['csv', 'png', 'jpg', 'jpeg'])
@@ -219,8 +220,52 @@ def profile_edit(researcher_id):
 def connections(researcher_id):
 	image_file = url_for('static', filename='images/' + current_user.image_file)
 	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
+	con = Connection.query.all()
 
-	return render_template('connections.html', res=res, image_file=image_file)
+	return render_template('connections.html', res=res, image_file=image_file, con=con)
+
+@app.route("/connect_request/<researcher_id>", methods=['GET', 'POST'])
+@login_required
+def connectrequest(researcher_id, connections_id):
+	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
+	con = Connection.query.all()
+	form = ConnectRequestForm()
+
+	
+	request = Connection(researcher_id=current_user.researcher_id,
+								status='Pending',
+								request_id = connections_id,
+								date_accepted=datetime.today())
+	db.session.add(request)
+	db.session.commit()
+	flash('Connection Request Succesfully Sent','success')
+	return render_template('connections-connect.html', form=form, res=res, con=con)
+
+
+@app.route('/connect/<researcher_id>/<connections_id>/approved', methods=['GET', 'POST'])
+@login_required
+def approveconnection(researcher_id, connections_id):
+	image_file = url_for('static', filename='images/' + current_user.image_file)
+	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
+	connect = Connection.query.filter_by(connections_id=connections_id).first()
+	
+	connect.status = 'Approved'
+	db.session.commit()
+	flash('Your connection has been approved!')
+	return redirect(url_for('connectrequest'))
+
+
+@app.route("/connect/<researcher_id>/<connections_id>/rejected", methods=['GET','POST'])
+@login_required
+def rejectedconnection(researcher_id, connection_id):
+	image_file = url_for('static', filename='images/' + current_user.image_file)
+	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
+	connect = Connection.query.filter_by(connections_id=connections_id).first()
+	
+	connect.status = 'Rejected'
+	db.session.commit()
+	flash('Your connection has been rejected!')
+	return redirect(url_for('connectrequest', res-res, image_file=image_file, connect=connect))
 
 
 @app.route('/search/<researcher_id>', methods=['GET', 'POST'])
@@ -229,6 +274,7 @@ def search(researcher_id):
 	search = SearchForm()
 	image_file = url_for('static', filename='images/' + current_user.image_file)
 	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
+	con = Connection.query.all()
 
 	if search.validate_on_submit():
 		if search.searchfor.data != None:
@@ -237,7 +283,7 @@ def search(researcher_id):
 			searchfor = ' '
 		method = search.select.data
 		return redirect('/result/'+researcher_id+'/'+searchfor+'/by/'+method)
-	return render_template('connections-search.html', res=res, image_file=image_file, search=search)
+	return render_template('connections-search.html', res=res, image_file=image_file, con=con, search=search)
 
 	
 
@@ -249,11 +295,23 @@ def results(researcher_id, query, method):
 	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
 	results = []
 
+		#connection request start
+	form = ConnectRequestForm()
+	request = Connection(researcher_id=current_user.researcher_id,
+								status='Pending',
+								request_id = connection_id,
+								date_accepted=datetime.today())
+	db.session.add(request)
+	db.session.commit()
+	flash('Connection Request Succesfully Sent','success')
+
+	#connection request end
+
 	if query != ' ':
-		if method == 'Researcher': #if Searching for Organizer name(works with either searching first or last name)
+		if method == 'Researcher': 
 			qry = db.session.query(Researcher).filter(Researcher.first_name.like(query))
 			results = qry.all()
-		elif method == 'Researcher': #if Searching for Organizer name(works with either searching first or last name)
+		elif method == 'Researcher':
 			qry1 = db.session.query(Researcher).filter(Researcher.last_name.like(query))
 			results = qry1.all()
 		elif method == 'Organization':
@@ -271,31 +329,12 @@ def results(researcher_id, query, method):
 	if search.validate_on_submit():
 		if search.searchfor.data != None:
 			searchfor = search.searchfor.data
+			
 		else:
 			searchfor = ' '
 		method = search.select.data
 		return redirect('/result/'+researcher_id+'/'+searchfor+'/by/'+method)
-	return render_template('connections-result.html', table=table, image_file=image_file, res=res,query=query, method=method, search=search)
-
-@app.route('/connect/<int:connections_id>/approved', methods=['GET', 'POST'])
-@login_required
-def approveconnections(connections_id):
-	image_file = url_for('static', filename='images/' + current_user.image_file)
-	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
-	connect = Connection.query.filter_by(connections_id=connections_id).first()
-	
-	connect.status = 'Approved'
-	db.session.commit()
-	flash('Your event has been approved!','Notify'+str(res.researcher_id))
-	return redirect(url_for('connect', res=res, image_file=image_file, connect=connect))
-
-@app.route("/connect/<int:researcher_id>/manage", methods=['GET', 'POST'])
-@login_required
-def connects(researcher_id):
-	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
-	researcher = Researcher.query.all()
-	connect = Connection.query.all()
-	return render_template('connections-connect.html', res=res, connects=connect, researcher=researcher)
+	return render_template('connections-result.html', table=table, form=form, image_file=image_file, res=res,query=query, method=method, search=search)
 
 
 @app.route('/follow/<researcher_id>')

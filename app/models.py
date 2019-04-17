@@ -57,7 +57,7 @@ class Researcher(UserMixin, db.Model):
 		return True
 
 	def is_anonymous(self):
-		return Fals
+		return False
 	
 	def follow(self, researcher):
 		if not self.is_following(researcher):
@@ -98,29 +98,42 @@ class File(db.Model):
 class Connection(db.Model):
 	__tablename__ = 'connection'
 	connections_id = db.Column(db.Integer, primary_key=True)
-	status = db.Column(db.Integer, default=0)
-	date_request = db.Column(db.DateTime, default=datetime.utcnow)
+	status = db.Column('status', db.String())
+	anonymousuest = db.Column(db.DateTime, default=datetime.utcnow)
 	date_accepted = db.Column(db.DateTime)
 	request_id = db.Column(db.Integer)
 	researcher_id = db.Column(db.Integer, db.ForeignKey('researcher.researcher_id'))
 
 	def __init__(self,status,date_accepted,request_id,researcher_id):
-		self.status = status
+		self.status = 'pending'
 		self.date_accepted = date_accepted
 		self.request_id = request_id
 		self.researcher_id = researcher_id
+	
+	def confirm(self):
+		self.status = 'confirmed'
+		
+	def reject(self):
+		self.status = 'rejected'
+
+	def participant_count(self):
+		return Participant.query.filter_by(event=self.id).count
 
 	def __repr__(self):
 		return '<Researcher %r>' % self.connections_id
 
 class Results(Table):
-    researcher_id = Col('researcher_id', show=False)
-    first_name = Col('first_name')
-    last_name = Col('last_name')
-    username = Col('username')
-    email = Col('email')
-    profession = Col('profession')
+	researcher_id = Col('researcher_id', show=False)
+	image_file = Col('Profile')
+	first_name = Col('First Name')
+	last_name = Col('Last Name')
+	username = Col('Username')
+	email = Col('Email Address')
+	profession = Col('Profession')
+	organization = Col('Organization')
 
+
+	
 
 class Project(db.Model):
 	__tablename__ = 'project'

@@ -6,82 +6,32 @@
 						<h2>Connections</h2>
 					</header>
 	{% endblock %}	
-
-        <section class="panel">
-            <header class="panel-heading">
-                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default"  href="{{url_for('connections', researcher_id=res.researcher_id)}}">My Connections</a>
-                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default">Connection Request</a>
-                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default" href="{{url_for('search', researcher_id=res.researcher_id)}}">Search Connections</a>
-
-                <br></br>
-
-                    <br></br>
-           <p></p>
-
-
- 
-            </header>
-
-
-<div class="panel-body">
-<div class="table-responsive">
   
-
-     
-                  {% for connect in connects|sort(attribute='date_s') %}
-                  {% if connect.status == 'Pending' and connects|selectattr('status','equalto','Pending')|list|length != 0 %}
-                  <ul class="event-list">
-                      <li>
-                          <img src="">
-                          <div class="info">
-                              <div class="row" style="margin-left: 10px;">
-                                  <h2 class="title">{{ connect.status }}</h2>
-                                  <p class="stat" style="margin-left: auto; margin-right: 65px;"> {{ connect.status }} </p>
-                              </div>
-                              {% for researcher_id in researcher %}
-                              {% if researcher.researcher_id %}
-                              <p class="desc">Researcher: {{ researcher.first_name + ' ' + researcher.last_name }}</p>
-                              {%endif%}{%endfor%}
-                              <p class="desc">Date Requested: {{ connect.date_request }}</p>
-                              <ul>
-                                  <li style="width:40%;" data-toggle="modal" data-target="#connect{{ connect.connections_id }}"><img src=""> More Info </li>
-                              </ul>
-                          </div>
-                          <div class="social">
-                              <ul>
-                                  <form action="/connect/{{connect.connections_id}}/approved" method="post">
-                                  <button class="approved"><img src="" width="50" height="50"></button>
-                                  </form>
-                                  <button class="rejected" data-toggle="modal" data-target=#modEvent{{ connect.connections_id }}><img src="" width="50" height="50"></button>
-                              </ul>
-                          </div>
-                      </li>
-                  </ul>
-                  {% elif connect.status == 'PH' and events|selectattr('status','equalto','Pending')|list|length == 0 %}
-                  <ul class="event-list">
-                      <img src="{{ url_for('static', filename='images/noreqbanner.png') }}" style="width: 100%; margin-top: 70px; border-radius: 1rem;">
-                      <div class="row">
-                          <a type=button href="/landing" style="margin: auto;"><img src="{{ url_for('static', filename='images/back.png') }}" style="max-width: 100px; margin: auto; margin-top: 70px;"></a>
-                      </div>
-                  </ul>
-                  {% endif %}
-                  {% endfor %}
-
-              
+    <section class="probootstrap-cover">
+        <div class="limiter">
+          <div class="container-login100-2">
+            <div class="wrap-venue100" style="margin-top: 60px; margin-bottom: 60px;">
   
-    
-
-
-
-
-</div>
-</div>
-                 
+              <form class="login100-form validate-form" method="post"  enctype="multipart/form-data">
+                {{ form.csrf_token }}
+                
         
-
-</section>
-
-</section>
+                <div class="form-header">
+                  <h2>Connect Researchers</h2>
+                </div>
+  
+            
+  
+                <div class="container-login100-form-btn">
+                  {{ form.submit(class="login100-form-btn")}}
+                </div>
+  
+              </form>
+            </div>
+          </div>
+        </div>  
+      </section>
+    
    
 
-	{% endblock %}
+{% endblock %}

@@ -10,8 +10,8 @@
         <section class="panel">
             <header class="panel-heading">
                 <a type="button" class="mb-xs mt-xs mr-xs btn btn-default">My Connections</a>
-                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default" href= "{{url_for('connects', researcher_id=res.researcher_id)}}">Connection Request</a>
-                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default" href="{{url_for('search', researcher_id=res.researcher_id)}}">Search Connections</a>
+                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default" href= "{{url_for('connectrequest', researcher_id=res.researcher_id, connections_id=con.connections_id)}}">Connection Request</a>
+                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default" href="{{url_for('search', researcher_id=res.researcher_id, connections_id=con.connections_id)}}">Search Connections</a>
 
                 <br></br>
 
@@ -28,41 +28,8 @@
                         <div class="panel-body">
                             <div class="table-responsive">
                 
-                                <table class="table table-striped mb-none">
-                                    <thead>
-                                        <tr>
-                                            <th>Profile</th>
-                                            <th>Profile Name</th>
-                                            <th>Profession</th>
-                                            <th>Organization</th>
-                                            <th>Email</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>                            
-                                                <p><a href="{{ url_for('follow', researcher_id=res.researhcer_id) }}">Follow</a></p>
-                                              
-                                                <p><a href="{{ url_for('unfollow', researcher_id=res.researcher_id) }}">Unfollow</a></p></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>@fat</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Larry</td>
-                                            <td>the Bird</td>
-                                            <td>@twitter</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                              {{table}}
+
                             </div>
                         </div>
                  

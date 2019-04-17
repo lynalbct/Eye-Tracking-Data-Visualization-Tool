@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 
-from wtforms import StringField,  PasswordField, RadioField, ValidationError, SelectField, SubmitField, BooleanField
+from wtforms import StringField,  PasswordField, RadioField, ValidationError, SelectField, SubmitField, BooleanField, HiddenField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import Length, InputRequired, EqualTo, DataRequired, Email, ValidationError
 from app.models import Researcher
@@ -98,7 +98,9 @@ class SearchForm(FlaskForm):
     searchfor = StringField('')
     submit = SubmitField('Search')
 
-class Results(Table):
-    researcher_id = Col('Id', show= False)
-    name = Col('Researcher')
-    organization = Col('Organization')
+class ConnectRequestForm(FlaskForm):
+    connections_id = HiddenField('connection_id', validators=[DataRequired()])
+    request_id = HiddenField('request_id', validators=[DataRequired])
+    researcher_id = HiddenField('researcher-id', validators=[DataRequired()])
+    date_accepted = DateField('Start Date', validators=[DataRequired()])
+    submit = SubmitField('Request Event')
