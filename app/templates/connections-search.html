@@ -9,11 +9,14 @@
 
         <section class="panel">
             <header class="panel-heading">
-                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default"  href="{{url_for('connections', researcher_id=res.researcher_id, connections_id=con.connections_id)}}">My Connections</a>
-                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default" href="{{url_for('connectrequest', researcher_id=res.researcher_id, connections_id=con.connections_id)}}">Connection Request</a>
-                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default">Search Connections</a>
-
-                <form method="POST" class="search nav-form">
+                    <a type="button" class="mb-xs mt-xs mr-xs btn btn-default"
+                      href="{{url_for('connections', researcher_id=res.researcher_id)}}">My Connections</a>
+                    <a type="button" class="mb-xs mt-xs mr-xs btn btn-default"
+                        >Connection Request</a>
+                    <a type="button" class="mb-xs mt-xs mr-xs btn btn-default"
+                      href="{{url_for('search', researcher_id=res.researcher_id)}}">Search Connections</a>
+               
+                      <form method="POST" class="search nav-form">
                         {{search.csrf_token}}
                         <div class="searchbar">
                           {{ search.select(class="search_input") }}

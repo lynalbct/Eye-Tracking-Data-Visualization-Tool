@@ -214,7 +214,6 @@ def profile_edit(researcher_id):
         image_file = url_for('static', filename='images/' + current_user.image_file)
         res = Researcher.query.filter_by(researcher_id=current_user.researcher_id).first()
     return render_template('profile-edit.html', res = res, form = form, image_file=image_file, title = "Account")
-
 @app.route('/connections/<int:researcher_id>')
 @login_required
 def connections(researcher_id):
@@ -222,24 +221,24 @@ def connections(researcher_id):
 	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
 	con = Connection.query.all()
 
-	return render_template('connections.html', res=res, image_file=image_file, con=con)
+	qry = db.session.query(Connection).filter(Connection.status=='confirmed').filter(Connection.researcher_id==current_user.researcher_id)
+	results = qry.all()
+	table = Request(results)
+	table.border = True
+
+	return render_template('connections.html', res=res, con=con, results=results, table=table, image_file=image_file)
 
 @app.route("/connect_request/<researcher_id>", methods=['GET', 'POST'])
 @login_required
-def connectrequest(researcher_id, connections_id):
+def connectrequest(researcher_id):
 	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
-	con = Connection.query.all()
-	form = ConnectRequestForm()
-
 	
-	request = Connection(researcher_id=current_user.researcher_id,
-								status='Pending',
-								request_id = connections_id,
-								date_accepted=datetime.today())
-	db.session.add(request)
-	db.session.commit()
-	flash('Connection Request Succesfully Sent','success')
-	return render_template('connections-connect.html', form=form, res=res, con=con)
+	qry = db.session.query(Connection).filter(Connection.status=='pending').filter(Connection.researcher_id==current_user.researcher_id)
+	results = qry.all()
+	table = Request(results)
+	table.border = True
+
+	return render_template('connections-request.html', results=results, res=res, table=table)
 
 
 @app.route('/connect/<researcher_id>/<connections_id>/approved', methods=['GET', 'POST'])
@@ -249,7 +248,7 @@ def approveconnection(researcher_id, connections_id):
 	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
 	connect = Connection.query.filter_by(connections_id=connections_id).first()
 	
-	connect.status = 'Approved'
+	connect.status = 'confirmed'
 	db.session.commit()
 	flash('Your connection has been approved!')
 	return redirect(url_for('connectrequest'))
@@ -257,49 +256,50 @@ def approveconnection(researcher_id, connections_id):
 
 @app.route("/connect/<researcher_id>/<connections_id>/rejected", methods=['GET','POST'])
 @login_required
-def rejectedconnection(researcher_id, connection_id):
+def rejectedconnection(researcher_id, connections_id):
 	image_file = url_for('static', filename='images/' + current_user.image_file)
 	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
 	connect = Connection.query.filter_by(connections_id=connections_id).first()
 	
-	connect.status = 'Rejected'
+	connect.status = 'rejected'
 	db.session.commit()
 	flash('Your connection has been rejected!')
 	return redirect(url_for('connectrequest', res-res, image_file=image_file, connect=connect))
 
 
-@app.route('/search/<researcher_id>', methods=['GET', 'POST'])
+@app.route('/search/<researcher_id>', defaults={'connections_id':0}, methods=['GET', 'POST'])
+@app.route('/search/<researcher_id>/<connections_id>')
 @login_required
-def search(researcher_id):
+def search(researcher_id, connections_id):
 	search = SearchForm()
 	image_file = url_for('static', filename='images/' + current_user.image_file)
 	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
-	con = Connection.query.all()
-
+	con = Connection.query.filter_by(connections_id=connections_id).first()
 	if search.validate_on_submit():
 		if search.searchfor.data != None:
 			searchfor = search.searchfor.data
 		else:
 			searchfor = ' '
 		method = search.select.data
-		return redirect('/result/'+researcher_id+'/'+searchfor+'/by/'+method)
-	return render_template('connections-search.html', res=res, image_file=image_file, con=con, search=search)
+		return redirect('/result/'+researcher_id+'/'+searchfor+'/by/'+method+'/'+str(connections_id))
+	return render_template('connections-search.html', res=res, con=con, image_file=image_file, search=search)
 
 	
 
-@app.route("/result/<researcher_id>/<string:query>/by/<string:method>", methods=['GET', 'POST'])
+@app.route("/result/<researcher_id>/<string:query>/by/<string:method>/<connections_id>", methods=['GET', 'POST'])
 @login_required
-def results(researcher_id, query, method):
+def results(researcher_id, query, method, connections_id):
 	search = SearchForm()
 	image_file = url_for('static', filename='images/' + current_user.image_file)
 	res = Researcher.query.filter_by(researcher_id=researcher_id).first()
+	con = Connection.query.filter_by(connections_id=connections_id).first()
 	results = []
 
 		#connection request start
 	form = ConnectRequestForm()
 	request = Connection(researcher_id=current_user.researcher_id,
 								status='Pending',
-								request_id = connection_id,
+								request_id = connections_id,
 								date_accepted=datetime.today())
 	db.session.add(request)
 	db.session.commit()
@@ -326,6 +326,7 @@ def results(researcher_id, query, method):
 	table = Results(results)
 	table.border = True
 
+
 	if search.validate_on_submit():
 		if search.searchfor.data != None:
 			searchfor = search.searchfor.data
@@ -333,8 +334,8 @@ def results(researcher_id, query, method):
 		else:
 			searchfor = ' '
 		method = search.select.data
-		return redirect('/result/'+researcher_id+'/'+searchfor+'/by/'+method)
-	return render_template('connections-result.html', table=table, form=form, image_file=image_file, res=res,query=query, method=method, search=search)
+		return redirect('/result/'+researcher_id+'/'+searchfor+'/by/'+method+'/'+connections_id)
+	return render_template('connections-result.html',table=table, qry=qry, con=con, form=form, image_file=image_file, res=res,query=query, method=method, search=search)
 
 
 @app.route('/follow/<researcher_id>')

@@ -3,7 +3,7 @@
 			<section role="main" class="content-body">
 	{% block header %}
 					<header class="page-header">
-						<h2>Connections</h2>
+						<h2>Connection Requests</h2>
 					</header>
 	{% endblock %}	
   
@@ -12,21 +12,17 @@
           <div class="container-login100-2">
             <div class="wrap-venue100" style="margin-top: 60px; margin-bottom: 60px;">
   
-              <form class="login100-form validate-form" method="post"  enctype="multipart/form-data">
-                {{ form.csrf_token }}
-                
-        
-                <div class="form-header">
-                  <h2>Connect Researchers</h2>
-                </div>
-  
             
-  
-                <div class="container-login100-form-btn">
-                  {{ form.submit(class="login100-form-btn")}}
-                </div>
-  
-              </form>
+                <div class="panel-body">
+                    <div class="table-responsive">
+
+              
+              {{ table }}
+              
+            
+              
+                    </div>
+                  </div>
             </div>
           </div>
         </div>  

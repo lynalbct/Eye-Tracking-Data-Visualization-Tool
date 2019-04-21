@@ -103,7 +103,7 @@ class Connection(db.Model):
 	date_accepted = db.Column(db.DateTime)
 	request_id = db.Column(db.Integer)
 	researcher_id = db.Column(db.Integer, db.ForeignKey('researcher.researcher_id'))
-
+	
 	def __init__(self,status,date_accepted,request_id,researcher_id):
 		self.status = 'pending'
 		self.date_accepted = date_accepted
@@ -124,7 +124,6 @@ class Connection(db.Model):
 
 class Results(Table):
 	researcher_id = Col('researcher_id', show=False)
-	image_file = Col('Profile')
 	first_name = Col('First Name')
 	last_name = Col('Last Name')
 	username = Col('Username')
@@ -133,10 +132,14 @@ class Results(Table):
 	organization = Col('Organization')
 
 
-	
+class Request(Table):
+	connections_id = Col('connections_id', show=False)
+	request_id = Col('request_id')
+	status = Col('status')
+
 
 class Project(db.Model):
-	__tablename__ = 'project'
+	__tablename__ = 'project'	
 	project_id = db.Column(db.Integer, primary_key=True)
 	project_name = db.Column(db.String(140), nullable = False)
 	project_description = db.Column(db.String(200))

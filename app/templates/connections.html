@@ -9,9 +9,12 @@
 
         <section class="panel">
             <header class="panel-heading">
-                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default">My Connections</a>
-                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default" href= "{{url_for('connectrequest', researcher_id=res.researcher_id, connections_id=con.connections_id)}}">Connection Request</a>
-                <a type="button" class="mb-xs mt-xs mr-xs btn btn-default" href="{{url_for('search', researcher_id=res.researcher_id, connections_id=con.connections_id)}}">Search Connections</a>
+                    <a type="button" class="mb-xs mt-xs mr-xs btn btn-default"
+                    href="{{url_for('connections', researcher_id=res.researcher_id)}}">My Connections</a>
+                  <a type="button" class="mb-xs mt-xs mr-xs btn btn-default" href="{{url_for('connectrequest', researcher_id=res.researcher_id)}}"
+                      >Connection Request</a>
+                  <a type="button" class="mb-xs mt-xs mr-xs btn btn-default"
+                    href="{{url_for('search', researcher_id=res.researcher_id)}}">Search Connections</a>
 
                 <br></br>
 
@@ -28,7 +31,8 @@
                         <div class="panel-body">
                             <div class="table-responsive">
                 
-                              {{table}}
+                                {{table}}
+                           
 
                             </div>
                         </div>
