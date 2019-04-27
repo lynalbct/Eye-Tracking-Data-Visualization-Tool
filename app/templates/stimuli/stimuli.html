@@ -21,7 +21,7 @@
                 {% for project in projects %}
                 <tr id="{{project.project_id}}" >
                   <th scope="row">{{loop.index}}</th>
-                  <td><a href="/project/{{project.project_id }}" method='POST'>{{project.project_name}}</a></td>
+                  <td><a href="/project/{{project.project_id }}" method='GET'>{{project.project_name}}</a></td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -53,6 +53,9 @@
                 <form class="user" method="POST" action="{{ url_for('stimuli')}}">
                     {{ projectform.hidden_tag() }}
                     {{ projectform.csrf_token }}
+                    {% if projectform.csrf_token.errors %}
+                    <div class="warning">You have submitted an invalid CSRF token</div>
+                {% endif %}
                   <div class="form-group">
                   </div>
                   <div class="form-group">
@@ -63,7 +66,7 @@
                   </div>
                   </div><br>
                   <Center>
-                    <p><button class="btn btn-lg btn-primary shadow-sm" style="max-width: 900px;padding-bottom: -10%; margin-top: -15%">Create</button></p>
+                    <p><button class="btn btn-lg btn-primary shadow-sm" type="submit" style="max-width: 900px;padding-bottom: -10%; margin-top: -15%">Create</button></p>
                   </Center>
                 </form>
                   <hr>

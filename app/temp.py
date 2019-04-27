@@ -16,14 +16,6 @@ import base64
 import csv
 from array import *
 import re
-import operator
-import numpy as np
-import itertools
-import glob
-from itertools import permutations
-from itertools import combinations
-# import pandas as pd
-
 
 upload_folder = 'app/static/user' 
 allowed_img_extensions = set(['png', 'jpg', 'jpeg','PNG','JPG'])
@@ -66,7 +58,7 @@ def upload_stimuli(proj_id):
 		# upload_location = upload_folder + '/' + str(current_user.researcher_id) + '/'+'stimuli'
 		# print upload_location
 		# if os.path.isdir(upload_location) == False:
-		#   os.makedirs(upload_location)
+		# 	os.makedirs(upload_location)
 		# print(type(form.upload.data))
 		if form.upload is None:
 			flash('No selected file')
@@ -228,203 +220,107 @@ def project(project_id):
 @app.route('/<int:proj_id>/analyse', methods=['GET','POST'])
 def analyse(proj_id):
 	eye_movement_data = File.query.filter_by(project_id=proj_id).all()
-	counter = len(eye_movement_data)
-	num = 0
 	for i in eye_movement_data:
-		if num != counter:
-			num = num + 1
-		# filter_aoi(i.directory_name,i.file_name,proj_id)
-		# clean_data(i.directory_name,i.file_name,proj_id)
-		# final_preprocess(i.directory_name,i.file_name,proj_id)
-		process(i.directory_name,i.file_name,proj_id, num)
-		postprocess(i.directory_name,i.file_name,proj_id)
-		# return render_template('project/analyse.html')
+		filter_data(i.directory_name,i.file_name,proj_id)
+		filter(i.directory_name,i.file_name,proj_id)
 
-	return render_template('project/analyse.html')
-
-
-def filter_aoi(file,filename,proj_id):
+def filter_data(file,filename,proj_id):
+	try:
+		upload_location = upload_folder + '/' + str(current_user.researcher_id) + '/' + str(proj_id) + '/' + 'result_'+ filename
+		with open(file,'r') as csv_file:
+			read_csv = csv.reader(csv_file)
+				# csv_file.writelines(data_in[1:])
+			with open(upload_location,'w') as result:
+				wtr= csv.writer(result)
+				next(read_csv)
+				for line in read_csv:
+					print line
+					wtr.writerow((line[0], line[1]))
+				with open(upload_location,'r') as new_file, open(file,'w') as write_file:
+					file = csv.reader(new_file)
+					new_file = csv.writer(write_file)
+					for a in file:
+						converted_data = map(int, a[0:])
+						write = new_file.writerow(converted_data)
+	except IndexError:
+		filter(file,filename,proj_id)
 	stimuli_data = Stimuli.query.filter_by(project_id=proj_id).first()
 	stimuli_id = stimuli_data.stimuli_id
 	aoi = Aoi.query.filter_by(stimuli_id=stimuli_id).all()
 	y = []
 	for b in range(len(aoi)):
 		with open(file, 'r') as csv_file:
+			print file
 			reader = csv.reader(csv_file, delimiter=',')
-			next(reader)
 			for row in reader:
 				if (int(row[0]) in range(aoi[b].x1, aoi[b].x2)) and (int(row[1]) in range(aoi[b].y1, aoi[b].y3)):
-					print row[0], row[1]    
-					line = str(reader.line_num)
-					print type(line)
-					line = re.findall(r'\d+', line)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-					y.append([int(row[0]), int(row[1]), aoi[b].new_id, (line)])
-				elif IndexError:
-					pass
-				else:                                                                                                       
+					print row[0], row[1]
+					y.append([int(row[0]), int(row[1]), aoi[b].new_id])
+				else:
 					print 'no match'
+
 	with open(file, 'w') as new_file:
 		file = csv.writer(new_file)
+		file.writerow(['y','aoi'])
 		for d in range(len(y)):
-			file.writerow([(y[d])])
+			file.writerow([(y[d])])	
+	# clean_data()
 	
+# def filter(file,filename,proj_id):
+# 	stimuli_data = Stimuli.query.filter_by(project_id=proj_id).first()
+# 	stimuli_id = stimuli_data.stimuli_id
+# 	aoi = Aoi.query.filter_by(stimuli_id=stimuli_id).all()
+# 	y = []
+# 	for b in range(len(aoi)):
+# 		with open(file, 'r') as csv_file:
+# 			print file
+# 			reader = csv.reader(csv_file, delimiter=',')
+# 			for row in reader:
+# 				if (int(row[0]) in range(aoi[b].x1, aoi[b].x2)) and (int(row[1]) in range(aoi[b].y1, aoi[b].y3)):
+# 					print row[0], row[1]
+# 					y.append([int(row[0]), int(row[1]), aoi[b].new_id])
+# 				else:
+# 					print 'no match'
+
+# 	with open(file, 'w') as new_file:
+# 		file = csv.writer(new_file)
+# 		file.writerow(['y','aoi'])
+# 		for d in range(len(y)):
+# 			file.writerow([(y[d])])
+# 	clean_data()
+
 def clean_data(file,filename,proj_id):
+	eye_movement_data = File.query.filter_by(project_id=proj_id).all()
+	upload_location = upload_folder + '/' + str(current_user.researcher_id) + '/' + str(proj_id) + '/' + 'final.csv'
 	array = [] 
-	with open(file,'r') as csv_file:
-		reader = csv.reader(csv_file)
-		for row in reader:
-			print row
-			for col in row:
-				str1 = col.replace(']','').replace('[','')
-				str1 = col.replace(']','').replace('[','')
-				str1 = re.findall(r'\w+', str1) 
-				array.append(str1[-2:])
-				print array
-	with open(file,'w') as read_file:
-		writer = csv.writer(read_file)
-		writer.writerows(array)
-	with open(file, 'r') as csv_file:
-		reader = csv.reader(csv_file)
-		print array
-		sort = sorted(array, key = lambda x: int(x[1]))
-		with open(file, 'w') as read_file:
-			writer = csv.writer(read_file)
-			writer.writerows(sort)
 
-def final_preprocess(file,filename,proj_id):
-	array = []
-	new_array = []
-	with open(file,'r') as read_file:
+	for i in eye_movement_data:
+		arr = []
+		with open(file,'r') as csv_file:
+			reader = csv.reader(csv_file) 
+			next(reader)
+			for row in reader:
+				for col in row:
+					str1 = col.replace(']','').replace('[','')
+					arr.append(str1[-1:])
+		array.append(arr)
+	with open(upload_location,'w') as new_file:
+		writer = csv.writer(new_file)
+		writer.writerow(array)
+	temfunc(proj_id)
+
+def temfunc(proj_id):
+	
+	upload_location = upload_folder + '/' + str(current_user.researcher_id) + '/' + str(proj_id) + '/' + 'final.csv'
+		
+	with open(upload_location,'r') as read_file:
 		reader = csv.reader(read_file)
 		for row in reader:
-			array.append(row[0])
-		for eachline in array[:]:
-			for i in range(len(array)):
-				try:
-					if (int(array[i+1]) == int(array[i])):
-						del array[i]
-					else:
-						pass
-				except IndexError:
-					break
+			for data in row:
+				str1 = data.replace('"','').replace('"','')
+				print str1
+			
 
-	with open(file,'w') as write_file:
-		print 'ey'
-		writer = csv.writer(write_file)
-		print 'ola'
-		for i in range(len(array)):
-			new_array.append(chr(int(array[i])))
-			print chr(int(array[i]))
-		writer.writerows(new_array)
-
-
-def matrix(a, b, match_score=3, gap_cost=2):
-	H = np.zeros((len(a) + 1, len(b) + 1), np.int)
-
-	for i, j in itertools.product(range(1, H.shape[0]), range(1, H.shape[1])):
-		match = H[i - 1, j - 1] + (match_score if a[i - 1] == b[j - 1] else - match_score)
-		delete = H[i - 1, j] - gap_cost
-		insert = H[i, j - 1] - gap_cost
-		H[i, j] = max(match, delete, insert, 0)
-	return H
-
-def traceback(H, b, b_='', old_i=0):
-	# flip H to get index of **last** occurrence of H.max() with np.argmax()
-	H_flip = np.flip(np.flip(H, 0), 1)
-	i_, j_ = np.unravel_index(H_flip.argmax(), H_flip.shape)
-	i, j = np.subtract(H.shape, (i_ + 1, j_ + 1))  # (i, j) are **last** indexes of H.max()
-	if H[i, j] == 0:
-		return b_, j
-	b_ = b[j - 1] + '-' + b_ if old_i - i > 1 else b[j - 1] + b_
-	return traceback(H[0:i, 0:j], b, b_, i)
-
-def smith_waterman(a, b, match_score=3, gap_cost=2):
-	# a, b = a.upper(), b.upper()
-	H = matrix(a, b, match_score, gap_cost)
-	b_, pos = traceback(H, b)
-	return pos, pos + len(b_)
-
-
-def process(file, filename, proj_id, num):
-	base_loc = upload_folder + '/' + str(current_user.researcher_id) + '/' + str(proj_id)
-	arr = []
-	dictionary = {}
-	new_array = []
-	temp_array = []
-	temp_var = ''
-
-	with open(file,'r') as read_file:
-		reader = csv.reader(read_file)
-		for row in reader:
-			arr.append(row[0])
-
-	with open(base_loc+'/preprocessed.csv','a') as write_file:
-		writer = csv.writer(write_file)
-		data = ''.join(map(str, arr))
-		new_array.extend([num,data])
-		writer.writerows([new_array])
-	with open(base_loc+'/preprocessed.csv','r') as read:
-		arrr = []
-		permutes = []
-		reader = csv.reader(read)
-		for row in reader:
-			arrr.append((row[0],row[1]))
-		perm = combinations(arrr,2)
-	with open(base_loc+'/permutations_result.csv','w') as perm_result:
-		writer = csv.writer(perm_result)
-		for i in (perm): 
-			permutes.append(i)
-			print i
-			print permutes
-			item1 = re.sub(r'[^A-Za-z]', '', str(i[0])) 
-			item2 = re.sub(r'[^A-Za-z]', '', str(i[1])) 
-			print matrix(item1,item2)
-			print(smith_waterman(item1, item2))
-			a, b = item1, item2
-			H = matrix(a, b)
-			result = traceback(H,b)
-			dictionary.update({i: traceback(H,b)})
-			print dictionary
-			for key, value in dictionary.items():
-				print key, value
-				writer.writerow([key, value])
-	with open(base_loc+'/permutations_result.csv','r') as csv_file:
-		reader = csv.reader(csv_file)
-		for row in reader:
-			for i in range(len(row)): 
-					temp_array.append(row[1])
-	for i in range(len(temp_array)-1):
-
-		if len(temp_array[i]) > len(temp_array[i+1]):
-			temp_var = temp_array[i]
-		else:
-			temp_var = temp_array[i+1]
-	with open(base_loc+'/preprocessed.csv','r') as csv_file:
-		reader = csv.reader(csv_file)
-		print '-----'
-		for row in reader:
-			result = re.sub(r'[^A-Za-z]', '', str(temp_var)) 
-			data = re.sub(r'[^A-Za-z]', '', str(row)) 
-			print(smith_waterman(result, data))
-			a, b = result, data
-			H = matrix(a, b)
-			temp_var = traceback(H,b)
-			# result = temp_var
-			return temp_var
-			# print result
-def postprocess(file, filename, proj_id):
-	pass
-				
-# print(matrix('GGTTGACTA', 'TGTTACGG'))
-
-# a, b = 'ggttgacta', 'tgttacgg'
-# H = matrix(a, b)
-# print(traceback(H, b)) # ('gtt-ac', 1)
-
-# a, b = 'GGTTGACTA', 'TGTTACGG'    
-# start, end = smith_waterman(a, b)
-# print(smith_waterman(a,b))
-# print(a[start:end])   
 
 
 @app.route('/<int:proj_id>/define/aoi', methods=['GET','POST'])
@@ -433,11 +329,10 @@ def save_aoi(proj_id):
 	stimuli_data = Stimuli.query.filter_by(project_id=proj_id).first()
 	filename = stimuli_data.stimuli_name 
 	ext = filename.split('.')[-1]
-	new_id = 65
+	new_id = 0
 
 	if request.method == 'POST':
 		for i in range(len(data['startX'])-1):
-			print i
 			save_aoi =  Aoi(
 				x1 = data['startX'][i],
 				y1 = data['startY'][i],
@@ -482,13 +377,13 @@ def home():
 	user = Researcher.query.filter_by(researcher_id=current_user.researcher_id).first()
 	return render_template('dashboard/index.html', user=user)
 
-# @app.route('/connections',methods=['GET','POST'])
-# def connections():
-# 	connections = Connection.query.filter_by(researcher_id=current_user.researcher_id).all()
-# 	not_connections = Connection.query.filter(Connection.researcher_id != current_user.researcher_id).all()
-# 	not_connected_ids,not_connected_fname, not_connected_lname = [], [], []
-# 	for not_connection in not_connections:
-# 		not_connected_user = Researcher.query.filter_by(researcher_id=not_connection.researcher_id).all()
+@app.route('/connections',methods=['GET','POST'])
+def connections():
+	connections = Connection.query.filter_by(researcher_id=current_user.researcher_id).all()
+	not_connections = Connection.query.filter(Connection.researcher_id != current_user.researcher_id).all()
+	not_connected_ids,not_connected_fname, not_connected_lname = [], [], []
+	for not_connection in not_connections:
+		not_connected_user = Researcher.query.filter_by(researcher_id=not_connection.researcher_id).all()
 	return render_template('connections/connections.html', not_connected_user=not_connected_user)
 
 @app.route('/profile', methods=['POST','GET'])
