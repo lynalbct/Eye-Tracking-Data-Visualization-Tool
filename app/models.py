@@ -18,9 +18,9 @@ class Researcher(UserMixin, db.Model):
 	email = db.Column(db.String(140), nullable=False, unique=True)
 	password = db.Column(db.String(140), nullable=False)
 	date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-	connections = db.relationship("Connection", uselist=False, backref="researcher")
+	# connections = db.relationship("Connection", uselist=False, backref="researcher")
 	projects = db.relationship("Project", uselist=False, backref="researcher")
-	sharedprojects = db.relationship("SharedProject", uselist=False, backref="researcher")
+	# sharedprojects = db.relationship("SharedProject", uselist=False, backref="researcher")
 
 	def __init__(self, username='', email='',password=''):
 		self.first_name = ''
@@ -89,7 +89,7 @@ class Project(db.Model):
 	project_description = db.Column(db.String(200))
 	date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 	researcher_id = db.Column(db.Integer, db.ForeignKey('researcher.researcher_id'))
-	sharedprojects = db.relationship("SharedProject", uselist=False, backref="project")
+	# sharedprojects = db.relationship("SharedProject", uselist=False, backref="project")
 	files = db.relationship("File", uselist=False, backref="project")
 	stimuli = db.relationship("Stimuli", uselist=False, backref="project")
 
@@ -129,7 +129,7 @@ class Stimuli(db.Model):
 	y_resolution = db.Column(db.Integer, nullable=False)
 	date_created = db.Column(db.DateTime, default = datetime.utcnow, nullable=False)
 	project_id = db.Column(db.Integer, db.ForeignKey('project.project_id'))
-	stimuli_participant = db.relationship("Stimuli_Participant", uselist=False, backref="stimuli")
+	# stimuli_participant = db.relationship("Stimuli_Participant", uselist=False, backref="stimuli")
 	aoi = db.relationship("Aoi", uselist=False, backref="stimuli")
 
 	def __init__(self, stimuli_name,upload, stimuli_description,x_resolution,y_resolution,project_id):
@@ -173,6 +173,7 @@ class Stimuli(db.Model):
 class Aoi(db.Model):
 	__tablename__ = 'aoi'
 	aoi_id = db.Column(db.Integer, primary_key=True)
+	new_id = db.Column(db.Integer)
 	x1 = db.Column(db.Integer)
 	y1 = db.Column(db.Integer)
 	x2 = db.Column(db.Integer)
@@ -183,8 +184,7 @@ class Aoi(db.Model):
 	y4 = db.Column(db.Integer)
 	date_created = db.Column(db.DateTime, default=datetime.utcnow)
 	stimuli_id = db.Column(db.Integer, db.ForeignKey('stimuli.stimuli_id'))
-	new_id = db.Column(db.Integer)
-	fixation_analysis = db.relationship("Fixation_Analysis", uselist=False, backref="aoi")
+	# fixation_analysis = db.relationship("Fixation_Analysis", uselist=False, backref="aoi")
 
 	def __init__(self,x1,y1,x2,y2,x3,y3,x4,y4, stimuli_id, new_id):
 		self.x1 =x1

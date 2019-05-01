@@ -4,11 +4,31 @@
             <h1 class="h3 mb-0 text-gray-800" ></h1>
             <center>
             <div class="btn-group" role="group">
-              <button class="btn btn-outline-primary btn-lg" data-toggle="tooltip" title="Upload eye tracking data">Upload</button>
-              <button class="btn btn-outline-primary btn-lg" data-toggle="tooltip" title="Upload stimuli and define AOI/s">Define</button>
+              <button class="btn btn-outline-primary btn-lg disabled" data-toggle="tooltip" title="Upload eye tracking data">Upload</button>
+              <button class="btn btn-outline-primary btn-lg disabled" data-toggle="tooltip" title="Upload stimuli and define AOI/s">Define</button>
               <button class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" title="Analyse data and get the common scanpath">Analyse</button>
-              <button class="btn btn-outline-primary btn-lg" data-toggle="tooltip" title="Visualize result">Visualize</button>
+              <button class="btn btn-outline-primary btn-lg disabled" data-toggle="tooltip" title="Visualize result">Visualize</button>
             </div>
             </center>
           </div>
+         <br style="margin-top: 2%">
+
+            <!-- Area Chart -->
+            <div class="container cont">
+              <!-- <div class="card cont mb-8"> -->
+
+                <div class="card-body">
+                  <!-- <div class="chart-area"> -->
+                    <!-- <canvas id="area"></canvas>  -->
+                        {% for sequence in sequences %}
+                      <h7>{{loop.index}}&nbsp{{sequence}}</h7><br>
+
+                        {% endfor %}
+                  <!-- </div> -->
+                <!-- </div> -->
+                <br style="margin-top: 2%">
+                <a href="#" class="d-none d-sm-inline-block btn btn-md btn-primary shadow-sm"><i class="fas fa-pie-chart fa-sm text-white-50"></i> Visualize </a>
+              </div>
+            </div>
+
   {% endblock %}

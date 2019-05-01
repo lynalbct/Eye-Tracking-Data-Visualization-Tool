@@ -167,10 +167,11 @@ def register():
 				"organization": ""
 			}
 			account = Researcher.query.filter_by(researcher_id=current_user.researcher_id).first()
-			if account:
-				add_researcher = Connection(researcher_id=account.researcher_id)
-				db.session.add(add_researcher)
-				db.session.commit()
+			# if account:
+			# 	add_researcher = Connection(researcher_id=account.researcher_id)
+			# 	db.session.add(add_researcher)
+			# 	db.session.commit()
+			print 'ok'
 			return redirect(url_for('info'))
 		else:
 			print(form.errors)
@@ -201,12 +202,16 @@ def project(project_id):
 	if request.method == 'POST':
 		if request.files:
 			upload_location = upload_folder + '/' + str(current_user.researcher_id) + '/' + str(project_id)
+			orig_location = upload_folder + '/' + str(current_user.researcher_id) + '/' + str(project_id)+'/original'
+
 			if os.path.isdir(upload_location) == False:
 				os.makedirs(upload_location)
+				os.makedirs(orig_location)
 			for i in request.files.getlist('files'):
 				filename = secure_filename(i.filename)
 				if allowed_file(filename):
 					i.save(os.path.join(upload_location + '/', filename))
+					i.save(os.path.join(orig_location +'/', filename))
 					save_file = File(
 						file_name = filename,
 						directory_name = str(upload_location+'/'+filename),
@@ -227,22 +232,31 @@ def project(project_id):
 
 @app.route('/<int:proj_id>/analyse', methods=['GET','POST'])
 def analyse(proj_id):
+	sequences = []
+	base_loc = upload_folder + '/' + str(current_user.researcher_id) + '/' + str(proj_id)
+	with open(base_loc+'/processed.csv','r') as read_file:
+		reader = csv.reader(read_file)
+		for rows in reader:
+			data = re.sub(r'[^A-Za-z]', '', str(rows)) 
+			sequences.append(data)
+		postprocess(proj_id)
+	return render_template('project/analyse.html',sequences=sequences, proj_id=proj_id)
+
+
+def caller(proj_id):
 	eye_movement_data = File.query.filter_by(project_id=proj_id).all()
 	counter = len(eye_movement_data)
 	num = 0
 	for i in eye_movement_data:
-		if num != counter:
+		print num
+		if num < counter:
 			num = num + 1
-		# filter_aoi(i.directory_name,i.file_name,proj_id)
-		# clean_data(i.directory_name,i.file_name,proj_id)
-		# final_preprocess(i.directory_name,i.file_name,proj_id)
+		filter_aoi(i.directory_name,i.file_name,proj_id)
+		clean_data(i.directory_name,i.file_name,proj_id)
+		final_preprocess(i.directory_name,i.file_name,proj_id)
 		process(i.directory_name,i.file_name,proj_id, num)
-		postprocess(i.directory_name,i.file_name,proj_id)
-		# return render_template('project/analyse.html')
 
-	return render_template('project/analyse.html')
-
-
+		
 def filter_aoi(file,filename,proj_id):
 	stimuli_data = Stimuli.query.filter_by(project_id=proj_id).first()
 	stimuli_id = stimuli_data.stimuli_id
@@ -369,6 +383,7 @@ def process(file, filename, proj_id, num):
 		reader = csv.reader(read)
 		for row in reader:
 			arrr.append((row[0],row[1]))
+		print arrr
 		perm = combinations(arrr,2)
 	with open(base_loc+'/permutations_result.csv','w') as perm_result:
 		writer = csv.writer(perm_result)
@@ -402,29 +417,52 @@ def process(file, filename, proj_id, num):
 	with open(base_loc+'/preprocessed.csv','r') as csv_file:
 		reader = csv.reader(csv_file)
 		print '-----'
-		for row in reader:
-			result = re.sub(r'[^A-Za-z]', '', str(temp_var)) 
-			data = re.sub(r'[^A-Za-z]', '', str(row)) 
-			print(smith_waterman(result, data))
-			a, b = result, data
-			H = matrix(a, b)
-			temp_var = traceback(H,b)
-			# result = temp_var
+		with open(base_loc+'/processed.csv','a') as write_file:
+			writer = csv.writer(write_file)
+
+			for row in reader:
+				result = re.sub(r'[^A-Za-z]', '', str(temp_var)) 
+				data = re.sub(r'[^A-Za-z]', '', str(row)) 
+				print(smith_waterman(result, data))
+				a, b = result, data
+				print result,data
+				H = matrix(a, b)
+				temp_var = traceback(H,b)
+				print temp_var
+				if result != "":
+					writer.writerow([a,b])
+					writer.writerow(temp_var)
 			return temp_var
-			# print result
-def postprocess(file, filename, proj_id):
-	pass
-				
-# print(matrix('GGTTGACTA', 'TGTTACGG'))
 
-# a, b = 'ggttgacta', 'tgttacgg'
-# H = matrix(a, b)
-# print(traceback(H, b)) # ('gtt-ac', 1)
+@app.route('/<int:proj_id>/visualize',methods=['GET','POST'])
+def visualize(proj_id):
+	postprocess(proj_id)
+	return ''
 
-# a, b = 'GGTTGACTA', 'TGTTACGG'    
-# start, end = smith_waterman(a, b)
-# print(smith_waterman(a,b))
-# print(a[start:end])   
+def postprocess(proj_id):
+	stimuli_data = Stimuli.query.filter_by(project_id=proj_id).first()
+	stimuli_id = stimuli_data.stimuli_id
+	base_loc = upload_folder + '/' + str(current_user.researcher_id) + '/' + str(proj_id)
+	arr = []
+	new_array = []
+	final_seq = ''
+	with open(base_loc+'/processed.csv') as read_file:
+		reader = csv.reader(read_file)
+		for row in reader:
+			arr.append(row)
+	for i in arr[:]:
+		final_seq = re.sub(r'[^A-Za-z]', '', str(arr[-1])) 
+	for c in final_seq:
+		# new_array.append(ord(c))
+		new_array.append(Aoi.query.filter_by(stimuli_id=stimuli_id,new_id=ord(c)).first())
+	print new_array		
+	latest_array = [[(data.x1+data.x2)/2,(data.y1+data.y3)/2] for data in new_array]
+	print latest_array
+	# ( (x1 +x2)/2 ,(y1 + y2)/2 )
+	# for data in latest_array:
+	# 	for item in data:
+	# 		print item
+
 
 
 @app.route('/<int:proj_id>/define/aoi', methods=['GET','POST'])
@@ -453,6 +491,7 @@ def save_aoi(proj_id):
 
 			db.session.add(save_aoi)
 			db.session.commit()
+		caller(proj_id)
 		return redirect(url_for('analyse', proj_id=proj_id))
 	return render_template('project/define_aoi.html', ext=ext, imgdata=stimuli_data.upload, proj_id=proj_id)
 
@@ -481,15 +520,6 @@ def resetpassword():
 def home():
 	user = Researcher.query.filter_by(researcher_id=current_user.researcher_id).first()
 	return render_template('dashboard/index.html', user=user)
-
-# @app.route('/connections',methods=['GET','POST'])
-# def connections():
-# 	connections = Connection.query.filter_by(researcher_id=current_user.researcher_id).all()
-# 	not_connections = Connection.query.filter(Connection.researcher_id != current_user.researcher_id).all()
-# 	not_connected_ids,not_connected_fname, not_connected_lname = [], [], []
-# 	for not_connection in not_connections:
-# 		not_connected_user = Researcher.query.filter_by(researcher_id=not_connection.researcher_id).all()
-	return render_template('connections/connections.html', not_connected_user=not_connected_user)
 
 @app.route('/profile', methods=['POST','GET'])
 def profile():
