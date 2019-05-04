@@ -18,8 +18,11 @@
 
               
               {{ table }}
-              
-            
+              {% for i in qry %}
+              <form action="/connect/{{res.researcher_id}}/approved" method="post">
+                <button type="submit" class="mb-xs mt-xs mr-xs btn btn-default">Approve</button>
+                </form>
+             {% endfor %}
               
                     </div>
                   </div>

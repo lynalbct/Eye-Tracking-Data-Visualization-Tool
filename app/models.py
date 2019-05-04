@@ -105,25 +105,17 @@ class Connection(db.Model):
 	researcher_id = db.Column(db.Integer, db.ForeignKey('researcher.researcher_id'))
 	
 	def __init__(self,status,date_accepted,request_id,researcher_id):
-		self.status = 'pending'
+		self.status = status
 		self.date_accepted = date_accepted
 		self.request_id = request_id
 		self.researcher_id = researcher_id
 	
-	def confirm(self):
-		self.status = 'confirmed'
-		
-	def reject(self):
-		self.status = 'rejected'
-
-	def participant_count(self):
-		return Participant.query.filter_by(event=self.id).count
 
 	def __repr__(self):
 		return '<Researcher %r>' % self.connections_id
 
 class Results(Table):
-	researcher_id = Col('researcher_id', show=False)
+	researcher_id = Col('researcher_id')
 	first_name = Col('First Name')
 	last_name = Col('Last Name')
 	username = Col('Username')
@@ -135,6 +127,7 @@ class Results(Table):
 class Request(Table):
 	connections_id = Col('connections_id', show=False)
 	request_id = Col('request_id')
+	Researcher.first_name = Col('first name')
 	status = Col('status')
 
 

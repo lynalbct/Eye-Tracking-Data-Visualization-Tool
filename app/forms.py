@@ -99,8 +99,5 @@ class SearchForm(FlaskForm):
     submit = SubmitField('Search')
 
 class ConnectRequestForm(FlaskForm):
-    connections_id = HiddenField('connection_id', validators=[DataRequired()])
-    request_id = HiddenField('request_id', validators=[DataRequired])
-    researcher_id = HiddenField('researcher-id', validators=[DataRequired()])
-    date_accepted = DateField('Start Date', validators=[DataRequired()])
-    submit = SubmitField('Request Event')
+    
+    submit = SubmitField('Connect', validators=[InputRequired()])

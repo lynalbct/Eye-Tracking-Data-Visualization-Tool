@@ -41,18 +41,19 @@
     <div class="panel-body">
       <div class="table-responsive">
 
-{{ table }}
-
-<thead><tr><th>Connect</th></tr></thead>
-<tbody>
-<tr>
-<td>
-{% for i in qry %}
-{{ form.submit(class="mb-xs mt-xs mr-xs btn btn-defaul")}}
+          <form  method="post" action="/connect/{{res.researcher_id}}/{{query}}/by/{{method}}/{{0}}" enctype="multipart/form-data">
+              <div class="form-group">
+                
+                {% for i in qry %}
+                
+            
+                {{ table }}
+                
+                <a>{{form.submit(class="mb-xs mt-xs mr-xs btn btn-default")}}</a>
 {% endfor %}
-</td>
-</tr>
-</tbody>
+              </div>
+              </form>
+
       </div>
     </div>
 
