@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+	{% block content %}
+
+	<div class="align-items-center ">
+    <h1 class="h3 mb-0 text-gray-800" ></h1>
+      <center>
+  </div>
+  <!-- <br style="margin-top: 2%"> -->
+
+            <!-- Area Chart -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h4 class="m-0 font-weight-bold text-primary">Project: {{project.project_name}}</h4>
+    </div>
+    <div class="card-body">
+      <p>{{project.project_description}}</p>
+      <p class="mb-0"><!-- Before working with this theme, you should become familiar with the Bootstrap framework, especially the utility classes. --></p>
+    </div>
+  </div>
+ <!-- Content Row -->
+          <div class="row">
+
+            <!-- Content Column -->
+            <div class="col-lg-6 mb-4">
+
+              <!-- Project Card Example -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Eye Movement Data</h6>
+                  <div class="dropdown"><span class="clickable"><i class="fas fa-download fa-sm fa-fw text-primary"></i></span></div>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table style="padding-top: 1%" class="table table-sm">
+                      <thead class="thead-light">
+                        <tr>
+                          <th scope="col">Name</th>
+                          <th scope="col">Size(bytes)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for file,array_size in array %}
+                        <tr>
+                          <th scope="row" style="margin-top: 1%"><a style="margin-top: 1%">{{file.file_name}}</a></th>
+                          <td>{{array_size}}</td>
+                        </tr>
+                        {% endfor %} 
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Color System -->
+              <div class="row">
+                <div class="col-lg-6 mb-4">
+
+                </div>
+                <div class="col-lg-6 mb-4">
+                 
+                </div>
+                <div class="col-lg-6 mb-4">
+                  
+                </div>
+                <div class="col-lg-6 mb-4">
+                 
+                </div>
+                <div class="col-lg-6 mb-4">
+                 
+                </div>
+                <div class="col-lg-6 mb-4">
+                 
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-lg-6 mb-4">
+
+              <!-- Illustrations -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Stimulus</h6>
+                  <div class="dropdown"><span class="clickable"><i class="fas fa-download fa-sm fa-fw text-primary"></i></span></div>
+                </div>
+                <div class="card-body">
+                  <div class="text-center">
+                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="data:image/{{ ext }};base64,{{ imgdata }}" alt="stimulus">
+                  </div>
+                  <p> </p>
+                  <hr>
+                  <a>Resolution: {{stimuli.x_resolution}}px&nbsp x &nbsp {{stimuli.y_resolution}}px</a>
+                </div>
+              </div>
+  {% endblock %}

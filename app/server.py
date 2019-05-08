@@ -20,6 +20,7 @@ import operator
 import numpy as np
 import itertools
 import glob
+import ast
 from itertools import permutations
 from itertools import combinations
 # import pandas as pd
@@ -56,68 +57,6 @@ def index():
 def forgotpassword():
 	return render_template('dashboard/forgot-password.html')
 
-@app.route('/<int:proj_id>/upload/aoi', methods=['GET','POST'])
-def upload_stimuli(proj_id):
-	form = StimuliForm()
-	if request.method == 'POST':
-		
-		# print 'yes'
-		# add project id before the stimuli folder
-		# upload_location = upload_folder + '/' + str(current_user.researcher_id) + '/'+'stimuli'
-		# print upload_location
-		# if os.path.isdir(upload_location) == False:
-		#   os.makedirs(upload_location)
-		# print(type(form.upload.data))
-		if form.upload is None:
-			flash('No selected file')
-			return redirect(request.url)
-
-		if form.upload:
-			file = form.upload.data
-			encoded_string = base64.b64encode(file.read())
-			print(type(encoded_string))
-
-			save_stimuli = Stimuli(
-					stimuli_name=file.filename,
-					upload=encoded_string,
-					stimuli_description="stimuli_description",
-					x_resolution=form.x_resolution.data,
-					y_resolution=form.y_resolution.data,
-					project_id=proj_id
-				 )
-			db.session.add(save_stimuli)
-			db.session.commit()
-			return redirect(url_for('save_aoi', proj_id=proj_id))
-	return render_template('project/define.html', form=form)
-
-@app.route('/stimuli', methods=['GET','POST'])
-def stimuli():
-	projectform = ProjectForm()
-	# print(projectform.errors)
-	if request.method == 'POST':
-		# check if the data is validated
-		print projectform.project_name.data
-		print projectform.project_description.data
-		if projectform.validate():
-			project = Project(
-				project_name=projectform.project_name.data,
-				project_description = projectform.project_description.data,
-				researcher_id = current_user.researcher_id
-				)
-			db.session.add(project)
-			db.session.commit()
-			# debug()
-			projects = Project.query.filter_by(researcher_id=current_user.researcher_id).all()
-			print 'pagshor dira!!'
-			return render_template('stimuli/stimuli.html', projects=projects, projectform=projectform)
-		else:
-			print(projectform.errors)
-	else:
-		print 'here'
-		projects = Project.query.filter_by(researcher_id=current_user.researcher_id).all()
-		print projects
-		return render_template('stimuli/stimuli.html', projects=projects, projectform=projectform)
-	return render_template('stimuli/stimuli.html', projectform=projectform)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -144,6 +83,7 @@ def login():
 		else:
 			return render_template('forms/login.html', form=form)
 	return render_template('forms/login.html', form=form)
+
 
 @app.route('/register', methods = ['GET','POST'])
 def register():
@@ -195,6 +135,57 @@ def info():
 			return redirect(url_for('info'))
 	return render_template('forms/info.html', form=form)
 
+@app.route('/<int:proj_id>/upload/aoi', methods=['GET','POST'])
+def upload_stimuli(proj_id):
+	form = StimuliForm()
+	if request.method == 'POST':
+		
+		if form.upload is None:
+			flash('No selected file')
+			return redirect(request.url)
+
+		if form.upload:
+			file = form.upload.data
+			encoded_string = base64.b64encode(file.read())
+			print(type(encoded_string))
+
+			save_stimuli = Stimuli(
+					stimuli_name=file.filename,
+					upload=encoded_string,
+					stimuli_description="stimuli_description",
+					x_resolution=form.x_resolution.data,
+					y_resolution=form.y_resolution.data,
+					project_id=proj_id
+				 )
+			db.session.add(save_stimuli)
+			db.session.commit()
+			return redirect(url_for('save_aoi', proj_id=proj_id))
+	return render_template('project/define.html', form=form)
+
+@app.route('/stimuli', methods=['GET','POST'])
+def stimuli():
+	projectform = ProjectForm()
+	if request.method == 'POST':
+		# check if the data is validated
+		print projectform.project_name.data
+		print projectform.project_description.data
+		if projectform.validate():
+			project = Project(
+				project_name=projectform.project_name.data,
+				project_description = projectform.project_description.data,
+				researcher_id = current_user.researcher_id
+				)
+			db.session.add(project)
+			db.session.commit()
+			return redirect(url_for('project',project_id=project.project_id))
+		else:
+			print(projectform.errors)
+	else:
+		print 'here'
+		projects = Project.query.filter_by(researcher_id=current_user.researcher_id).all()
+		print projects
+		return render_template('stimuli/stimuli.html', projects=projects, projectform=projectform)
+	return render_template('stimuli/stimuli.html', projectform=projectform)
 
 
 @app.route('/project/<int:project_id>', methods=['GET','POST'])
@@ -230,6 +221,22 @@ def project(project_id):
 			return redirect(url_for('project',proj_id=project_id))
 	return render_template('project/project.html')
 
+@app.route('/view/<int:project_id>', methods=['GET','POST'])
+def view_project(project_id):
+	project = Project.query.filter_by(project_id=project_id).first()
+	file = File.query.filter_by(project_id=project_id).all()
+	stimuli = Stimuli.query.filter_by(project_id=project_id).first()
+	filename = stimuli.stimuli_name 
+	ext = filename.split('.')[-1]
+	array_size = []
+	for data in file:
+		size = os.path.getsize(data.directory_name)
+		array_size.append(size)
+
+	return render_template('project/view_project.html',array=zip(file,array_size),\
+		project=project,files=file,stimuli=stimuli,ext=ext,imgdata=stimuli.upload)
+
+
 @app.route('/<int:proj_id>/analyse', methods=['GET','POST'])
 def analyse(proj_id):
 	sequences = []
@@ -239,7 +246,7 @@ def analyse(proj_id):
 		for rows in reader:
 			data = re.sub(r'[^A-Za-z]', '', str(rows)) 
 			sequences.append(data)
-		postprocess(proj_id)
+		# postprocess(proj_id)
 	return render_template('project/analyse.html',sequences=sequences, proj_id=proj_id)
 
 
@@ -416,10 +423,8 @@ def process(file, filename, proj_id, num):
 			temp_var = temp_array[i+1]
 	with open(base_loc+'/preprocessed.csv','r') as csv_file:
 		reader = csv.reader(csv_file)
-		print '-----'
 		with open(base_loc+'/processed.csv','a') as write_file:
 			writer = csv.writer(write_file)
-
 			for row in reader:
 				result = re.sub(r'[^A-Za-z]', '', str(temp_var)) 
 				data = re.sub(r'[^A-Za-z]', '', str(row)) 
@@ -436,8 +441,13 @@ def process(file, filename, proj_id, num):
 
 @app.route('/<int:proj_id>/visualize',methods=['GET','POST'])
 def visualize(proj_id):
-	postprocess(proj_id)
-	return ''
+	sequences = postprocess(proj_id)
+	stimuli_data = Stimuli.query.filter_by(project_id=proj_id).first()
+	filename = stimuli_data.stimuli_name 
+	ext = filename.split('.')[-1]
+
+	return render_template('project/visualize.html', x_res=stimuli_data.x_resolution,y_res=stimuli_data.y_resolution,\
+		ext=ext,imgdata=stimuli_data.upload,sequences=sequences)
 
 def postprocess(proj_id):
 	stimuli_data = Stimuli.query.filter_by(project_id=proj_id).first()
@@ -453,16 +463,11 @@ def postprocess(proj_id):
 	for i in arr[:]:
 		final_seq = re.sub(r'[^A-Za-z]', '', str(arr[-1])) 
 	for c in final_seq:
-		# new_array.append(ord(c))
 		new_array.append(Aoi.query.filter_by(stimuli_id=stimuli_id,new_id=ord(c)).first())
 	print new_array		
-	latest_array = [[(data.x1+data.x2)/2,(data.y1+data.y3)/2] for data in new_array]
+	latest_array = [[(data.width-((data.x1+data.x2)/2)),(data.height-((data.y1+data.y3)/2))] for data in new_array]
 	print latest_array
-	# ( (x1 +x2)/2 ,(y1 + y2)/2 )
-	# for data in latest_array:
-	# 	for item in data:
-	# 		print item
-
+	return latest_array
 
 
 @app.route('/<int:proj_id>/define/aoi', methods=['GET','POST'])
@@ -485,6 +490,8 @@ def save_aoi(proj_id):
 				y3 = (data['endY'][i]),
 				x4 = data['endX'][i],
 				y4 = (data['endY'][i]),
+				height = data['height'][i],
+				width = data['width'][i],
 				stimuli_id = stimuli_data.stimuli_id,
 				new_id = new_id + i
 				)
@@ -494,8 +501,6 @@ def save_aoi(proj_id):
 		caller(proj_id)
 		return redirect(url_for('analyse', proj_id=proj_id))
 	return render_template('project/define_aoi.html', ext=ext, imgdata=stimuli_data.upload, proj_id=proj_id)
-
-
 
 @app.route('/resetpassword')
 def resetpassword():
@@ -541,6 +546,27 @@ def profile():
 		else:
 			print('not validated')
 	return render_template('profile/edit_profile.html', form=form, user=user)
+
+@app.route('/settings', methods=['POST','GET'])
+def settings():
+	form = ProfileForm()
+	print(form)
+	user = Researcher.query.filter_by(researcher_id =current_user.researcher_id).first()
+	print(current_user.researcher_id)
+	if request.method == 'POST':
+		if form.validate():
+			current_user.username=form.username.data,
+			current_user.email=form.email.data,
+			current_user.first_name = form.first_name.data,
+			current_user.last_name = form.last_name.data,
+			current_user.profession = form.profession.data,
+			current_user.organization = form.organization.data
+			db.session.add(current_user)
+			db.session.commit()
+			print('ok')
+		else:
+			print('not validated')
+	return render_template('settings.html', form=form, user=user)
 
 @app.route('/edit_profile')
 def editprofile():

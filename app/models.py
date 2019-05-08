@@ -182,11 +182,13 @@ class Aoi(db.Model):
 	y3 = db.Column(db.Integer)
 	x4 = db.Column(db.Integer)
 	y4 = db.Column(db.Integer)
+	height = db.Column(db.Integer)
+	width = db.Column(db.Integer)
 	date_created = db.Column(db.DateTime, default=datetime.utcnow)
 	stimuli_id = db.Column(db.Integer, db.ForeignKey('stimuli.stimuli_id'))
 	# fixation_analysis = db.relationship("Fixation_Analysis", uselist=False, backref="aoi")
 
-	def __init__(self,x1,y1,x2,y2,x3,y3,x4,y4, stimuli_id, new_id):
+	def __init__(self,x1,y1,x2,y2,x3,y3,x4,y4,height,width, stimuli_id, new_id):
 		self.x1 =x1
 		self.y1 =y1
 		self.x2 =x2
@@ -195,6 +197,8 @@ class Aoi(db.Model):
 		self.y3 =y3
 		self.x4 =x4
 		self.y4 =y4
+		self.height = height
+		self.width = width
 		self.stimuli_id=stimuli_id
 		self.new_id=new_id
 

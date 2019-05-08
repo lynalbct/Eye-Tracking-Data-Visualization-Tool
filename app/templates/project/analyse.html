@@ -11,24 +11,17 @@
             </div>
             </center>
           </div>
-         <br style="margin-top: 2%">
+          <br style="margin-top: 2%">
 
             <!-- Area Chart -->
-            <div class="container cont">
-              <!-- <div class="card cont mb-8"> -->
-
-                <div class="card-body">
-                  <!-- <div class="chart-area"> -->
-                    <!-- <canvas id="area"></canvas>  -->
-                        {% for sequence in sequences %}
-                      <h7>{{loop.index}}&nbsp{{sequence}}</h7><br>
-
-                        {% endfor %}
-                  <!-- </div> -->
-                <!-- </div> -->
-                <br style="margin-top: 2%">
-                <a href="#" class="d-none d-sm-inline-block btn btn-md btn-primary shadow-sm"><i class="fas fa-pie-chart fa-sm text-white-50"></i> Visualize </a>
-              </div>
+          <div class="container cont">
+            <div class="card-body">
+                {% for sequence in sequences %}
+               <h7>{{loop.index}}&nbsp{{sequence}}</h7><br>
+                {% endfor %}
+              <br style="margin-top: 2%">
+              <a href="{{ url_for('visualize',proj_id=proj_id)}}" class="d-none d-sm-inline-block btn btn-md btn-primary shadow-sm"><i class="fas fa-pie-chart fa-sm text-white-50"></i> Visualize </a>
             </div>
+          </div>
 
   {% endblock %}

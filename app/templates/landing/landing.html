@@ -9,7 +9,8 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>ETDV Tool</title>
+  <title>EDVT</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png')}}" style="border-radius: 50%">
 
   <!-- Custom fonts for this template-->
   <link href="static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -50,13 +51,8 @@
           <!-- Topbar Search -->
           <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                  <i class="fas fa-search fa-sm"></i>
-                </button>
-              </div>
-            </div>
+              <h5 style="font-family: verdana;">Eye Tracking Data Visualization Tool</h5>
+              </div>               
           </form>
 
           <!-- Topbar Navbar -->
@@ -64,8 +60,9 @@
 
             <!-- Nav Item - Search Dropdown (Visible Only XS) -->
             <li class="nav-item dropdown no-arrow d-sm-none">
-              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-search fa-fw"></i>
+              <!-- <h3>Eye Tracking Data Visualization Tool</h3> -->
+              
+                
               </a>
               <!-- Dropdown - Messages -->
               <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
@@ -101,17 +98,20 @@
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid">
-
-        </div>
-      </div>
+        <!-- <div class="container-fluid"> -->
+          <center>
+          <img style="min-height: 50%;min-width: 100%;" src="{{ url_for('static',filename='images/landing.gif')}}">
+          </center>
+          <br style="margin-top: 2%">
+       <!--  -->
+      <!-- </div> -->
       <!-- End of Main Content -->
 
       <!-- Footer -->
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; ETDV Tool 2019</span>
+            <span>Copyright &copy; EDVT 2019</span>
           </div>
         </div>
       </footer>

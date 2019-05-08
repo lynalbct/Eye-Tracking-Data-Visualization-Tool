@@ -121,14 +121,17 @@ function generateCode() {
 	var endCoordXloop = [];
 	var endCoordYloop = [];
 	var heightloop = [];
-
+	var widthloop = [];
+	imgHeight = $img.height() + 1;
+	imgWidth = $img.width() + 1;
 	for (i=0;i<cnt;i++) {
 		// A 태그 형태 좌표 및 크기
 		var top = (unit == 'px') ? $('#grid-box-' + i).position().top + 1 : ($('#grid-box-' + i).position().top / (imgHeight - 2) * 100).toFixed(2);
 		var left = (unit == 'px') ? $('#grid-box-' + i).position().left + 1 : ($('#grid-box-' + i).position().left / (imgWidth - 2) * 100).toFixed(2);
 		var width = (unit == 'px') ? $('#grid-box-' + i).width() : ($('#grid-box-' + i).width() / imgWidth * 100).toFixed(2);
 		var height = (unit == 'px') ? $('#grid-box-' + i).height() : ($('#grid-box-' + i).height() / imgHeight * 100).toFixed(2);
-		heightloop.push(height);
+		widthloop.push(imgWidth);
+		heightloop.push(imgHeight);
 		
 		// 이미지맵 형태 좌표 (px만 가능)
 		var startCoordX = parseInt($('#grid-box-' + i).position().left + 1);
@@ -151,7 +154,7 @@ function generateCode() {
 		
 	}
 	// console.log(startCoordXloop);
-	sendAoi(startCoordXloop,startCoordYloop, endCoordXloop, endCoordYloop, heightloop);
+	sendAoi(startCoordXloop,startCoordYloop, endCoordXloop, endCoordYloop, heightloop, widthloop);
 	// localStorage.setItem('startCoordXloop', JSON.stringify(startCoordXloop));
 	// A 태그 마크업
 	var gcA = gcAlert + '&lt;div style="position:relative"&gt;' + '<br>' + '&nbsp;&nbsp;&nbsp;&nbsp;&lt;img src="' + imgsrc + '"&gt;' + '<br>' + gcAloop + '&lt;/div&gt;';
@@ -163,12 +166,13 @@ function generateCode() {
 }
 
 
-function sendAoi(startCoordXloop, startCoordYloop, endCoordXloop, endCoordYloop, heightloop){
+function sendAoi(startCoordXloop, startCoordYloop, endCoordXloop, endCoordYloop, heightloop,widthloop){
 	var startX= startCoordXloop;
 	var startY= startCoordYloop;
 	var endX= endCoordXloop;
 	var endY= endCoordYloop;
 	var height = heightloop;
+	var width = widthloop;
 	var proj_id = document.getElementById('workspace-img').getAttribute('value');
 
 	$.ajax({
@@ -180,7 +184,8 @@ function sendAoi(startCoordXloop, startCoordYloop, endCoordXloop, endCoordYloop,
 			'startY':startY,
 			'endX':endX,
 			'endY':endY,
-			'height':height
+			'height':height,
+			'width':width
 		}),
 		datatype: "json",
 		success: function(resp){

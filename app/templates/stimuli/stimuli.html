@@ -21,7 +21,7 @@
                 {% for project in projects %}
                 <tr id="{{project.project_id}}" >
                   <th scope="row">{{loop.index}}</th>
-                  <td><a href="/project/{{project.project_id }}" method='GET'>{{project.project_name}}</a></td>
+                  <td><a href="/view/{{project.project_id }}" method='GET'>{{project.project_name}}</a></td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -78,7 +78,8 @@
       </div>
     </div>
   </div>
+  {% endblock %} 
 
                     <!-- end of contents -->
-            {% endblock %} 
+            
     

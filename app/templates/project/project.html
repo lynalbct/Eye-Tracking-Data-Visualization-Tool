@@ -24,19 +24,24 @@
               <div class="card cont mb-4">
 
                 <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="area"></canvas> 
-                    <form method="POST" enctype="multipart/form-data" href="/project/{{project_id }}">
-                      <center>
-
-                      <span class="btn btn-primary btn-l fileinput-button">
-                        <input type="file" id="files" name="files" multiple>
-                      </span><br style="margin-bottom: 3%">
-                      <input type="submit" value="Submit">
+                  <!-- <div class="chart-area"> -->
+                    <form class="user" method="POST" enctype="multipart/form-data" href="/project/{{project_id }}">
                       
-                      </center>
+                      <!-- div class="py-3 d-flex flex-row align-items-center justify-content-between"> -->
+                      <center><h6 class="m-0 font-weight-bold text-gray-800">Upload eye movement data.</h6><hr></center><!-- </div> -->
+                     <br style="margine-top:10%;">
+                     <div class="form-group">
+                      <span style="margin-top: 10%" class="btn form-control-user btn-l fileinput-button">
+                        <input type="file" id="files" name="files" multiple>
+                      </span>
+                      <!-- <br style="margin-bottom: 20%"> -->
+                      </div>
+
+                      <button class="btn btn-primary btn-user btn-block" type="submit" name="submit" >Submit</button></div><br>
+                      
+                      
                     </form>
-                  </div>
+                  <!-- </div> -->
                 </div>
               </div>
             </div>

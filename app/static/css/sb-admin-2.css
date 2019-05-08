@@ -566,6 +566,37 @@ pre code {
   margin-right: auto;
   margin-left: auto;
 }
+.overlay2 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #858796;
+  overflow: hidden;
+  width: 100%;
+  height: 0;
+  transition: .5s ease;
+}
+.container2 {
+  position: relative;
+  width: 100%;
+}
+.container2:hover .overlay2 {
+  height: 100%;
+}
+
+
+.text2 {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
 
 @media (min-width: 576px) {
   .container {
@@ -2616,6 +2647,10 @@ textarea.form-control {
 .btn:not(:disabled):not(.disabled) {
   cursor: pointer;
 }
+.clickable:not(:disabled):not(.disabled){
+  cursor: pointer;
+}
+
 
 a.btn.disabled,
 fieldset:disabled a.btn {
@@ -10390,7 +10425,13 @@ a.text-dark:hover, a.text-dark:focus {
   tr,
   img {
     page-break-inside: avoid;
+
   }
+  .image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
   p,
   h2,
   h3 {
@@ -11894,4 +11935,7 @@ footer.sticky-footer .copyright {
 
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
+}
+#myChart{
+  border:1px solid #021a40
 }
