@@ -55,7 +55,7 @@ def index():
 
 @app.route('/forgotpassword')
 def forgotpassword():
-	return render_template('dashboard/forgot-password.html')
+	return render_template('forms/forgot-password.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -232,22 +232,42 @@ def view_project(project_id):
 	for data in file:
 		size = os.path.getsize(data.directory_name)
 		array_size.append(size)
+	sequence = []
+	sequences = []
+	base_loc = upload_folder + '/' + str(current_user.researcher_id) + '/' + str(project_id)
+	with open(base_loc+'/processed.csv','r') as read_file:
+		reader = csv.reader(read_file)
+		for rows in reader:
+			data = re.sub(r'[^A-Za-z]', '', str(rows)) 
+			sequence.append(data)
+	with open(base_loc+'/preprocessed.csv','r') as read_file:
+		reader = csv.reader(read_file)
+		for rows in reader:
+			data = re.sub(r'[^A-Za-z]', '', str(rows)) 
+			sequences.append(data)
 
 	return render_template('project/view_project.html',array=zip(file,array_size),\
-		project=project,files=file,stimuli=stimuli,ext=ext,imgdata=stimuli.upload)
+		project=project,files=file,stimuli=stimuli,ext=ext,imgdata=stimuli.upload,\
+		sequence=sequence[-1], arrays=sequences, proj_id=project_id)
 
 
 @app.route('/<int:proj_id>/analyse', methods=['GET','POST'])
 def analyse(proj_id):
+	sequence = []
 	sequences = []
 	base_loc = upload_folder + '/' + str(current_user.researcher_id) + '/' + str(proj_id)
 	with open(base_loc+'/processed.csv','r') as read_file:
 		reader = csv.reader(read_file)
 		for rows in reader:
 			data = re.sub(r'[^A-Za-z]', '', str(rows)) 
+			sequence.append(data)
+	with open(base_loc+'/preprocessed.csv','r') as read_file:
+		reader = csv.reader(read_file)
+		for rows in reader:
+			data = re.sub(r'[^A-Za-z]', '', str(rows)) 
 			sequences.append(data)
-		# postprocess(proj_id)
-	return render_template('project/analyse.html',sequences=sequences, proj_id=proj_id)
+
+	return render_template('project/analyse.html',sequence=sequence[-1], arrays=sequences, proj_id=proj_id)
 
 
 def caller(proj_id):
@@ -275,9 +295,13 @@ def filter_aoi(file,filename,proj_id):
 			next(reader)
 			for row in reader:
 				if (int(row[0]) in range(aoi[b].x1, aoi[b].x2)) and (int(row[1]) in range(aoi[b].y1, aoi[b].y3)):
+<<<<<<< HEAD
 					# print row[0], row[1]    
 					line = str(reader.line_num)
 					# print type(line)
+=======
+					line = str(reader.line_num)
+>>>>>>> 3ce20cf70bdb427bf1e4c479e07c2bdf58a76dc2
 					line = re.findall(r'\d+', line)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 					y.append([int(row[0]), int(row[1]), aoi[b].new_id, (line)])
 				elif IndexError:
@@ -330,9 +354,13 @@ def final_preprocess(file,filename,proj_id):
 					break
 
 	with open(file,'w') as write_file:
+<<<<<<< HEAD
 		print('ey')
 		writer = csv.writer(write_file)
 		print('ola')
+=======
+		writer = csv.writer(write_file)
+>>>>>>> 3ce20cf70bdb427bf1e4c479e07c2bdf58a76dc2
 		for i in range(len(array)):
 			new_array.append(chr(int(array[i])))
 			# print chr(int(array[i]))
@@ -455,9 +483,15 @@ def postprocess(proj_id):
 			arr.append(row)
 	for i in arr[:]:
 		final_seq = re.sub(r'[^A-Za-z]', '', str(arr[-1])) 
+		
 	for c in final_seq:
 		new_array.append(Aoi.query.filter_by(stimuli_id=stimuli_id,new_id=ord(c)).first())
+<<<<<<< HEAD
 	latest_array = [[(data.width-((data.x1+data.x2)/2)),(data.height-((data.y1+data.y3)/2))] for data in new_array]
+=======
+
+	latest_array = [[(data.x1+data.x2)/2,(data.height-((data.y1+data.y3)/2))] for data in new_array]
+>>>>>>> 3ce20cf70bdb427bf1e4c479e07c2bdf58a76dc2
 	return latest_array
 
 
@@ -485,7 +519,6 @@ def save_aoi(proj_id):
 				stimuli_id = stimuli_data.stimuli_id,
 				new_id = new_id + i
 				)
-
 			db.session.add(save_aoi)
 			db.session.commit()
 		caller(proj_id)
@@ -567,5 +600,5 @@ def editprofile():
 def logout():
 	session.clear()
 	logout_user()
-	return redirect(url_for('index'))
+	return redirect(url_for('login'))
 

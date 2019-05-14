@@ -558,6 +558,10 @@ pre code {
   margin-right: auto;
   margin-left: auto;
   }
+/*.y{
+  overflow-y: auto;
+  min-width: 500px;
+}*/
 
 .container {
   width: 100%;
@@ -4980,6 +4984,25 @@ input[type="button"].btn-block {
   background-clip: border-box;
   border: 1px solid #e3e6f0;
   border-radius: 0.35rem;
+}
+.card2 {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid #e3e6f0;
+  border-radius: 0.35rem;
+  height: 405px !important;
+  overflow-y:auto;
+
 }
 
 .card > hr {
@@ -11937,5 +11960,5 @@ body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
 #myChart{
-  border:1px solid #021a40
+  border:1px solid #858796
 }

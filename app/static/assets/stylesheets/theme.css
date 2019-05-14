@@ -11474,6 +11474,12 @@ div.simple-card-list {
 div.simple-card-list .card {
 	display: table-cell;
 }
+div.simple-card-list .card .y{
+
+  overflow-y: auto;
+  min-width: 500px;
+
+}
 
 div.simple-card-list .card .card-content {
 	background-color: rgba(0, 0, 0, 0.1);

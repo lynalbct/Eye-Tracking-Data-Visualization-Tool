@@ -13,10 +13,12 @@
             </center>
           </div>
           <br style="margin-top: 2%;">
-          <div class="contaniner">
-            <canvas id="myChart" width="{{x_res}}" height="{{y_res}}" style="background-repeat: no-repeat;background-image: url(data:image/{{ ext }};base64,{{ imgdata }});background-size: {{x_res}}px {{y_res}}px"></canvas>
+          <div class="card shadow">
+          <div class="card-header">
+            <canvas id="myChart" width="600" height="400" style="background-repeat: no-repeat;background-image: url(data:image/{{ ext }};base64,{{ imgdata }});background-size: 100%"></canvas>
             <input type="hidden" class="x_res" value="{{x_res}}"></input>
             <input type="hidden" class="y_res" value="{{y_res}}"></input>
             <input type="hidden" class="sequences" value="{{sequences}}"></input>
+          </div>
           </div>
 {% endblock %}

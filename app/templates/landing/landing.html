@@ -49,9 +49,12 @@
           </button>
 
           <!-- Topbar Search -->
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 ">
             <div class="input-group">
-              <h5 style="font-family: verdana;">Eye Tracking Data Visualization Tool</h5>
+              &nbsp&nbsp&nbsp 
+              <!-- <img style="max-width: 70px" src="{{ url_for('.static',filename='images/logo.png')}}"> -->
+
+              <a style="font-family: verdana;color: #2e59d9; font-size: 20px">Eye Tracking Data Visualization Tool</a>
               </div>               
           </form>
 
@@ -86,10 +89,11 @@
               </a>
             </li>
 
+
             <!-- Nav Item - Messages -->
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="{{ url_for('register') }}" id="userDropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <button class="btn btn-primary" type="button" href="{{ url_for('register') }}" style="margin-left: -30%">Sign up</button>
+                <button class="btn btn-primary " type="button" href="{{ url_for('register') }}" style="margin-left: -30%">Sign up</button>
               </a>
             </li>
           </ul>
@@ -100,12 +104,14 @@
         <!-- Begin Page Content -->
         <!-- <div class="container-fluid"> -->
           <center>
-          <img style="min-height: 50%;min-width: 100%;" src="{{ url_for('static',filename='images/landing.gif')}}">
+          <img style="max-height: 20%;min-width: 100%;margin-top: -2%" src="{{ url_for('.static',filename='images/eyetracking.jpg')}}">
           </center>
           <br style="margin-top: 2%">
        <!--  -->
       <!-- </div> -->
       <!-- End of Main Content -->
+      <br>
+
 
       <!-- Footer -->
       <footer class="sticky-footer bg-white">
