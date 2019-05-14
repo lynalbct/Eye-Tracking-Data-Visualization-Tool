@@ -111,7 +111,7 @@ def register():
 			# 	add_researcher = Connection(researcher_id=account.researcher_id)
 			# 	db.session.add(add_researcher)
 			# 	db.session.commit()
-			print 'ok'
+			print('ok')
 			return redirect(url_for('info'))
 		else:
 			print(form.errors)
@@ -167,8 +167,8 @@ def stimuli():
 	projectform = ProjectForm()
 	if request.method == 'POST':
 		# check if the data is validated
-		print projectform.project_name.data
-		print projectform.project_description.data
+		# print projectform.project_name.data
+		# print projectform.project_description.data
 		if projectform.validate():
 			project = Project(
 				project_name=projectform.project_name.data,
@@ -181,9 +181,9 @@ def stimuli():
 		else:
 			print(projectform.errors)
 	else:
-		print 'here'
+		# print 'here'
 		projects = Project.query.filter_by(researcher_id=current_user.researcher_id).all()
-		print projects
+		# print projects
 		return render_template('stimuli/stimuli.html', projects=projects, projectform=projectform)
 	return render_template('stimuli/stimuli.html', projectform=projectform)
 
@@ -211,7 +211,7 @@ def project(project_id):
 						)
 					db.session.add(save_file)
 					db.session.commit()
-					print 'here'
+					# print 'here'
 
 				else:
 					flash('file extension is not csv')
@@ -255,7 +255,7 @@ def caller(proj_id):
 	counter = len(eye_movement_data)
 	num = 0
 	for i in eye_movement_data:
-		print num
+		# print num
 		if num < counter:
 			num = num + 1
 		filter_aoi(i.directory_name,i.file_name,proj_id)
@@ -275,15 +275,15 @@ def filter_aoi(file,filename,proj_id):
 			next(reader)
 			for row in reader:
 				if (int(row[0]) in range(aoi[b].x1, aoi[b].x2)) and (int(row[1]) in range(aoi[b].y1, aoi[b].y3)):
-					print row[0], row[1]    
+					# print row[0], row[1]    
 					line = str(reader.line_num)
-					print type(line)
+					# print type(line)
 					line = re.findall(r'\d+', line)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 					y.append([int(row[0]), int(row[1]), aoi[b].new_id, (line)])
 				elif IndexError:
 					pass
 				else:                                                                                                       
-					print 'no match'
+					print('no match')
 	with open(file, 'w') as new_file:
 		file = csv.writer(new_file)
 		for d in range(len(y)):
@@ -294,19 +294,19 @@ def clean_data(file,filename,proj_id):
 	with open(file,'r') as csv_file:
 		reader = csv.reader(csv_file)
 		for row in reader:
-			print row
+			# print row
 			for col in row:
 				str1 = col.replace(']','').replace('[','')
 				str1 = col.replace(']','').replace('[','')
 				str1 = re.findall(r'\w+', str1) 
 				array.append(str1[-2:])
-				print array
+				# print array
 	with open(file,'w') as read_file:
 		writer = csv.writer(read_file)
 		writer.writerows(array)
 	with open(file, 'r') as csv_file:
 		reader = csv.reader(csv_file)
-		print array
+		# print array
 		sort = sorted(array, key = lambda x: int(x[1]))
 		with open(file, 'w') as read_file:
 			writer = csv.writer(read_file)
@@ -330,12 +330,12 @@ def final_preprocess(file,filename,proj_id):
 					break
 
 	with open(file,'w') as write_file:
-		print 'ey'
+		print('ey')
 		writer = csv.writer(write_file)
-		print 'ola'
+		print('ola')
 		for i in range(len(array)):
 			new_array.append(chr(int(array[i])))
-			print chr(int(array[i]))
+			# print chr(int(array[i]))
 		writer.writerows(new_array)
 
 
@@ -390,25 +390,19 @@ def process(file, filename, proj_id, num):
 		reader = csv.reader(read)
 		for row in reader:
 			arrr.append((row[0],row[1]))
-		print arrr
 		perm = combinations(arrr,2)
 	with open(base_loc+'/permutations_result.csv','w') as perm_result:
 		writer = csv.writer(perm_result)
 		for i in (perm): 
 			permutes.append(i)
-			print i
-			print permutes
 			item1 = re.sub(r'[^A-Za-z]', '', str(i[0])) 
 			item2 = re.sub(r'[^A-Za-z]', '', str(i[1])) 
-			print matrix(item1,item2)
 			print(smith_waterman(item1, item2))
 			a, b = item1, item2
 			H = matrix(a, b)
 			result = traceback(H,b)
 			dictionary.update({i: traceback(H,b)})
-			print dictionary
 			for key, value in dictionary.items():
-				print key, value
 				writer.writerow([key, value])
 	with open(base_loc+'/permutations_result.csv','r') as csv_file:
 		reader = csv.reader(csv_file)
@@ -430,10 +424,9 @@ def process(file, filename, proj_id, num):
 				data = re.sub(r'[^A-Za-z]', '', str(row)) 
 				print(smith_waterman(result, data))
 				a, b = result, data
-				print result,data
+				print(result,data)
 				H = matrix(a, b)
 				temp_var = traceback(H,b)
-				print temp_var
 				if result != "":
 					writer.writerow([a,b])
 					writer.writerow(temp_var)
@@ -464,9 +457,7 @@ def postprocess(proj_id):
 		final_seq = re.sub(r'[^A-Za-z]', '', str(arr[-1])) 
 	for c in final_seq:
 		new_array.append(Aoi.query.filter_by(stimuli_id=stimuli_id,new_id=ord(c)).first())
-	print new_array		
 	latest_array = [[(data.width-((data.x1+data.x2)/2)),(data.height-((data.y1+data.y3)/2))] for data in new_array]
-	print latest_array
 	return latest_array
 
 
@@ -480,7 +471,6 @@ def save_aoi(proj_id):
 
 	if request.method == 'POST':
 		for i in range(len(data['startX'])-1):
-			print i
 			save_aoi =  Aoi(
 				x1 = data['startX'][i],
 				y1 = data['startY'][i],
