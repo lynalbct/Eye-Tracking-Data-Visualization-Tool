@@ -10,7 +10,8 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>ETDV Tool</title>
+  <title>EDVT</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png')}}" style="border-radius: 50%">
 
   <!-- Custom fonts for this template-->
   <link href="static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -23,7 +24,7 @@
 
 <body class="bg-gradient-primary">
 
-  <div class="container">
+  <div style="margin-top: 3%" class="container">
 
     <!-- Outer Row -->
     <div class="row justify-content-center">
@@ -60,17 +61,17 @@
                     </div>
 
                     <button class="btn btn-primary btn-user btn-block" type="submit" name="submit" >Log in</button>
-                    <hr>
-                    <a href="index.html" class="btn btn-google btn-user btn-block">
+                    
+<!--                     <a href="index.html" class="btn btn-google btn-user btn-block">
                       <i class="fab fa-google fa-fw"></i> Login with Google
                     </a>
                     <a href="index.html" class="btn btn-facebook btn-user btn-block">
                       <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                    </a>
+                    </a> -->
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="small" href="forgot-password.html">Forgot Password?</a>
+                    <!-- <a class="small" href="{{url_for('forgotpassword')}}">Forgot Password?</a> -->
                   </div>
                   <div class="text-center">
                     <a class="small" href="{{ url_for('register') }}">Create an Account!</a>

@@ -2,11 +2,14 @@
 window.onload=function(){
 	var x_res_element = document.getElementsByClassName("x_res");
 	var x_res = parseInt(x_res_element[0].value);
-	console.log(typeof(x_res));
+	var x_axis = x_res/8;
+	console.log(x_axis);
 
 	var y_res_element = document.getElementsByClassName("y_res");
 	var y_res = parseInt(y_res_element[0].value);
-	console.log(y_res);
+	var y_axis = x_res/8;
+	console.log(y_axis);
+	console.log(y_axis);
 
 	var sequences_element = document.getElementsByClassName("sequences");
 	var sequence = sequences_element[0].value;
@@ -17,17 +20,15 @@ window.onload=function(){
 
 	var final_array = [];
 	var i;
-	for (i=0; i<(array_seq.length/2); i++){
-	  final_array.push([array_seq[i],array_seq[i+1]]);
-	} 
-	var inc_label = [];
-	var datapoints = [];
 	var num = 0;
-	final_array.forEach(e => {
-	  datapoints.push({'x' : e[0],'y' : e[1], 'r' : num+=1});
-	  
-		})
-	console.log(datapoints)
+	var iter = 0;
+
+	for (i=0; i<(array_seq.length/2); i++){
+	  final_array.push({'x':array_seq[i],'y':array_seq[i+1],'r':num+=1});
+	  i++;
+	} 
+
+	console.log(final_array)
 
 	var dynamicColors = function() {
 		var r = Math.floor(Math.random() * 255);
@@ -44,15 +45,13 @@ window.onload=function(){
 		var bubbleChart = new Chart(ctx, {
 			type: 'scatter',
 			data: {
-				// labels:[y_res,896,768,640,512,384,256,128],
 				datasets: [{
 					label: 'Common Scanpath',
 					data: 
-					datapoints
+					final_array
 				,
 				backgroundColor: dynamicColors(),
 				hoverBackgroundColor:dynamicColors(),
-				// useRandomColors: true,
 				pointBackgroundColor: dynamicColors(),
 				pointBorderColor: dynamicColors(),
 				borderColor: dynamicColors(),
@@ -62,54 +61,34 @@ window.onload=function(){
 				tension: 0,
 				showLine: true
 			}],
+		},
 			options: {
+
 				responsive: true,
 				scales: {
 					yAxes: [{
 						display:true,
-						type: 'number',
+						type: 'linear',
 						position: 'left',
 						ticks: {
-							min: y_res,
-							max: 0,
-							callback: function (value, index, values) {
-								 return Number(value.toString());//pass tick values as a string into Number function
-							 }
-						},
-						afterBuildTicks: function (chartObj) { //Build ticks labelling as per your need
-							chartObj.ticks = [y_res,896,768,640,512,384,256,128];
+							min: 0,
+							max: y_res,
+							stepSize: x_axis
 							
 						},
-						gridLines: {
-							display: false,
-							drawBorder: false
-						}
 					}],
 					xAxes: [{
 						position: 'bottom',
 						ticks: {
 							min: 0, // Controls where axis starts
 							max: x_res,// Controls where axis finishes
-							suggestedMax: x_res+20,
-							callback: function (value, index, values) {
-								 return Number(value.toString());//pass tick values as a string into Number function
-							 }
+							stepSize: y_axis
+							
 						},
-						afterBuildTicks: function (chartObj) { //Build ticks labelling as per your need
-							chartObj.ticks = [x_res,896,768,640,512,384,256,128];
-						 }
-						 // ,
-						// gridLines: {
-						// 	display: false,
-						// 	lineWidth: 2 // Width of bottom line
-						// }
-				 
 					}]
 				}
 
 			}
-			
-		}	
 	});
 // }
 
