@@ -20,6 +20,7 @@ class Researcher(UserMixin, db.Model):
 	date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 	# connections = db.relationship("Connection", uselist=False, backref="researcher")
 	projects = db.relationship("Project", uselist=False, backref="researcher")
+	image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
 	# sharedprojects = db.relationship("SharedProject", uselist=False, backref="researcher")
 
 	def __init__(self, username='', email='',password=''):

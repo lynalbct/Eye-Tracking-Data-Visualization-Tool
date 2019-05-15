@@ -295,13 +295,7 @@ def filter_aoi(file,filename,proj_id):
 			next(reader)
 			for row in reader:
 				if (int(row[0]) in range(aoi[b].x1, aoi[b].x2)) and (int(row[1]) in range(aoi[b].y1, aoi[b].y3)):
-<<<<<<< HEAD
-					# print row[0], row[1]    
 					line = str(reader.line_num)
-					# print type(line)
-=======
-					line = str(reader.line_num)
->>>>>>> 3ce20cf70bdb427bf1e4c479e07c2bdf58a76dc2
 					line = re.findall(r'\d+', line)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 					y.append([int(row[0]), int(row[1]), aoi[b].new_id, (line)])
 				elif IndexError:
@@ -354,13 +348,7 @@ def final_preprocess(file,filename,proj_id):
 					break
 
 	with open(file,'w') as write_file:
-<<<<<<< HEAD
-		print('ey')
 		writer = csv.writer(write_file)
-		print('ola')
-=======
-		writer = csv.writer(write_file)
->>>>>>> 3ce20cf70bdb427bf1e4c479e07c2bdf58a76dc2
 		for i in range(len(array)):
 			new_array.append(chr(int(array[i])))
 			# print chr(int(array[i]))
@@ -486,12 +474,8 @@ def postprocess(proj_id):
 		
 	for c in final_seq:
 		new_array.append(Aoi.query.filter_by(stimuli_id=stimuli_id,new_id=ord(c)).first())
-<<<<<<< HEAD
-	latest_array = [[(data.width-((data.x1+data.x2)/2)),(data.height-((data.y1+data.y3)/2))] for data in new_array]
-=======
 
 	latest_array = [[(data.x1+data.x2)/2,(data.height-((data.y1+data.y3)/2))] for data in new_array]
->>>>>>> 3ce20cf70bdb427bf1e4c479e07c2bdf58a76dc2
 	return latest_array
 
 
@@ -523,7 +507,7 @@ def save_aoi(proj_id):
 			db.session.commit()
 		caller(proj_id)
 		return redirect(url_for('analyse', proj_id=proj_id))
-	return render_template('project/define_aoi.html', ext=ext, imgdata=stimuli_data.upload, proj_id=proj_id)
+	return render_template('project/define_aoi.html', ext=ext, imgdata=stimuli_data.upload[1:], proj_id=proj_id)
 
 @app.route('/resetpassword')
 def resetpassword():
@@ -547,7 +531,14 @@ def resetpassword():
 @app.route('/home')
 def home():
 	user = Researcher.query.filter_by(researcher_id=current_user.researcher_id).first()
-	return render_template('dashboard/index.html', user=user)
+	TotalProjects = Project.query.all()
+	totalproj = len(TotalProjects)
+	print(totalproj)
+
+	TotalStimuli = Stimuli.query.all()
+	totalstim = len(TotalStimuli)
+	print(totalstim)
+	return render_template('dashboard/index.html', user=user, totalproj=totalproj, totalstim=totalstim)
 
 @app.route('/profile', methods=['POST','GET'])
 def profile():
