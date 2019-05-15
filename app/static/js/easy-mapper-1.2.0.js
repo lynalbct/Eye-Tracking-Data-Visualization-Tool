@@ -341,7 +341,7 @@ function resetGrid() {
 
 // 맵 엘리먼트 추가
 function addMapElView(index) {
-	$img.append('<div class="grid-box" id="grid-box-' + index + '"><span class="grid-box-cnt">' + (index + 1) + '</span><span class="grid-box-close">&times;</span><span class="grid-box-link">ADD LINK</span></div>');
+	$img.append('<div class="grid-box" id="grid-box-' + index + '"><span class="grid-box-cnt">' + (index + 1) + '</span><span class="grid-box-close">&times;</span></div>');
 	
 	$('#grid-box-' + index).css({
 		width: (unit == 'px') ? Math.abs(mapEl[index][1][0] - mapEl[index][0][0]) : Math.abs(mapEl[index][1][0] - mapEl[index][0][0]) / 100 * imgWidth,
