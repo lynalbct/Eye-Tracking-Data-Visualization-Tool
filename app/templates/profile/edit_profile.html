@@ -62,10 +62,8 @@
 						<center>
 							<div class="row">
 								<div class="container2" style="margin-bottom: -14%">
-									<img class="image" alt="Avatar" src="{{ url_for('static', filename='images/default_avatar.png')}}" style="max-width: 60%">
-									<div href="{{url_for('profile')}}" class="overlay2">
-										<div class="text2">Upload profile picture</div>
-									</div> 
+									<img class="image" alt="Avatar" src="{{ image_file }}" style="max-width: 60%">
+									
 								</div>
 							</div>
 						</center>
@@ -74,47 +72,25 @@
 				</div>
 			</div>
 
-						<!-- Second Column -->
-						<div class="col-xl-8 col-lg-7">
+			<div class="col-xl-8 col-lg-7">
 
-							<!-- Background Gradient Utilities -->
-							<div class="card shadow mb-4">
-								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">About Me</h6>
-								</div>
-								<div style="margin-bottom: 2%" class="card-body">                                         
-									<strong><th><i class="fa fa-user"></i>&nbsp&nbsp{{ user.first_name}}&nbsp{{ user.last_name }} </th></strong></strong>
-									<br><th><i class="fa fa-suitcase"></i>&nbsp&nbsp{{ user.profession }} </th></br>
-									<th><i class="fa fa-users"></i>&nbsp&nbsp{{user.organization}}</th><br>
-									<th><i class="fa fa-envelope"></i>&nbsp&nbsp{{user.email}}</th><br>
-									<th><i class="fa fa-calendar"></i>&nbsp&nbspJoined on {{user.date_created.strftime('%m-%d-%Y')}}</th><br>
-								</div>
-							</div>
-						</div>
+				<!-- Background Gradient Utilities -->
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+						<h6 class="m-0 font-weight-bold text-primary">About Me</h6>
 					</div>
-				</div>
-
-				<div class="row">
-					<!-- <div class="container">shgdaa</div> -->
-					<!-- <center> -->
-						<div style="margin-left: 2%; margin-right: 2%" class="col-lg">
-
-						<div class="card shadow mb-4">
-							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary">Activity Logs</h6>
-							</div>
-							<div class="card-body">                                         
-								<strong><th><i class="fa fa-user"></i>&nbsp&nbsp{{ user.first_name}}&nbsp{{ user.last_name }} </th></strong></strong>
-								<br><th><i class="fa fa-suitcase"></i>&nbsp&nbsp{{ user.profession }} </th></br>
-								<th><i class="fa fa-users"></i>&nbsp&nbsp{{user.organization}}</th><br>
-								<th><i class="fa fa-envelope"></i>&nbsp&nbsp{{user.email}}</th><br>
-								<th><i class="fa fa-calendar"></i>&nbsp&nbspJoined on {{user.date_created.strftime('%m-%d-%Y')}}</th><br>
-							</div>
-							</div>
+					<div style="margin-bottom: 2%" class="card-body">                                         
+						<strong><th><i class="fa fa-user"></i>&nbsp&nbsp{{ user.first_name}}&nbsp{{ user.last_name }} </th></strong></strong>
+						<br><th><i class="fa fa-suitcase"></i>&nbsp&nbsp{{ user.profession }} </th></br>
+						<th><i class="fa fa-users"></i>&nbsp&nbsp{{user.organization}}</th><br>
+						<th><i class="fa fa-envelope"></i>&nbsp&nbsp{{user.email}}</th><br>
+						<th><i class="fa fa-calendar"></i>&nbsp&nbspJoined on {{user.date_created.strftime('%m-%d-%Y')}}</th><br>
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+			
 				<!-- /.container-fluid -->
 
 			</div>

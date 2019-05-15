@@ -93,6 +93,7 @@ class Project(db.Model):
 	# sharedprojects = db.relationship("SharedProject", uselist=False, backref="project")
 	files = db.relationship("File", uselist=False, backref="project")
 	stimuli = db.relationship("Stimuli", uselist=False, backref="project")
+	
 
 	def __init__(self, project_name,project_description,researcher_id):
 		self.project_name = project_name

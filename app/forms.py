@@ -86,3 +86,14 @@ class StimuliForm(Form):
 
 class DataForm(Form):
    upload = FileField('data', validators=[FileRequired(),FileAllowed(['csv'], 'CSV file only!')])
+
+class UpdateProfileForm(Form):
+
+    first_name = StringField('First Name',validators=[DataRequired(), Length(min=2, max=20)])
+    last_name = StringField('Last Name',validators=[DataRequired(), Length(min=2, max=20)])
+    profession = StringField('Profession',validators=[Length(min=2, max=20)])
+    organization = StringField('Organization',validators=[Length(min=2, max=20)])
+    username = StringField('Username',validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email',validators=[DataRequired(), Email()])
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
+    submit = SubmitField('Update')

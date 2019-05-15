@@ -23,6 +23,8 @@ import glob
 import ast
 from itertools import permutations
 from itertools import combinations
+import secrets
+from PIL import Image
 # import pandas as pd
 
 
@@ -158,12 +160,13 @@ def upload_stimuli(proj_id):
 					project_id=proj_id
 				 )
 			db.session.add(save_stimuli)
-			db.session.commit()
+			db.	session.commit()
 			return redirect(url_for('save_aoi', proj_id=proj_id))
 	return render_template('project/define.html', form=form)
 
 @app.route('/stimuli', methods=['GET','POST'])
 def stimuli():
+	image_file = url_for('static', filename='images/' + current_user.image_file)
 	projectform = ProjectForm()
 	if request.method == 'POST':
 		# check if the data is validated
@@ -184,12 +187,13 @@ def stimuli():
 		# print 'here'
 		projects = Project.query.filter_by(researcher_id=current_user.researcher_id).all()
 		# print projects
-		return render_template('stimuli/stimuli.html', projects=projects, projectform=projectform)
-	return render_template('stimuli/stimuli.html', projectform=projectform)
+		return render_template('stimuli/stimuli.html', projects=projects, projectform=projectform, image_file=image_file)
+	return render_template('stimuli/stimuli.html', projectform=projectform, image_file=image_file)
 
 
 @app.route('/project/<int:project_id>', methods=['GET','POST'])
 def project(project_id):
+	image_file = url_for('static', filename='images/' + current_user.image_file)
 	if request.method == 'POST':
 		if request.files:
 			upload_location = upload_folder + '/' + str(current_user.researcher_id) + '/' + str(project_id)
@@ -219,10 +223,11 @@ def project(project_id):
 			return redirect(url_for('upload_stimuli', proj_id=project_id))
 		else:
 			return redirect(url_for('project',proj_id=project_id))
-	return render_template('project/project.html')
+	return render_template('project/project.html', image_file=image_file)
 
 @app.route('/view/<int:project_id>', methods=['GET','POST'])
 def view_project(project_id):
+	image_file = url_for('static', filename='images/' + current_user.image_file)
 	project = Project.query.filter_by(project_id=project_id).first()
 	file = File.query.filter_by(project_id=project_id).all()
 	stimuli = Stimuli.query.filter_by(project_id=project_id).first()
@@ -248,7 +253,7 @@ def view_project(project_id):
 
 	return render_template('project/view_project.html',array=zip(file,array_size),\
 		project=project,files=file,stimuli=stimuli,ext=ext,imgdata=stimuli.upload,\
-		sequence=sequence[-1], arrays=sequences, proj_id=project_id)
+		sequence=sequence[-1], arrays=sequences, proj_id=project_id, image_file=image_file)
 
 
 @app.route('/<int:proj_id>/analyse', methods=['GET','POST'])
@@ -450,12 +455,13 @@ def process(file, filename, proj_id, num):
 
 @app.route('/<int:proj_id>/visualize',methods=['GET','POST'])
 def visualize(proj_id):
+	image_file = url_for('static', filename='images/' + current_user.image_file)
 	sequences = postprocess(proj_id)
 	stimuli_data = Stimuli.query.filter_by(project_id=proj_id).first()
 	filename = stimuli_data.stimuli_name 
 	ext = filename.split('.')[-1]
 
-	return render_template('project/visualize.html', x_res=stimuli_data.x_resolution,y_res=stimuli_data.y_resolution,\
+	return render_template('project/visualize.html', image_file=image_file, x_res=stimuli_data.x_resolution,y_res=stimuli_data.y_resolution,\
 		ext=ext,imgdata=stimuli_data.upload,sequences=sequences)
 
 def postprocess(proj_id):
@@ -507,7 +513,7 @@ def save_aoi(proj_id):
 			db.session.commit()
 		caller(proj_id)
 		return redirect(url_for('analyse', proj_id=proj_id))
-	return render_template('project/define_aoi.html', ext=ext, imgdata=stimuli_data.upload[1:], proj_id=proj_id)
+	return render_template('project/define_aoi.html', ext=ext, imgdata=stimuli_data.upload, proj_id=proj_id)
 
 @app.route('/resetpassword')
 def resetpassword():
@@ -530,6 +536,7 @@ def resetpassword():
 
 @app.route('/home')
 def home():
+	image_file = url_for('static', filename='images/' + current_user.image_file)
 	user = Researcher.query.filter_by(researcher_id=current_user.researcher_id).first()
 	TotalProjects = Project.query.all()
 	totalproj = len(TotalProjects)
@@ -538,7 +545,7 @@ def home():
 	TotalStimuli = Stimuli.query.all()
 	totalstim = len(TotalStimuli)
 	print(totalstim)
-	return render_template('dashboard/index.html', user=user, totalproj=totalproj, totalstim=totalstim)
+	return render_template('dashboard/index.html', image_file=image_file ,user=user, totalproj=totalproj, totalstim=totalstim)
 
 @app.route('/profile', methods=['POST','GET'])
 def profile():
@@ -546,6 +553,7 @@ def profile():
 	print(form)
 	user = Researcher.query.filter_by(researcher_id =current_user.researcher_id).first()
 	print(current_user.researcher_id)
+	image_file = url_for('static', filename='images/' + current_user.image_file)
 	if request.method == 'POST':
 		if form.validate():
 			current_user.username=form.username.data,
@@ -559,28 +567,51 @@ def profile():
 			print('ok')
 		else:
 			print('not validated')
-	return render_template('profile/edit_profile.html', form=form, user=user)
+	return render_template('profile/edit_profile.html', form=form, user=user, image_file=image_file)
+
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/images', picture_fn)
+
+    output_size = (125, 125)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+
+    return picture_fn
 
 @app.route('/settings', methods=['POST','GET'])
 def settings():
-	form = ProfileForm()
+	form = UpdateProfileForm()
 	print(form)
 	user = Researcher.query.filter_by(researcher_id =current_user.researcher_id).first()
 	print(current_user.researcher_id)
-	if request.method == 'POST':
-		if form.validate():
-			current_user.username=form.username.data,
-			current_user.email=form.email.data,
-			current_user.first_name = form.first_name.data,
-			current_user.last_name = form.last_name.data,
-			current_user.profession = form.profession.data,
-			current_user.organization = form.organization.data
-			db.session.add(current_user)
-			db.session.commit()
-			print('ok')
-		else:
-			print('not validated')
-	return render_template('settings.html', form=form, user=user)
+	image_file = url_for('static', filename='images/' + current_user.image_file)
+	
+	if form.validate_on_submit():
+		if form.picture.data:
+			picture_file = save_picture(form.picture.data)
+			current_user.image_file = picture_file
+		current_user.first_name = form.first_name.data
+		current_user.last_name = form.last_name.data
+		current_user.username = form.username.data
+		current_user.email = form.email.data
+		current_user.profession = form.profession.data
+		current_user.organization = form.organization.data
+		db.session.commit()
+		flash('Your account has been updated!', 'success')
+		return render_template('settings.html', user=user, form=form, image_file=image_file)
+	elif request.method == 'GET':
+		form.first_name.data = current_user.first_name
+		form.last_name.data = current_user.last_name
+		form.username.data = current_user.username
+		form.email.data = current_user.email
+		form.profession.data = current_user.profession
+		form.organization.data = current_user.organization
+       	return render_template('settings.html', user=user, form=form, image_file=image_file)
+	return render_template('settings.html', form=form, user=user, image_file=image_file)
 
 @app.route('/edit_profile')
 def editprofile():
