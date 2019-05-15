@@ -537,6 +537,7 @@ def resetpassword():
 @app.route('/home')
 def home():
 	image_file = url_for('static', filename='images/' + current_user.image_file)
+	project = Project.query.all()
 	user = Researcher.query.filter_by(researcher_id=current_user.researcher_id).first()
 	TotalProjects = Project.query.all()
 	totalproj = len(TotalProjects)
@@ -545,7 +546,7 @@ def home():
 	TotalStimuli = Stimuli.query.all()
 	totalstim = len(TotalStimuli)
 	print(totalstim)
-	return render_template('dashboard/index.html', image_file=image_file ,user=user, totalproj=totalproj, totalstim=totalstim)
+	return render_template('dashboard/index.html', project=project, image_file=image_file ,user=user, totalproj=totalproj, totalstim=totalstim)
 
 @app.route('/profile', methods=['POST','GET'])
 def profile():
@@ -610,7 +611,7 @@ def settings():
 		form.email.data = current_user.email
 		form.profession.data = current_user.profession
 		form.organization.data = current_user.organization
-       	return render_template('settings.html', user=user, form=form, image_file=image_file)
+		return render_template('settings.html', user=user, form=form, image_file=image_file)
 	return render_template('settings.html', form=form, user=user, image_file=image_file)
 
 @app.route('/edit_profile')
