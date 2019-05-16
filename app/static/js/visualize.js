@@ -38,8 +38,9 @@ window.onload=function(){
 	}
 
 	var ctx = document.getElementById("myChart");
-	ctx.height = y_res;
-	ctx.width = x_res;
+	var canvas = document.getElementsByTagName('canvas')[0];
+	canvas.width  = 500;
+	canvas.height = 250;
 
 
 		var bubbleChart = new Chart(ctx, {
