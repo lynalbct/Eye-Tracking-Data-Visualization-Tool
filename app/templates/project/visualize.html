@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+          {% block content %}
+          <!-- Page Heading -->
+          <div class="align-items-center ">
+            <h1 class="h3 mb-0 text-gray-800" ></h1>
+            <center>
+            <div class="btn-group" role="group">
+              <button class="btn btn-outline-primary btn-lg disabled" data-toggle="tooltip" title="Upload eye tracking data">Upload</button>
+              <button class="btn btn-outline-primary btn-lg disabled" data-toggle="tooltip" title="Upload stimuli and define AOI/s">Define</button>
+              <button class="btn btn-outline-primary btn-lg disabled" data-toggle="tooltip" title="Analyse data and get the common scanpath">Analyse</button>
+              <button class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" title="Visualize result">Visualize</button>
+            </div>
+            </center>
+          </div>
+          <br style="margin-top: 2%;">
+          <div class="card shadow">
+          <div class="card-header">
+            <canvas id="myChart" style="background-repeat: no-repeat;background-image: url(data:image/{{ ext }};base64,{{ imgdata }});background-size: 99%"></canvas>
+            <input type="hidden" class="x_res" value="{{x_res}}"></input>
+            <input type="hidden" class="y_res" value="{{y_res}}"></input>
+            <input type="hidden" class="sequences" value="{{sequences}}"></input>
+          </div>
+          </div>
+{% endblock %}

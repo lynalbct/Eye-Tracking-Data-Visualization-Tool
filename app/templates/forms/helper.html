@@ -1,0 +1,9 @@
+{% macro render_field(field) %}
+    {{ field.label }}
+    <input type="text" name="{{ field.label.text.lower() }}" id = "{{ field.label.text.lower() }}">
+    {% if field.errors %}
+        {% for error in field.errors %}
+            <p class="error">{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+{% endmacro %}

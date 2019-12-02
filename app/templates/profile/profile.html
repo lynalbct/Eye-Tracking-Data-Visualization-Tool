@@ -1,0 +1,123 @@
+{% extends "base.html" %} 
+{% block body %}    
+
+          {% block head %}
+<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Edit Profile</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+ <form class="user">
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="text" class="form-control form-control-user" name="form.first_name.data" placeholder="First Name">
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control form-control-user" name="last_name" placeholder="Last Name">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Email Address">
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password">
+                  </div>
+                </div>
+                  
+              </form>
+
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button class="btn btn-default">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Profile</h1>
+  <a href="" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#modalLoginForm">Edit Profile</a>
+</div>
+
+          {% endblock %}
+          <!-- Content Row -->
+          <div class="row">
+
+            <!-- First Column -->
+            <div class="col-lg-4">
+
+              <div class="card shadow mb-4">
+
+                <div class="card-body text-center">
+            <br><h1 class="h3 mb-0 text-gray-800">USERNAME</h1></br>
+            <br></br>
+            <br></br>
+            <center>
+                <div class="row">
+                    <div class="container2">
+                     <div class="circle">
+                       <!-- User Profile Image -->
+                       <img class="profile-pic" src="http://cdn.cutestpaw.com/wp-content/uploads/2012/07/l-Wittle-puppy-yawning.jpg">
+
+                       <!-- Default Image -->
+                       <!-- <i class="fa fa-user fa-5x"></i> -->
+                    </div>
+                     <div class="p-image">
+                       <i class="fa fa-camera upload-button"></i>
+                        <input class="file-upload" type="file" accept="image/*"/>
+                     </div>
+                      </div>
+                </div>
+              </center>
+                  <strong><th>Bio: </th></strong></strong>
+
+                  <br></br>
+
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Second Column -->
+            <div class="col-xl-8 col-lg-7">
+
+              <!-- Background Gradient Utilities -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">About Me</h6>
+                </div>
+                <div class="card-body">
+                  <strong><th>Name: </th></strong></strong>
+                  <strong><br><th>Profession: </th></br></strong>
+                  <strong><th>Organization: </th></strong>
+
+                </div>
+              </div>
+
+
+            </div>
+
+          </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  {% endblock %}
